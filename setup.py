@@ -22,8 +22,8 @@ except ImportError:
 NAME = 'pykg2tbl'
 DESCRIPTION = 'Py Project to extra table data from knowwledge-graphs using sparql templates'
 URL = 'https://github.com/vliz-be-opsci/pykg2tbl'
-EMAIL = 'marc.portier@gmail.com'
-AUTHOR = 'Marc Portier'
+EMAIL = ['marc.portier@gmail.com','cedricdecruw@gmail.com']
+AUTHOR = ['Marc Portier','Cedric Decruw']
 LICENSE = 'MIT'
 CONSOLE_SCRIPTS = ['pykg2tbl = pykg2tbl.__main__:main']
 TROVE_CLASSES = [

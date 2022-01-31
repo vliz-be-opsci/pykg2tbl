@@ -7,10 +7,11 @@
 
 """
 
-from .extractor import MyModel
+from .service import *  #TODO define the classes that need to be added with __all__
+from .j2.jinja_processor import * # ** 
 import logging
 
-__all__ = ['MyModel']
+#__all__ = ['MyModel'] #TODO add all imported classes from above
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
