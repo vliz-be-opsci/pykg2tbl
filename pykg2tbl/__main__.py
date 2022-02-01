@@ -26,26 +26,28 @@ def get_arg_parser():
         '-i',
         '--input',
         type=str,
+        nargs='+',
+        metavar="FILE",
         action='store',
         help='input file to be turned into datagraph or endpoint of rdf-database'
     )
-    
+
     parser.add_argument(
-        '-of',
+        '-f',
         '--output_format',
         choices=['csv','tsv','ttl'],
         action='store',
         help='output file format',
         default='csv'
     )
-    
+
     parser.add_argument(
-        '-ol',
+        '-o',
         '--output_location',
         type=str,
+        metavar="FILE",
         action='store',
         help='output file location',
-        default= os.getcwd()
     )
 
     return parser
@@ -58,7 +60,7 @@ def enable_logging(args: argparse.Namespace):
     with open(args.logconf, 'r') as yml_logconf:
         logging.config.dictConfig(yaml.load(yml_logconf, Loader=yaml.SafeLoader))
     log.info(f"Logging enabled according to config in {args.logconf}")
-    
+
 def main():
     """
     The main entry point to this module.
