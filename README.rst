@@ -1,7 +1,7 @@
 pykg2tbl
 ===================================
 
-Py Project to extra table data from knowwledge-graphs using sparql templates
+Py Project to extra table data from knowledge-graphs using sparql templates
 
 Started on 2022-01-04
 

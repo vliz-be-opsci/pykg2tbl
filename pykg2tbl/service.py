@@ -1,8 +1,7 @@
 # Use this file to describe the datamodel handled by this module
 # we recommend using abstract classes to achieve proper service and interface insulation
 from abc import ABC, abstractmethod
-from rdflib import Graph,URIRef, BNode, Literal
-import rdflib
+import rdflib, csv
 
 class QueryResult():
     def __init__(self, data: dict):
@@ -55,6 +54,3 @@ class KG2TblService():
     def exec(self,query:str, output_file:str):
         result = self.source.query(query)
         result.as_csv(output_file)
-    
-    
-

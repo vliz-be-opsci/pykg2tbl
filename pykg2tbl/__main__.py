@@ -23,13 +23,31 @@ def get_arg_parser():
 
     # TODO define your own command line arguments
     parser.add_argument(
-        '-o',
-        '--option',
+        '-i',
+        '--input',
         type=str,
         action='store',
-        help='Some Option',
-        default='TheOptionValue',
+        help='input file to be turned into datagraph or endpoint of rdf-database'
     )
+    
+    parser.add_argument(
+        '-of',
+        '--output_format',
+        choices=['csv','tsv','ttl'],
+        action='store',
+        help='output file format',
+        default='csv'
+    )
+    
+    parser.add_argument(
+        '-ol',
+        '--output_location',
+        type=str,
+        action='store',
+        help='output file location',
+        default= os.getcwd()
+    )
+
     return parser
 
 

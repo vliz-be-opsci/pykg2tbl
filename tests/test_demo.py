@@ -27,7 +27,12 @@ class TestStringMethods(unittest.TestCase):
         self.assertAlmostEqual(m.my_method(10), 0.01)  # when comparing floats one should allow for some margin
         with self.assertRaises(AssertionError):        # to trigger and test for intended failure
             m.my_method(200)
-
+            
+    #make tests here to simulate the terminal codes
+    #read in triple store fils and make datagraph from it 
+    def test_read_graph(self):
+        self.assertEqual(10,1)
+        pass
 
 if __name__ == "__main__":
     enable_test_logging()

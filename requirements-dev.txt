@@ -8,3 +8,6 @@ flake8
 pytest
 python-dotenv
 pyyaml
+
+#module specific
+rdflib
