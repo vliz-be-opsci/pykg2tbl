@@ -2,6 +2,7 @@
 # we recommend using abstract classes to achieve proper service and interface insulation
 from abc import ABC, abstractmethod
 from rdflib import Graph
+from SPARQLWrapper import SPARQLWrapper
 import logging
 import csv
 
@@ -28,10 +29,6 @@ class KGSource(ABC):
     def query(self, sparql:str) -> QueryResult:
         pass
 
-    @staticmethod
-    def reslist_to_dict(reslist:list):
-        return reslist #TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
-
 ## create classes for making the kg context and query factory graph
 class KGFileSource(KGSource):
     def __init__(self, *files):
@@ -44,20 +41,32 @@ class KGFileSource(KGSource):
             graph_to_add = g.parse(f)
             self.graph = graph_to_add if self.graph is None else self.graph + graph_to_add
 
+    @staticmethod
+    def reslist_to_dict(reslist:list):
+        return reslist #TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
+
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
-        return QueryResult(KGSource.reslist_to_dict(reslist))
+        return QueryResult(KGFileSource.reslist_to_dict(reslist))
 
 ## create class for KG based on endpoint
 class KG2EndpointSource(KGSource):
     def __init__(self, url):
         super().__init__()
-        self.endpoint = None # check how to make an endpoint
+        self.endpoint = url
+
+    @staticmethod
+    def reslist_to_dict(reslist:list):
+        return reslist #TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
 
     def query(self, sparql: str) -> QueryResult:
-        reslist = self.endpoint.query(sparql)
-        return QueryResult(KGSource.reslist_to_dict(reslist))
+        ep = SPARQLWrapper(self.endpoint)
+        ep.setQuery(sparql)
+        ep.setReturnFormat("json")
+        reslist = ep.query()
+        return QueryResult(KG2EndpointSource.reslist_to_dict(reslist))
+
 
 ## class tbl service
 class KG2TblService():

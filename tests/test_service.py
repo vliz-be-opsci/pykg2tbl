@@ -4,18 +4,27 @@ import sys
 import os
 from util4tests import enable_test_logging, run_single_test, log
 
-from pykg2tbl import KG2TblService, KGFileSource
+from pykg2tbl import KG2TblService, KGFileSource, KG2EndpointSource
+
+
+ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 10"
+BODC_ENDPOINT = "http://vocab.nerc.ac.uk/sparql/sparql"
 
 
 class TestService(unittest.TestCase):
 
-    def test_basic(self):
+    def test_basic_filesource(self):
         file_base = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'sources')
         log.debug(f"test using files in {file_base}")
         test_source  = KGFileSource(os.path.join(file_base, '01-persons-shape.ttl'),
                                     os.path.join(file_base, '02-person.ttl'))
-        #TODO send some default sparql query e.g. listing all triples
-        result = test_source.query("SELECT * WHERE { ?s ?p ?o. }")
+        result = test_source.query(ALL_TRIPLES_SPARQL)
+        log.debug(result)
+        self.assertIsNotNone(result, "result should exist")
+
+    def test_basic_endpoint(self):
+        test_source  = KG2EndpointSource(BODC_ENDPOINT)
+        result = test_source.query(ALL_TRIPLES_SPARQL)
         log.debug(result)
         self.assertIsNotNone(result, "result should exist")
 
