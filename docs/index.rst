@@ -26,5 +26,5 @@ API Docs
 pykg2tbl
 ****************************************
 
-.. automodule:: pykg2tbl.extractor
+.. automodule:: pykg2tbl.service
     :members:

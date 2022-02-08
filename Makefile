@@ -1,5 +1,4 @@
-SHELL := /bin/bash
-PYTHON = python3
+PYTHON = python
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 
@@ -14,11 +13,11 @@ clean:
 	@rm -rf .cache
 
 init:
-	@pip install --upgrade pip
-	@pip install -e .
+	pip install --upgrade pip
+	pip install -e .
 
 init-dev: init
-	@pip install -e .[dev]
+	pip install -e .[dev]
 
 docu:
 	@${PYTHON} setup.py build_sphinx

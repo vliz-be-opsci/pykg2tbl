@@ -8,7 +8,7 @@
 """
 
 from .service import *  #TODO define the classes that need to be added with __all__
-from .j2.jinja_processor import * # ** 
+from .j2.jinja_sparql_builder import * # ** 
 import logging
 
 #__all__ = ['MyModel'] #TODO add all imported classes from above
