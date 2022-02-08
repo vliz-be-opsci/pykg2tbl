@@ -27,6 +27,14 @@ class TestService(unittest.TestCase):
         result = test_source.query(ALL_TRIPLES_SPARQL)
         log.debug(result)
         self.assertIsNotNone(result, "result should exist")
+        
+    def test_full_search(self):
+        #make full search on the endpoint of BODC to see what it returns // test on the BODC server itself first
+        test_source  = KG2EndpointSource(BODC_ENDPOINT)
+        #make test qry using template from BODC
+        result = test_source.query(ALL_TRIPLES_SPARQL)
+        log.debug(result)
+        self.assertIsNotNone(result, "result should exist")
 
 
 if __name__ == "__main__":

@@ -90,7 +90,6 @@ class SparqlBuilder(ABC):
         
         :return: the set of all variables applicable to the named query.
         :rtype: set
-        :brollllllll: alles wat ik wil
         
         """
         pass

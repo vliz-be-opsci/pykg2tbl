@@ -23,6 +23,15 @@ WHERE {
 } 
 LIMIT 10''',qry,'unexpected qry result')
 
+    def test_get_variables_sparql_query(self):
+        #TODO write test to get all the variables from a sparql template
+        variables = "TODO"
+        print(variables)
+        self.assertIsNotNone(variables,'variables should exist')
+        
+    def test_injested_query_sparql(self):
+        #test a sparql template who uses variables to make a sparql query to see if it works
+        pass
 
 if __name__ == "__main__":
     run_single_test(__file__)
