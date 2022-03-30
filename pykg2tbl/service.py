@@ -4,13 +4,12 @@ from abc import ABC, abstractmethod
 from rdflib import Graph
 from SPARQLWrapper import SPARQLWrapper
 import logging
-import csv
-
+import csv, json
 
 log = logging.getLogger(__name__)
 
-
 class QueryResult():
+
     def __init__(self, data: dict):
         self._data = data #TODO pandas dataframe
     # allow conversion to table / list/ dict/ whatnot with pandas
@@ -43,7 +42,8 @@ class KGFileSource(KGSource):
 
     @staticmethod
     def reslist_to_dict(reslist:list):
-        return reslist #TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
+        return [{str(v):str(row[v]) for v in reslist.vars} for row in reslist]
+        #TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
 
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
@@ -58,13 +58,14 @@ class KG2EndpointSource(KGSource):
 
     @staticmethod
     def reslist_to_dict(reslist:list):
-        return reslist #TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
+        return [{k: row[k]["value"] for k in row} for row in reslist["results"]["bindings"]]
+        #TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
 
     def query(self, sparql: str) -> QueryResult:
         ep = SPARQLWrapper(self.endpoint)
         ep.setQuery(sparql)
         ep.setReturnFormat("json")
-        reslist = ep.query()
+        reslist = ep.query().convert()
         return QueryResult(KG2EndpointSource.reslist_to_dict(reslist))
 
 class SparqlBuilder(ABC):

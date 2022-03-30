@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 
 log = logging.getLogger('tests')
 
-
 def enable_test_logging():
     load_dotenv()
     if 'PYTEST_LOGCONF' in os.environ:
@@ -18,7 +17,6 @@ def enable_test_logging():
             logging.config.dictConfig(yaml.load(yml_logconf, Loader=yaml.SafeLoader))
         log.info(f"Logging enabled according to config in {logconf}")
         print(logconf)
-
 
 def run_single_test(testfile):
     enable_test_logging()
