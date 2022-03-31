@@ -1,6 +1,7 @@
 PYTHON = python
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
+SHELL := /bin/bash
 
 clean:
 	@find . -name '*.pyc' -exec rm --force {} +
@@ -34,3 +35,9 @@ install:
 
 docker-build:
 	@docker build . -t pykg2tbl
+
+build: init-dev check test docu
+	@${PYTHON} -m build
+
+release: build
+	@${PYTHON} setup.py release

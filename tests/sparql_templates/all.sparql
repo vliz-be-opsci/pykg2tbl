@@ -2,4 +2,4 @@ SELECT *
 WHERE { 
     ?s ?p ?o. 
 } 
-LIMIT 10
+LIMIT 100

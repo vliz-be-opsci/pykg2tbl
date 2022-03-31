@@ -9,8 +9,13 @@ import csv, json
 log = logging.getLogger(__name__)
 
 class QueryResult():
-
+    """
+    Class that incompases the result from a performed query
+    
+    :param data: query result data in the form of a list of dictionaries
+    """
     def __init__(self, data: dict):
+        log.info(data)
         self._data = data #TODO pandas dataframe
     # allow conversion to table / list/ dict/ whatnot with pandas
 
@@ -20,16 +25,40 @@ class QueryResult():
 
     # be useful towards multiple ways of exporting (e.g. save as csv)
     def as_csv(self, fileoutputlocation:str, sep:str=","):
-        pass  #TODO  dmp dict 2 csv using csv module
+        """
+        convert and outputs csv file from result query
+        
+        :param fileoutputlocation: location + filename where the csv should be written to.
+        :param sep: delimiter that should be used for writing the csv file. 
+        """
+        # open the file in the write mode
+        f = open(fileoutputlocation, 'w', newline="")
+        # create the csv writer
+        writer = csv.DictWriter(f, self._data[0].keys(),delimiter=sep)
+        # write a row to the csv file
+        for row in self._data:
+            writer.writerow(row)
+        # close the file
+        f.close()
 
 ## create abstract class for making a contract by design for devs ##
 class KGSource(ABC):
     @abstractmethod
     def query(self, sparql:str) -> QueryResult:
+        """
+        function that queries data with the given sparql
+        
+        :param sparql: sparql statement logic for querying data.
+        """
         pass
 
 ## create classes for making the kg context and query factory graph
 class KGFileSource(KGSource):
+    """
+    Class that makes a KGSource from given turtle file(s)
+    
+    :param *files: turtle files that should be converted into a single knowlegde graph.
+    """
     def __init__(self, *files):
         super().__init__()
         self.graph = None
@@ -52,6 +81,11 @@ class KGFileSource(KGSource):
 
 ## create class for KG based on endpoint
 class KG2EndpointSource(KGSource):
+    """
+    Class that makes a KGSource from given url endpoint
+    
+    :param url: url of the endpoint to make the KGSource from.
+    """
     def __init__(self, url):
         super().__init__()
         self.endpoint = url
@@ -97,9 +131,14 @@ class SparqlBuilder(ABC):
 
 ## class tbl service
 class KG2TblService():
+    """
+    Service that will make query a provided kgsource and export a tabular data file based on the users preferences.
+    
+    :param source: source of graph
+    """
     def __init__(self, source:KGSource) -> None:
         self.source = source
 
-    def exec(self,query:str, output_file:str):
+    def exec(self,query:str, output_file:str, sep:str):
         result = self.source.query(query)
-        result.as_csv(output_file)
+        result.as_csv(output_file, sep)

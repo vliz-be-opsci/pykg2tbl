@@ -58,7 +58,7 @@ def get_arg_parser():
         type=str,
         metavar="FILE",
         action='store',
-        help='output file location',
+        help='output file location relative to current directory path',
     )
     
     parser.add_argument(
@@ -99,7 +99,7 @@ def enable_logging(args: argparse.Namespace):
 def performe_service(args: argparse.Namespace):
     #check if all necessary variables are given 
     if args.input is not None and args.endpoint is not None:
-        raise argparse.ArgumentTypeError('Either a fileinput or an endpoint must be suppleid, not both.')
+        raise argparse.ArgumentTypeError('Either a fileinput or an endpoint must be supplied, not both.')
     if args.input is None and args.endpoint is None:
         raise argparse.ArgumentTypeError('A fileinput or an endpoint must be supplied.')
     if args.template_folder is None:
@@ -124,6 +124,14 @@ def performe_service(args: argparse.Namespace):
     if args.endpoint is not None:
         if validators.url(args.endpoint) !=True:
             raise argparse.ArgumentTypeError(f'given endpoint is not a valid url => {args.endpoint} ')
+        
+    #check if output path exists
+    if args.output_location is not None:
+        folder_path_file = os.path.dirname(os.path.abspath(os.path.join(os.getcwd(),args.output_location)))
+        log.debug(folder_path_file)
+        if os.path.exists(folder_path_file) == False:
+            raise argparse.ArgumentTypeError('Supplied output path does not exist on disk.')
+    
 
 def args_values_to_params(argv_list: list) -> dict:
     """
@@ -185,6 +193,16 @@ def makesource(args: argparse.Namespace):
         return KGFileSource(*args.input)
     if args.endpoint is not None:
         return KG2EndpointSource(args.endpoint)
+    
+def getdelimiter(args: argparse.Namespace):
+    if args.output_format is not None:
+        if args.output_format == "csv":
+            return ','
+        if args.output_format == "tsv":
+            return '\t'
+    else:
+        return ','
+
 def main():
     """
     The main entry point to this module.
@@ -203,10 +221,12 @@ def main():
         variables_check(variables_template=vars_template, variables_given=params)
     querry = template_service.build_sparql_query(name=args.template_name, variables= params)
     source = makesource(args)
-    result_querry = source.query(querry)
-    log.debug(result_querry)
-    print(result_querry)
-
+    log.debug("making exec service")
+    executive_service = KG2TblService(source)
+    log.debug("performing service query")
+    executive_service.exec(querry,os.path.join(os.getcwd(),args.output_location),getdelimiter(args))
+    log.info("done with query")
+    print(f'new file saved on location : {os.path.join(os.getcwd(),args.output_location)}')
 
 if __name__ == '__main__':
     main()

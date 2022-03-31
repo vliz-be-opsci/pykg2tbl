@@ -8,6 +8,7 @@ import io
 import os
 import sys
 import unittest
+import subprocess
 from setuptools import find_packages, setup, Command
 from shutil import rmtree
 
@@ -46,8 +47,12 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 def required(sfx=''):
     """ Load the requirements from the requirements.txt file"""
-    with open(f"requirements{sfx}.txt") as f:
-        return [ln.strip() for ln in f.readlines() if not ln.startswith('-') and not ln.startswith('#') and ln.strip() != '']
+    reqs = []
+    try:
+        with open(f"requirements{sfx}.txt") as f:
+            reqs = [ln.strip() for ln in f.readlines() if not ln.startswith('-') and not ln.startswith('#') and ln.strip() != '']
+    finally:
+        return reqs
 
 
 requirements = required()
@@ -107,8 +112,29 @@ class UploadCommand(CommandBase):
 
         sys.exit()
 
+class ReleaseCommand(CommandBase):
+    """Support setup.py upload."""
+    description = 'Tag the package.'
 
-commands = {'upload': UploadCommand, 'test': TestCommand}
+    def run(self):
+        self.version_tag = 'v' + about['__version__']
+        self.status('Commiting this build...')
+        os.system('git commit -am "Setup.py commit for version {0}" '.format(self.version_tag))
+
+        self.status('Tagging this build with {0}'.format(self.version_tag))
+        try:
+            subprocess.run(['git', 'tag', self.version_tag], check=True)
+            self.status('Git push')
+            os.system('git push --tags')
+        except subprocess.CalledProcessError:
+            self.status('Rolling back last commit...')
+            os.system('git reset --soft HEAD~1')
+            # Delete old tag. This is not safe, needs to be done when pushing a new version only...
+            # os.system('git tag -d {0}'.format(self.version_tag))
+        sys.exit()
+
+
+commands = {'release': ReleaseCommand,'upload': UploadCommand, 'test': TestCommand}
 
 
 # Conditionally add the BuildDoc command (if sphinx is available)
