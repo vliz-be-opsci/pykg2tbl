@@ -1,5 +1,5 @@
 rdflib
 SPARQLWrapper
 argparse
-logging
+#logging
 validators
