@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import argparse
-import sys, os
+import sys
+import os
 import logging
 import logging.config
 import validators
@@ -33,7 +34,7 @@ def get_arg_parser():
         action='store',
         help='input file to be turned into datagraph or endpoint of rdf-database'
     )
-    
+
     parser.add_argument(
         '-e',
         '--endpoint',
@@ -60,7 +61,7 @@ def get_arg_parser():
         action='store',
         help='output file location relative to current directory path',
     )
-    
+
     parser.add_argument(
         '-tf',
         '--template_folder',
@@ -68,7 +69,7 @@ def get_arg_parser():
         action='store',
         help='template folder location on disk',
     )
-    
+
     parser.add_argument(
         '-t',
         '--template_name',
@@ -76,12 +77,12 @@ def get_arg_parser():
         action='store',
         help='template name located in the given template folder',
     )
-    
+
     parser.add_argument(
         '-v',
         '--variables',
         nargs='*',
-        action='store', 
+        action='store',
         help='List the variable names required for the given template seperated by |'
         )
 
@@ -95,9 +96,9 @@ def enable_logging(args: argparse.Namespace):
     with open(args.logconf, 'r') as yml_logconf:
         logging.config.dictConfig(yaml.load(yml_logconf, Loader=yaml.SafeLoader))
     log.info(f"Logging enabled according to config in {args.logconf}")
-    
+
 def performe_service(args: argparse.Namespace):
-    #check if all necessary variables are given 
+    #check if all necessary variables are given
     if args.input is not None and args.endpoint is not None:
         raise argparse.ArgumentTypeError('Either a fileinput or an endpoint must be supplied, not both.')
     if args.input is None and args.endpoint is None:
@@ -108,7 +109,7 @@ def performe_service(args: argparse.Namespace):
         raise argparse.ArgumentTypeError('A template name must be supplied.')
     if args.output_location is None:
         raise argparse.ArgumentTypeError('An output location must be supplied.')
-    
+
     #per variable check if they are valid for consumption
     current_folder = os.getcwd()
     if args.input is not None:
@@ -116,22 +117,22 @@ def performe_service(args: argparse.Namespace):
             log.debug(os.path.join(current_folder,i))
             if os.path.exists(os.path.join(current_folder,i)) == False:
                 raise argparse.ArgumentTypeError(f'file {i} does exist')
-    
+
     if os.path.exists(os.path.join(current_folder,args.template_folder,args.template_name)) == False:
         i = os.path.join(current_folder,args.template_folder,args.template_name)
         raise argparse.ArgumentTypeError(f'given folder or template name doesnt exist => {i} ')
-    
+
     if args.endpoint is not None:
         if validators.url(args.endpoint) !=True:
             raise argparse.ArgumentTypeError(f'given endpoint is not a valid url => {args.endpoint} ')
-        
+
     #check if output path exists
     if args.output_location is not None:
         folder_path_file = os.path.dirname(os.path.abspath(os.path.join(os.getcwd(),args.output_location)))
         log.debug(folder_path_file)
         if os.path.exists(folder_path_file) == False:
             raise argparse.ArgumentTypeError('Supplied output path does not exist on disk.')
-    
+
 
 def args_values_to_params(argv_list: list) -> dict:
     """
@@ -178,7 +179,7 @@ def variables_check(variables_template, variables_given):
                 intemplate = True
         if intemplate == False:
             raise argparse.ArgumentTypeError(f'variable {variable} is not present in template')
-    
+
     for variable in variables_given.keys():
         intemplate = False
         log.debug(variable)
@@ -186,14 +187,14 @@ def variables_check(variables_template, variables_given):
             if var  == variable:
                 intemplate = True
         if intemplate == False:
-            raise argparse.ArgumentTypeError(f'variable {variable} is not present in template')    
+            raise argparse.ArgumentTypeError(f'variable {variable} is not present in template')
 
 def makesource(args: argparse.Namespace):
     if args.input is not None:
         return KGFileSource(*args.input)
     if args.endpoint is not None:
         return KG2EndpointSource(args.endpoint)
-    
+
 def getdelimiter(args: argparse.Namespace):
     if args.output_format is not None:
         if args.output_format == "csv":
@@ -203,12 +204,13 @@ def getdelimiter(args: argparse.Namespace):
     else:
         return ','
 
-def main():
+def main(sysargs = None):
     """
     The main entry point to this module.
-    
+
     """
-    args = get_arg_parser().parse_args()
+    print('sysargs=', sysargs)
+    args = get_arg_parser().parse_args(sysargs) if sysargs is not None and len(sysargs) > 0 else get_arg_parser().parse_args()
     enable_logging(args)
     log.info("The args passed to %s are: %s." % (sys.argv[0], args))
     log.debug("Performing service")
@@ -231,4 +233,4 @@ def main():
     print(f'new file saved on location : {os.path.join(os.getcwd(),args.output_location)}')
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
