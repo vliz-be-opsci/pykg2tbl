@@ -44,6 +44,6 @@ class J2SparqlBuilder(SparqlBuilder):
         :param name: of the template
         :param **variables: named context parameters to apply to the template
         """
-        log.debug(variables["variables"])
-        qry = self._get_qry_template(name).render(variables["variables"])
+        log.debug(f"building sparql query '{name}' with variables={variables}")
+        qry = self._get_qry_template(name).render(variables)
         return qry

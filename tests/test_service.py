@@ -21,6 +21,8 @@ class TestService(unittest.TestCase):
         result = test_source.query(ALL_TRIPLES_SPARQL)
         log.debug(result)
         self.assertIsNotNone(result, "result should exist")
+        log.debug(f"result ==> {result}")
+
         self.assertGreater(len(result.__dict__['_data']),0,"result should have a length greater then 0")
         self.assertEqual(len(result.__dict__['_data']),20,"result should be equal to 10")
         ispresentC = False
@@ -46,9 +48,9 @@ class TestService(unittest.TestCase):
         j2sqb = J2SparqlBuilder(template_folder)
         variables = j2sqb.variables_in_query(name="rdf-predicates.sparql")
         log.info(f"all variables {variables}")
-        querry = j2sqb.build_sparql_query(name="rdf-predicates.sparql", variables= {'regex':"http://www.w3.org/1999/02/22-rdf-syntax-ns#type"})
-        log.debug(querry)
-        result = test_source.query(querry)
+        qry = j2sqb.build_sparql_query(name="rdf-predicates.sparql", regex="http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+        log.debug(qry)
+        result = test_source.query(qry)
         log.debug(result)
         self.assertIsNotNone(result, "result should exist")
         self.assertGreater(len(result.__dict__['_data']),0,"length result should be greater then 0")
