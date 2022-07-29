@@ -17,13 +17,13 @@ class QueryResult():
     def __init__(self, data: dict):
         log.info(data)
         self._data = data #TODO pandas dataframe
-    # allow conversion to table / list/ dict/ whatnot with pandas
 
     def __str__(self):
         # TODO consider something smarter then this:
         return str(self._data)
 
     # be useful towards multiple ways of exporting (e.g. save as csv)
+    # TODO allow conversion to table / list/ dict/ whatnot with pandas
     def as_csv(self, fileoutputlocation:str, sep:str=","):
         """
         convert and outputs csv file from result query
@@ -40,6 +40,7 @@ class QueryResult():
             writer.writerow(row)
         # close the file
         f.close()
+
 
 ## create abstract class for making a contract by design for devs ##
 class KGSource(ABC):
@@ -62,7 +63,6 @@ class KGFileSource(KGSource):
     def __init__(self, *files):
         super().__init__()
         self.graph = None
-        #TODO intantiate graph and load it with all files
         g = Graph()
         for f in files:
             log.debug(f"loading graph from file {f}")
