@@ -1,4 +1,3 @@
-import unittest
 import pytest
 import sys
 import os
@@ -7,35 +6,31 @@ from util4tests import enable_test_logging, run_single_test, log
 from pykg2tbl import KG2TblService, KGFileSource, KG2EndpointSource, J2SparqlBuilder
 
 
-ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 10"
-BODC_ENDPOINT = "http://vocab.nerc.ac.uk/sparql/sparql"
+N=723
+ALL_QUERY=f"""
 
-ALL_QUERY="""SELECT * 
-WHERE { 
-    ?s ?p ?o. 
-} 
-LIMIT 100"""
-class TestBuilder(unittest.TestCase):
-    def test_basic_query_sparql(self):
-        template_folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'sparql_templates')
-        j2sqb = J2SparqlBuilder(template_folder)
-        qry = j2sqb.build_sparql_query("all.sparql")
-        self.assertIsNotNone(qry, "result qry should exist")
-        self.assertEqual(ALL_QUERY, qry, 'unexpected qry result')
+SELECT *
+WHERE {{
+    ?s ?p ?o.
+}}
+LIMIT {N}"""
 
-    def test_get_variables_sparql_query(self):
-        #TODO write test to get all the variables from a sparql template
-        template_folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'sparql_templates')
-        log.debug(f"template folder =  {template_folder}")
-        j2sqb = J2SparqlBuilder(template_folder)
-        variables = j2sqb.variables_in_query(name="bodc_find.sparql")
-        log.info(f"all variables {variables}")
-        self.assertIsNotNone(variables,'variables should exist')
-        
-    def test_ingested_query_sparql(self):
-        #test a sparql template who uses variables to make a sparql query to see if it works
-        
-        pass
+def test_basic_query_sparql():
+    j2sqb = J2SparqlBuilder()
+    qry = j2sqb.build_sparql_query("all.sparql", N=N)
+    assert qry is not None, "result qry should exist"
+    log.debug(f"qry={qry}")
+    log.debug(f"expected={ALL_QUERY}")
+    assert qry == ALL_QUERY,"unexpected qry result"
 
+
+def test_get_variables_sparql_query():
+    #TODO write test to get all the variables from a sparql template
+    j2sqb = J2SparqlBuilder()
+    variables = j2sqb.variables_in_query(name="all.sparql")
+    log.info(f"all variables {variables}")
+    assert variables == {'N'},'unexpected variables in all.sparql'
+
+    
 if __name__ == "__main__":
     run_single_test(__file__)

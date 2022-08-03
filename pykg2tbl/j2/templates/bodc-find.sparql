@@ -1,9 +1,12 @@
 {# Jinja Template --> Sparql Query
  | Search for the parameters that have descriptions matching the regex in the mentioned collections
  | variables in template:
- |    - regex: regex matching the term description
- |    - collections: list of collections to search in
+ |    - (optional) regex: regex matching the term description  (anything matches if no regex provided)
+ |    - collections: list of collections to search in ('*' is shorthand for any collection)
+ |    - (optional) language: language of the labels to return (defaults to "en")
 #}
+
+{%-if not language %}{% set language = "en" %}{%endif-%}
 prefix skos:<http://www.w3.org/2004/02/skos/core#>
 prefix text:<http://jena.apache.org/text#>
 prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -25,7 +28,7 @@ where
 		FILTER(regex(str(?pl),'{{regex}}',"i"))
 	{% endif %}
 		?x owl:deprecated "false" .
-		FILTER(langMatches(lang(?pl), "en"))
+		FILTER(langMatches(lang(?pl), "{{language}}"))
 		?x dc:identifier ?dci .
 	}
 	{{'UNION' if not loop.last }}

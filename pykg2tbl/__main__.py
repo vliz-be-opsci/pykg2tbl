@@ -24,7 +24,6 @@ def get_arg_parser():
         help='location of the logging config (yml) to use',
     )
 
-    # TODO define your own command line arguments
     parser.add_argument(
         '-i',
         '--input',
@@ -66,6 +65,7 @@ def get_arg_parser():
         '-tf',
         '--template_folder',
         type=str,
+        metavar="PATH",
         action='store',
         help='template folder location on disk',
     )
@@ -78,11 +78,13 @@ def get_arg_parser():
         help='template name located in the given template folder',
     )
 
+    # TODO -- unclear how / why this approach?
+    # where to add actual vars vs. subcommand to list vars?
     parser.add_argument(
         '-v',
         '--variables',
         nargs='*',
-        action='store',
+        action='append',
         help='List the variable names required for the given template seperated by |'
         )
 
@@ -98,19 +100,19 @@ def enable_logging(args: argparse.Namespace):
     log.info(f"Logging enabled according to config in {args.logconf}")
 
 def performe_service(args: argparse.Namespace):
-    #check if all necessary variables are given
+    # check if all necessary variables are given
+    # TODO - why do this in __main__ ?? careful considertation --> either (1) remove, (2) move to service or (3) motivate and keep here in cli 
     if args.input is not None and args.endpoint is not None:
         raise argparse.ArgumentTypeError('Either a fileinput or an endpoint must be supplied, not both.')
     if args.input is None and args.endpoint is None:
         raise argparse.ArgumentTypeError('A fileinput or an endpoint must be supplied.')
-    if args.template_folder is None:
-        raise argparse.ArgumentTypeError('A template folder must be supplied.')
     if args.template_name is None:
         raise argparse.ArgumentTypeError('A template name must be supplied.')
     if args.output_location is None:
         raise argparse.ArgumentTypeError('An output location must be supplied.')
 
     #per variable check if they are valid for consumption
+    # TODO -- why? 
     current_folder = os.getcwd()
     if args.input is not None:
         for i in args.input:
@@ -118,10 +120,7 @@ def performe_service(args: argparse.Namespace):
             if os.path.exists(os.path.join(current_folder,i)) == False:
                 raise argparse.ArgumentTypeError(f'file {i} does exist')
 
-    if os.path.exists(os.path.join(current_folder,args.template_folder,args.template_name)) == False:
-        i = os.path.join(current_folder,args.template_folder,args.template_name)
-        raise argparse.ArgumentTypeError(f'given folder or template name doesnt exist => {i} ')
-
+    # TODO why? why here and not in service?
     if args.endpoint is not None:
         if validators.url(args.endpoint) !=True:
             raise argparse.ArgumentTypeError(f'given endpoint is not a valid url => {args.endpoint} ')
@@ -145,6 +144,7 @@ def args_values_to_params(argv_list: list) -> dict:
     :returns: the params dict
     :rtype: dict
     """
+    # TODO why?  from pyvocab search?  other technique available in argsparse?
     params = dict()
     log.debug(argv_list)
     for lin in argv_list:
@@ -209,6 +209,7 @@ def main(sysargs = None):
     The main entry point to this module.
 
     """
+    # TODO use log instead
     print('sysargs=', sysargs)
     args = get_arg_parser().parse_args(sysargs) if sysargs is not None and len(sysargs) > 0 else get_arg_parser().parse_args()
     enable_logging(args)
@@ -216,7 +217,7 @@ def main(sysargs = None):
     log.debug("Performing service")
     performe_service(args)
     params = {}
-    template_service = J2SparqlBuilder(os.path.join(os.getcwd(),args.template_folder))
+    template_service = J2SparqlBuilder(args.template_folder)
     vars_template = template_service.variables_in_query(args.template_name)
     if args.variables is not None and len(vars_template) > 0:
         params = args_values_to_params(args.variables)
@@ -231,6 +232,7 @@ def main(sysargs = None):
     executive_service.exec(querry,os.path.join(os.getcwd(),args.output_location),getdelimiter(args))
     log.info("done with query")
     print(f'new file saved on location : {os.path.join(os.getcwd(),args.output_location)}')
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
