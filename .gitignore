@@ -1,5 +1,6 @@
-# pycharm folder
+# IDE folder
 .idea/
+.vscode/
 
 # vi backups
 *~
@@ -8,6 +9,7 @@
 build/
 _build/
 *.log
+dist/
 
 # venv / Byte-compiled / optimized / DLL files
 venv/
@@ -16,3 +18,6 @@ __pycache__/
 *$py.class
 *.egg-info/
 
+# python
+.coverage
+.pytest_cache
