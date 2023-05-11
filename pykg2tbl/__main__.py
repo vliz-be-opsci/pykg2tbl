@@ -7,12 +7,8 @@ import sys
 
 import validators
 
-from pykg2tbl import (
-    J2SparqlBuilder,
-    KG2EndpointSource,
-    KG2TblService,
-    KGFileSource,
-)
+from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
+from pykg2tbl.service import KG2EndpointSource, KG2TblService, KGFileSource
 
 log = logging.getLogger(__name__)
 

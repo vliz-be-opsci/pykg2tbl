@@ -3,7 +3,7 @@ import os
 
 from jinja2 import Environment, FileSystemLoader, meta
 
-from pykg2tbl import SparqlBuilder
+from pykg2tbl.service import SparqlBuilder
 
 log = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 from util4tests import log, run_single_test
 
-from pykg2tbl import J2SparqlBuilder
+from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
 
 N = 723
 ALL_QUERY = f"""
