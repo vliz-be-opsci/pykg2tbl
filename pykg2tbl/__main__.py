@@ -19,7 +19,8 @@ log = logging.getLogger(__name__)
 
 def get_arg_parser():
     """
-    Defines the arguments to this script by using Python's [argparse](https://docs.python.org/3/library/argparse.html)
+    Defines the arguments to this script by using Python's
+        [argparse](https://docs.python.org/3/library/argparse.html)
     """
     parser = argparse.ArgumentParser(
         description="Py Project to extra table data from knowwledge-graphs using sparql templates",
@@ -104,32 +105,30 @@ def get_arg_parser():
 def enable_logging(args: argparse.Namespace):
     if args.logconf is None:
         return
-    import yaml  # conditional dependency -- we only need this (for now) when logconf needs to be read
+    # conditional dependency -- we only need this (for now) when logconf needs to be read
+    import yaml
 
     with open(args.logconf, "r") as yml_logconf:
-        logging.config.dictConfig(
-            yaml.load(yml_logconf, Loader=yaml.SafeLoader)
-        )
+        logging.config.dictConfig(yaml.load(yml_logconf, Loader=yaml.SafeLoader))
     log.info(f"Logging enabled according to config in {args.logconf}")
 
 
 def performe_service(args: argparse.Namespace):
     # check if all necessary variables are given
-    # TODO - why do this in __main__ ?? careful considertation --> either (1) remove, (2) move to service or (3) motivate and keep here in cli
+    # TODO - why do this in __main__ ?? careful considertation --> either
+    #   (1) remove,
+    #   (2) move to service or
+    #   (3) motivate and keep here in cli
     if args.input is not None and args.endpoint is not None:
         raise argparse.ArgumentTypeError(
             "Either a fileinput or an endpoint must be supplied, not both."
         )
     if args.input is None and args.endpoint is None:
-        raise argparse.ArgumentTypeError(
-            "A fileinput or an endpoint must be supplied."
-        )
+        raise argparse.ArgumentTypeError("A fileinput or an endpoint must be supplied.")
     if args.template_name is None:
         raise argparse.ArgumentTypeError("A template name must be supplied.")
     if args.output_location is None:
-        raise argparse.ArgumentTypeError(
-            "An output location must be supplied."
-        )
+        raise argparse.ArgumentTypeError("An output location must be supplied.")
 
     # per variable check if they are valid for consumption
     # TODO -- why?
@@ -154,16 +153,16 @@ def performe_service(args: argparse.Namespace):
         )
         log.debug(folder_path_file)
         if os.path.exists(folder_path_file) is False:
-            raise argparse.ArgumentTypeError(
-                "Supplied output path does not exist on disk."
-            )
+            raise argparse.ArgumentTypeError("Supplied output path does not exist on disk.")
 
 
 def args_values_to_params(argv_list: list) -> dict:
     """
-    converts the arg.V list of single_key=value | list_key[]=1,2 | dict_key.one=wan dict_key.two=toe
-    into a dict context for the templating engine
-    {  'single_key': 'value', 'list_key': ['1','2'], 'dict_key': {'one': 'wan', 'two':'toe'}}
+    converts the arg.V list of:
+        single_key=value | list_key[]=1,2 | dict_key.one=wan dict_key.two=toe
+        into a dict context for the templating engine
+        {  'single_key': 'value', 'list_key': ['1','2'],
+            'dict_key': {'one': 'wan', 'two':'toe'}}
 
     :param argv_list: the list of -V arguments passed on the command line
     :type argv_list: list of str
@@ -180,8 +179,7 @@ def args_values_to_params(argv_list: list) -> dict:
         if "." in key:
             parts = key.split(".")
             assert len(parts) == 2, (
-                "dict-value key '%s' does not match the single level support provided"
-                % key
+                "dict-value key '%s' does not match the single level support provided" % key
             )
             key, subkey = parts[0], parts[1]
             subdict = params.get(key, dict())
@@ -200,9 +198,7 @@ def args_values_to_params(argv_list: list) -> dict:
             sublist.extend(values)
             params[key] = sublist
         else:
-            assert key not in params, (
-                "single-value key '%s' should not be set twice" % key
-            )
+            assert key not in params, "single-value key '%s' should not be set twice" % key
             params[key] = value
     return params
 
@@ -214,9 +210,7 @@ def variables_check(variables_template, variables_given):
             if var == variable:
                 intemplate = True
         if intemplate is False:
-            raise argparse.ArgumentTypeError(
-                f"variable {variable} is not present in template"
-            )
+            raise argparse.ArgumentTypeError(f"variable {variable} is not present in template")
 
     for variable in variables_given.keys():
         intemplate = False
@@ -225,9 +219,7 @@ def variables_check(variables_template, variables_given):
             if var == variable:
                 intemplate = True
         if intemplate is False:
-            raise argparse.ArgumentTypeError(
-                f"variable {variable} is not present in template"
-            )
+            raise argparse.ArgumentTypeError(f"variable {variable} is not present in template")
 
 
 def makesource(args: argparse.Namespace):
@@ -268,12 +260,8 @@ def main(sysargs=None):
     vars_template = template_service.variables_in_query(args.template_name)
     if args.variables is not None and len(vars_template) > 0:
         params = args_values_to_params(args.variables)
-        variables_check(
-            variables_template=vars_template, variables_given=params
-        )
-    querry = template_service.build_sparql_query(
-        name=args.template_name, variables=params
-    )
+        variables_check(variables_template=vars_template, variables_given=params)
+    querry = template_service.build_sparql_query(name=args.template_name, variables=params)
     print("Making KGSource")
     source = makesource(args)
     print("performing query")
@@ -286,9 +274,8 @@ def main(sysargs=None):
         getdelimiter(args),
     )
     log.info("done with query")
-    print(
-        f"new file saved on location : {os.path.join(os.getcwd(),args.output_location)}"
-    )
+    new_file_location = os.path.join(os.getcwd(), args.output_location)
+    print(f"new file saved on location : {new_file_location}")
 
 
 if __name__ == "__main__":

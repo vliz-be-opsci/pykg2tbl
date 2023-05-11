@@ -1,5 +1,5 @@
 # Use this file to describe the datamodel handled by this module
-# we recommend using abstract classes to achieve proper service and interface 
+# we recommend using abstract classes to achieve proper service and interface
 # insulation
 import csv
 import logging
@@ -32,7 +32,8 @@ class QueryResult:
         """
         convert and outputs csv file from result query
 
-        :param fileoutputlocation: location + filename where the csv should be written to.
+        :param fileoutputlocation: location + filename where the csv
+            should be written to.
         :param sep: delimiter that should be used for writing the csv file.
         """
         # open the file in the write mode
@@ -46,7 +47,7 @@ class QueryResult:
         f.close()
 
 
-## create abstract class for making a contract by design for devs ##
+# Create abstract class for making a contract by design for devs ##
 class KGSource(ABC):
     @abstractmethod
     def query(self, sparql: str) -> QueryResult:
@@ -58,12 +59,13 @@ class KGSource(ABC):
         pass
 
 
-## create classes for making the kg context and query factory graph
+# Create classes for making the kg context and query factory graph
 class KGFileSource(KGSource):
     """
     Class that makes a KGSource from given turtle file(s)
 
-    :param *files: turtle files that should be converted into a single knowlegde graph.
+    :param *files: turtle files that should be converted into a single
+        knowlegde graph.
     """
 
     def __init__(self, *files):
@@ -73,16 +75,13 @@ class KGFileSource(KGSource):
         for f in files:
             log.debug(f"loading graph from file {f}")
             graph_to_add = g.parse(f)
-            self.graph = (
-                graph_to_add
-                if self.graph is None
-                else self.graph + graph_to_add
-            )
+            self.graph = graph_to_add if self.graph is None else self.graph + graph_to_add
 
     @staticmethod
     def reslist_to_dict(reslist: list):
         return [{str(v): str(row[v]) for v in reslist.vars} for row in reslist]
-        # TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
+        # TODO decide later on proper conversion to remove rdflib specifics and
+        #    create reusable data dict for conversion through query results (pandas wrapper)
 
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
@@ -90,7 +89,7 @@ class KGFileSource(KGSource):
         return QueryResult(KGFileSource.reslist_to_dict(reslist))
 
 
-## create class for KG based on endpoint
+# Create class for KG based on endpoint
 class KG2EndpointSource(KGSource):
     """
     Class that makes a KGSource from given url endpoint
@@ -102,13 +101,11 @@ class KG2EndpointSource(KGSource):
         super().__init__()
         self.endpoint = url
 
+    # TODO decide later on proper conversion to remove rdflib specifics and
+    #   create reusable data dict for conversion through query results (pandas wrapper)
     @staticmethod
     def reslist_to_dict(reslist: list):
-        return [
-            {k: row[k]["value"] for k in row}
-            for row in reslist["results"]["bindings"]
-        ]
-        # TODO decide later on proper conversion to remove rdflib specifics and create reusable data dict for conversion through query results (pandas wrapper)
+        return [{k: row[k]["value"] for k in row} for row in reslist["results"]["bindings"]]
 
     def query(self, sparql: str) -> QueryResult:
         ep = SPARQLWrapper(self.endpoint)
@@ -125,7 +122,7 @@ class SparqlBuilder(ABC):
         Builds the named sparql query by applying the provided params
 
         :param name: Name of the query.
-        :param variables: Dict of all the variables to give to the template to make the sparql query.
+        :param variables: Dict of all the variables given to the template to make the sparql query.
 
         :type name: str
         """
@@ -146,14 +143,16 @@ class SparqlBuilder(ABC):
         pass
 
 
-## class tbl service
+# class tbl service
 class KG2TblService:
     """
-    Service that will make query a provided kgsource and export a tabular data file based on the users preferences.
+    Service that will make query a provided kgsource and
+        export a tabular data file based on the users preferences.
 
     :param source: source of graph
     """
 
+    # TODO: Better docstring, not understandable.
     def __init__(self, source: KGSource) -> None:
         self.source = source
 

@@ -5,14 +5,13 @@ from util4tests import log, run_single_test
 from pykg2tbl import J2SparqlBuilder, KG2EndpointSource, KGFileSource
 
 ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 25"
-# TODO provide some registry of endpoints to choose from --> issue #4 -- then replace next line!
+# TODO provide some registry of endpoints to choose from --> issue #4
+#   then replace next line!
 BODC_ENDPOINT = "http://vocab.nerc.ac.uk/sparql/sparql"
 
 
 def test_basic_filesource():
-    file_base = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "sources"
-    )
+    file_base = os.path.join(os.path.abspath(os.path.dirname(__file__)), "sources")
     log.debug(f"test using files in {file_base}")
 
     # TODO provide better input files to test with
@@ -26,9 +25,9 @@ def test_basic_filesource():
     log.debug(f"result ==> {result}")
 
     # TODO some decent result iteration / representation / dataframe?
-    # allow it to assert
-    #   -  length of result
-    #   -  content being present or not
+    #   allow it to assert
+    #       -  length of result
+    #       -  content being present or not
 
 
 def test_basic_endpoint():
@@ -40,20 +39,20 @@ def test_basic_endpoint():
 
 
 def test_full_search():
-    # make full search on the endpoint of BODC to see what it returns // test on the BODC server itself first
+    # make full search on the endpoint of BODC to see what it returns test on the BODC
+    #   server itself first
     test_source = KG2EndpointSource(BODC_ENDPOINT)
     # make test qry using template from BODC
     log.info("full test")
     j2sqb = J2SparqlBuilder()
 
-    qry = j2sqb.build_sparql_query(
-        "bodc-find.sparql", collections=["P01"], regex=".*orca.*"
-    )
+    qry = j2sqb.build_sparql_query("bodc-find.sparql", collections=["P01"], regex=".*orca.*")
     log.debug(f"query = {qry}")
     result = test_source.query(qry)
     log.debug(f"result = {result}")
 
-    # TODO provide actual assertions on length and content once we have some decent result-set wrapper/inspection model / dataframe?
+    # TODO provide actual assertions on length and content once we have some
+    #   decent result-set wrapper/inspection model / dataframe?
 
 
 if __name__ == "__main__":
