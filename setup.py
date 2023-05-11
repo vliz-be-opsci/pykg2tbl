@@ -54,9 +54,7 @@ def required(sfx=""):
             reqs = [
                 ln.strip()
                 for ln in f.readlines()
-                if not ln.startswith("-")
-                and not ln.startswith("#")
-                and ln.strip() != ""
+                if not ln.startswith("-") and not ln.startswith("#") and ln.strip() != ""
             ]
     finally:
         return reqs
@@ -95,13 +93,8 @@ class TestCommand(CommandBase):
     description = "Perform the tests"
 
     def run(self):
-        self.status(
-            "Discovering tests with pattern %s in folder %s"
-            % (TEST_PATTERN, TEST_FOLDER)
-        )
-        suite = unittest.TestLoader().discover(
-            TEST_FOLDER, pattern=TEST_PATTERN
-        )
+        self.status("Discovering tests with pattern %s in folder %s" % (TEST_PATTERN, TEST_FOLDER))
+        suite = unittest.TestLoader().discover(TEST_FOLDER, pattern=TEST_PATTERN)
         runner = unittest.TextTestRunner()
         result = runner.run(suite)
         exit(0 if result.wasSuccessful() else 1)
@@ -120,9 +113,7 @@ class UploadCommand(CommandBase):
             pass
 
         self.status("Building Source and Wheel (universal) distribution")
-        os.system(
-            "{0} setup.py sdist bdist_wheel --universal".format(sys.executable)
-        )
+        os.system("{0} setup.py sdist bdist_wheel --universal".format(sys.executable))
 
         self.status("Uploading the package to PyPi via Twine")
         os.system("twine upload dist/*")
@@ -138,11 +129,7 @@ class ReleaseCommand(CommandBase):
     def run(self):
         self.version_tag = "v" + about["__version__"]
         self.status("Commiting this build...")
-        os.system(
-            'git commit -am "Setup.py commit for version {0}" '.format(
-                self.version_tag
-            )
-        )
+        os.system('git commit -am "Setup.py commit for version {0}" '.format(self.version_tag))
 
         self.status("Tagging this build with {0}".format(self.version_tag))
         try:
@@ -152,7 +139,8 @@ class ReleaseCommand(CommandBase):
         except subprocess.CalledProcessError:
             self.status("Rolling back last commit...")
             os.system("git reset --soft HEAD~1")
-            # Delete old tag. This is not safe, needs to be done when pushing a new version only...
+            # Delete old tag. This is not safe, needs to be done when
+            #   pushing a new version only...
             # os.system('git tag -d {0}'.format(self.version_tag))
         sys.exit()
 

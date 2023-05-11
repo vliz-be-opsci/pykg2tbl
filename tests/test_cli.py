@@ -4,11 +4,11 @@ from pykg2tbl.__main__ import main as kg2tbl
 
 
 def test_basic():
-    kg2tbl(
-        "-i tests/sources/01-persons-shape.ttl tests/sources/02-person.ttl -o /tmp/test_kg2tbl_vliz.csv -t all.sparql".split(
-            " "
-        )
-    )
+    arg1 = "tests/sources/01-persons-shape.ttl"
+    arg2 = "tests/sources/02-person.ttl"
+    output = "/tmp/test_kg2tbl_vliz.csv"
+
+    kg2tbl(f"-i {arg1} {arg2} -o {output} -t all.sparql".split(" "))
     pass
 
 
