@@ -22,7 +22,7 @@ init-dev: init
 	poetry install --extras 'dev'
 
 docu:
-	@${PYTHON} setup.py build_sphinx
+	poetry run sphinx-build -b html docs/source/ docs/build/html
 
 test:
 	@${PYTHON} -m pytest ${TEST_PATH}
