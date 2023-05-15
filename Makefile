@@ -15,10 +15,11 @@ clean:
 
 init:
 	pip install --upgrade pip
-	pip install -e .
+	pip install poetry
+	poetry install
 
 init-dev: init
-	pip install -e .[dev]
+	poetry install --extras 'dev'
 
 docu:
 	@${PYTHON} setup.py build_sphinx
@@ -27,11 +28,13 @@ test:
 	@${PYTHON} -m pytest ${TEST_PATH}
 
 check:
+	@${PYTHON} -m black --check --diff .
+	@${PYTHON} -m isort --check --diff .
 	@${PYTHON} -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude ${FLAKE8_EXCLUDE}
-	@${PYTHON} -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=132 --statistics --exclude ${FLAKE8_EXCLUDE}
+	@${PYTHON} -m flake8 . --count --exit-zero --statistics --exclude ${FLAKE8_EXCLUDE}
 
 install:
-	@${PYTHON} setup.py install
+	@${PYTHON} poetry install
 
 docker-build:
 	@docker build . -t pykg2tbl
@@ -41,3 +44,7 @@ build: init-dev check test docu
 
 release: build
 	@${PYTHON} setup.py release
+
+build-poetry-reqs:
+	cat requirements.txt | grep -E '^[^# ]' | cut -d= -f1 | xargs -n 1 poetry add 
+	cat requirements-dev.txt | grep -E '^[^# ]' | cut -d= -f1 | xargs -n 1 poetry add --group dev --extras dev

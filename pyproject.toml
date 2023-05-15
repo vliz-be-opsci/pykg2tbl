@@ -1,3 +1,55 @@
+[tool.poetry]
+name = "pykg2tbl"
+version = "0.0.1"
+description = "Py Project to extract table data from knowwledge-graphs using sparql templates"
+authors = [
+        "Marc Portier <marc.portier@gmail.com>", 
+        "Cedric Decruw <cedricdecruw@gmail.com>"]
+maintainers = ["João dos Santos <jotaflame@gmail.com>"]
+readme = "README.rst"
+packages = [{include = "pykg2tbl"}]
+license = "MIT"
+repository = "https://github.com/vliz-be-opsci/pykg2tbl"
+classifiers = [
+    # Trove classifiers
+    # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+rdflib = "^6.3.2"
+sparqlwrapper = "^2.0.0"
+argparse = "^1.4.0"
+validators = "^0.20.0"
+jinja2 = "^3.1.2"
+logging = "^0.4.9.6"
+setuptools-cpp = "^0.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = {version = "^7.3.1", extras = ["dev"]}
+sphinx = {version = "^7.0.1", extras = ["dev"]}
+poetry = {version = "^1.4.2", extras = ["dev"]}
+pyyaml = {version = "^6.0", extras = ["dev"]}
+python-dotenv = {version = "^1.0.0", extras = ["dev"]}
+rdflib = {version = "^6.3.2", extras = ["dev"]}
+
+[tool.poetry.extras]
+dev = []
+
+[tool.poetry.scripts]
+pykg2tbl = "pykg2tbl.__main__:main"
+release = "custom_cmds:ReleaseCommand"
+upload = "custom_cmds:UploadCommand"
+test = "custom_cmds:TestCommand"
+build_sphinx = "custom_cmds:BuildDoc"
+
+[build-system]
+requires = ["poetry"]
+build-backend = "poetry.masonry.api"
+
 [tool.black]
 line-length = 99
 
