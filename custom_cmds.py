@@ -6,14 +6,7 @@ import unittest
 from shutil import rmtree
 from typing import Any, Dict
 
-from setuptools import Command, find_packages, setup
-
-# conditionally import to allow setup.py install introduce requirements
-try:
-    from sphinx.setup_command import BuildDoc
-except ImportError:
-    BuildDoc = None
-
+from setuptools import Command
 
 # Fixed Package meta-data.
 NAME = "pykg2tbl"
@@ -112,16 +105,7 @@ commands = {
     "test": TestCommand,
 }
 
-# Conditionally add the BuildDoc command (if sphinx is available)
 cmd_opts = dict()
-if BuildDoc is not None:
-    commands["build_sphinx"] = BuildDoc
-    cmd_opts["build_sphinx"] = {
-        "project": ("setup.py", NAME),
-        "version": ("setup.py", about["__version__"]),
-        "release": ("setup.py", about["__version__"]),
-        "source_dir": ("setup.py", "docs"),
-    }
 
 
 def build(setup_kwargs: Dict[str, Any]) -> None:
