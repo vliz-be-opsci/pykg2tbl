@@ -1,2 +1,3 @@
-VERSION = (0, 0, 0)
-__version__ = ".".join(map(str, VERSION))
+import importlib.metadata
+
+__version__ = importlib.metadata.version("pykg2tbl")
