@@ -1,24 +1,10 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-      - id: check-merge-conflict
-      - id: check-case-conflict
-      - id: check-json
-      - id: check-toml
-        exclude: tests/fixtures/invalid_lock/poetry\.lock
-      - id: check-yaml
-      - id: pretty-format-json
-        args: [--autofix, --no-ensure-ascii, --no-sort-keys]
-      - id: check-ast
-      - id: debug-statements
-      - id: check-docstring-first
-  
 
   - repo: https://github.com/python-poetry/poetry
     rev: '1.4.0'
     hooks:
       - id: poetry-check
+        stages: [pre-commit]
       
 
   - repo: https://github.com/ambv/black
@@ -26,17 +12,20 @@ repos:
     hooks:
       - id: black
         args: [-tpy38, -q, --check]
+        stages: [pre-commit]
 
   - repo: https://github.com/timothycrosley/isort
     rev: 5.12.0
     hooks:
       - id: isort
         types: [python]
+        stages: [pre-commit]
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
+        stages: [pre-commit]
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.5.0

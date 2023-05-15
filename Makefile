@@ -17,8 +17,8 @@ init:
 	pip install --upgrade pip
 	which poetry >/dev/null || pip install poetry
 	poetry install
-	pre-commit install
-	pre-commit install --hook-type commit-msg
+	poetry run pre-commit install
+	poetry run pre-commit install --hook-type commit-msg
 
 init-dev: init
 	poetry install --extras 'dev'
@@ -27,13 +27,12 @@ docu:
 	poetry run sphinx-build -b html docs/source/ docs/build/html
 
 test:
-	@${PYTHON} -m pytest ${TEST_PATH}
+	poetry run pytest ${TEST_PATH}
 
 check:
-	@${PYTHON} -m black --check --diff .
-	@${PYTHON} -m isort --check --diff .
-	@${PYTHON} -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude ${FLAKE8_EXCLUDE}
-	@${PYTHON} -m flake8 . --count --exit-zero --statistics --exclude ${FLAKE8_EXCLUDE}
+	poetry run black --check --diff .
+	poetry run black --check --diff .
+	poetry run flake8 . --exclude ${FLAKE8_EXCLUDE}
 
 install:
 	poetry install
@@ -42,11 +41,11 @@ docker-build:
 	docker build . -t pykg2tbl
 
 build: init-dev check test docu
-	@${PYTHON} -m build
+	poetry build
 
 update:
 	poetry update
-	pre-commit autoupdate
+	poetry run -m pre-commit autoupdate
 
 release: build update
 	poetry run release
