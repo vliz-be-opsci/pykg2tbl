@@ -15,8 +15,8 @@ clean:
 
 init:
 	pip install --upgrade pip
-	pip install poetry
 	which poetry >/dev/null || pip install poetry
+	poetry install
 
 init-dev: init
 	poetry install --extras 'dev'
@@ -34,7 +34,7 @@ check:
 	@${PYTHON} -m flake8 . --count --exit-zero --statistics --exclude ${FLAKE8_EXCLUDE}
 
 install:
-	@${PYTHON} poetry install
+	poetry install
 
 docker-build:
 	docker build . -t pykg2tbl
@@ -43,8 +43,10 @@ build: init-dev check test docu
 	@${PYTHON} -m build
 
 release: build
-	@${PYTHON} setup.py release
+	poetry update
+	poetry run release
 
 build-poetry-reqs:
 	cat requirements.txt | grep -E '^[^# ]' | cut -d= -f1 | xargs -n 1 poetry add 
 	cat requirements-dev.txt | grep -E '^[^# ]' | cut -d= -f1 | xargs -n 1 poetry add --group dev --extras dev
+	poetry update
