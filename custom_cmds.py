@@ -4,7 +4,6 @@ import subprocess
 import sys
 import unittest
 from shutil import rmtree
-from typing import Any, Dict
 
 from setuptools import Command
 
@@ -97,21 +96,3 @@ class ReleaseCommand(CommandBase):
             #   pushing a new version only...
             # os.system('git tag -d {0}'.format(self.version_tag))
         sys.exit()
-
-
-commands = {
-    "release": ReleaseCommand,
-    "upload": UploadCommand,
-    "test": TestCommand,
-}
-
-cmd_opts = dict()
-
-
-def build(setup_kwargs: Dict[str, Any]) -> None:
-    setup_kwargs.update(
-        {
-            "cmdclass": commands,
-            "command_options": cmd_opts,
-        }
-    )

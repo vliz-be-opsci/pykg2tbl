@@ -13,7 +13,7 @@ Start using this project in a virtual environment
 
     $ virtualenv venv
     $ source venv/Scripts/activate
-    $ pip install -r requirements.txt
+    $ poetry install
 
 Initialize to grab dependencies
 
