@@ -16,7 +16,7 @@ clean:
 init:
 	pip install --upgrade pip
 	pip install poetry
-	poetry install
+	which poetry >/dev/null || pip install poetry
 
 init-dev: init
 	poetry install --extras 'dev'
