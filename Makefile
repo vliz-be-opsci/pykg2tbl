@@ -37,7 +37,7 @@ install:
 	@${PYTHON} poetry install
 
 docker-build:
-	@docker build . -t pykg2tbl
+	docker build . -t pykg2tbl
 
 build: init-dev check test docu
 	@${PYTHON} -m build
