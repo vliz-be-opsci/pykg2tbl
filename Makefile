@@ -17,6 +17,8 @@ init:
 	pip install --upgrade pip
 	which poetry >/dev/null || pip install poetry
 	poetry install
+	pre-commit install
+	pre-commit install --hook-type commit-msg
 
 init-dev: init
 	poetry install --extras 'dev'
@@ -42,8 +44,11 @@ docker-build:
 build: init-dev check test docu
 	@${PYTHON} -m build
 
-release: build
+update:
 	poetry update
+	pre-commit autoupdate
+
+release: build update
 	poetry run release
 
 build-poetry-reqs:
