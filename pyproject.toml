@@ -25,7 +25,6 @@ sparqlwrapper = "^2.0.0"
 argparse = "^1.4.0"
 validators = "^0.20.0"
 jinja2 = "^3.1.2"
-logging = "^0.4.9.6"
 
 [tool.poetry.group.dev.dependencies]
 pytest = {version = "^7.3.1", extras = ["dev"]}
@@ -51,7 +50,7 @@ test = "custom_cmds:TestCommand"
 build_sphinx = "custom_cmds:BuildDoc"
 
 [build-system]
-requires = ["poetry"]
+requires = ["setuptools","poetry"]
 build-backend = "poetry.masonry.api"
 
 [tool.black]
