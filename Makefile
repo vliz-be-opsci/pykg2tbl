@@ -31,8 +31,12 @@ test:
 
 check:
 	poetry run black --check --diff .
-	poetry run black --check --diff .
+	poetry run isort --check --diff .
 	poetry run flake8 . --exclude ${FLAKE8_EXCLUDE}
+
+lint_fix:
+	poetry run black .
+	poetry run isort .
 
 install:
 	poetry install
