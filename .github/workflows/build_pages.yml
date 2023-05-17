@@ -1,4 +1,4 @@
-name: bon-site to GitHub Pages
+name: Build Pages
 on:
     workflow_dispatch:
     push:
@@ -25,14 +25,14 @@ jobs:
         with:
             python-version: 3.8
       - name: Build Pages
-        if: ${{steps.filter.outputs.package == 'true' }} or ${{steps.filter.outputs.tests == 'true' }} 
+        if: ${{steps.filter.outputs.package == 'true' }}
         run: |
             make init-dev
             make docs
         
  
       - name: Deploy Pages
-        if: ${{steps.filter.outputs.package == 'true' }} or ${{steps.filter.outputs.tests == 'true' }} 
+        if: ${{steps.filter.outputs.package == 'true' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
