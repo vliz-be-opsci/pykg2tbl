@@ -32,8 +32,6 @@ jobs:
       run: |
         make init-dev
         pip install coverage pytest-cov
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
 
     - name: Linting check
       id: linting_check
