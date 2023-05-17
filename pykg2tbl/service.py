@@ -75,13 +75,18 @@ class KGFileSource(KGSource):
         for f in files:
             log.debug(f"loading graph from file {f}")
             graph_to_add = g.parse(f)
-            self.graph = graph_to_add if self.graph is None else self.graph + graph_to_add
+            self.graph = (
+                graph_to_add
+                if self.graph is None
+                else self.graph + graph_to_add
+            )
 
     @staticmethod
     def reslist_to_dict(reslist: list):
         return [{str(v): str(row[v]) for v in reslist.vars} for row in reslist]
         # TODO decide later on proper conversion to remove rdflib specifics and
-        #    create reusable data dict for conversion through query results (pandas wrapper)
+        #    create reusable data dict for conversion through query results
+        #   (pandas wrapper)
 
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
@@ -102,10 +107,14 @@ class KG2EndpointSource(KGSource):
         self.endpoint = url
 
     # TODO decide later on proper conversion to remove rdflib specifics and
-    #   create reusable data dict for conversion through query results (pandas wrapper)
+    #   create reusable data dict for conversion through query results
+    #   (pandas wrapper)
     @staticmethod
     def reslist_to_dict(reslist: list):
-        return [{k: row[k]["value"] for k in row} for row in reslist["results"]["bindings"]]
+        return [
+            {k: row[k]["value"] for k in row}
+            for row in reslist["results"]["bindings"]
+        ]
 
     def query(self, sparql: str) -> QueryResult:
         ep = SPARQLWrapper(self.endpoint)
@@ -122,7 +131,8 @@ class SparqlBuilder(ABC):
         Builds the named sparql query by applying the provided params
 
         :param name: Name of the query.
-        :param variables: Dict of all the variables given to the template to make the sparql query.
+        :param variables: Dict of all the variables given to the template to
+            make the sparql query.
 
         :type name: str
         """

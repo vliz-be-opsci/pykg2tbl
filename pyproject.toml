@@ -54,7 +54,7 @@ requires = ["setuptools","poetry"]
 build-backend = "poetry.masonry.api"
 
 [tool.black]
-line-length = 99
+line-length = 79
 
 [tool.isort]
 multi_line_output = 3
