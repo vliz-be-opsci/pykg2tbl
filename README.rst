@@ -7,15 +7,8 @@ Started on 2022-01-04
 
 Setup
 -----
-Start using this project in a virtual environment
+Start using this project with poetry
 
-.. code-block:: bash
-
-    $ virtualenv venv
-    $ source venv/Scripts/activate
-    $ poetry install
-
-Initialize to grab dependencies
 
 .. code-block:: bash
 
