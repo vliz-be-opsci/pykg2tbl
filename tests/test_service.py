@@ -12,7 +12,9 @@ BODC_ENDPOINT = "http://vocab.nerc.ac.uk/sparql/sparql"
 
 
 def test_basic_filesource():
-    file_base = os.path.join(os.path.abspath(os.path.dirname(__file__)), "sources")
+    file_base = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "sources"
+    )
     log.debug(f"test using files in {file_base}")
 
     # TODO provide better input files to test with
@@ -40,14 +42,16 @@ def test_basic_endpoint():
 
 
 def test_full_search():
-    # make full search on the endpoint of BODC to see what it returns test on the BODC
-    #   server itself first
+    # make full search on the endpoint of BODC to see what it returns test on
+    #   the BODC server itself first
     test_source = KG2EndpointSource(BODC_ENDPOINT)
     # make test qry using template from BODC
     log.info("full test")
     j2sqb = J2SparqlBuilder()
 
-    qry = j2sqb.build_sparql_query("bodc-find.sparql", collections=["P01"], regex=".*orca.*")
+    qry = j2sqb.build_sparql_query(
+        "bodc-find.sparql", collections=["P01"], regex=".*orca.*"
+    )
     log.debug(f"query = {qry}")
     result = test_source.query(qry)
     log.debug(f"result = {result}")
