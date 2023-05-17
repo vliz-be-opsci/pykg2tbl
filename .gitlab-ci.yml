@@ -45,7 +45,7 @@ pages:
   tags:
     - linux
   script:
-    - make docu
+    - make docs
     - rm -rf ../public/
     - mv build/sphinx/html/ ../public/
   artifacts:

@@ -1,6 +1,0 @@
-rdflib
-SPARQLWrapper
-argparse
-validators
-jinja2
-logging
