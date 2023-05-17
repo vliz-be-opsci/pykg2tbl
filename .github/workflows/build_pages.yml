@@ -1,0 +1,39 @@
+name: bon-site to GitHub Pages
+on:
+    workflow_dispatch:
+    push:
+        branches:
+        - main  
+
+jobs:
+  build-html:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout this repo
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+            filters: |
+                package:
+                    - 'pykg2tbl/**'
+                tests:
+                    - 'tests/**'
+ 
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+            python-version: 3.8
+      - name: Build Pages
+        if: ${{steps.filter.outputs.package == 'true' }} or ${{steps.filter.outputs.tests == 'true' }} 
+        run: |
+            make init-dev
+            make docs
+        
+ 
+      - name: Deploy Pages
+        if: ${{steps.filter.outputs.package == 'true' }} or ${{steps.filter.outputs.tests == 'true' }} 
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html 

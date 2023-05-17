@@ -1,7 +1,9 @@
-PYTHON = python
 TEST_PATH = ./tests/
 FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
-SHELL := /bin/bash
+PROJECT = pykg2tbl
+AUTHOR = Marc Portier, Cedric Decruw 
+
+.PHONY: build docs format install jupyter publish run tests
 
 clean:
 	@find . -name '*.pyc' -exec rm --force {} +
@@ -23,8 +25,10 @@ init:
 init-dev: init
 	poetry install --extras 'dev'
 
-docu:
-	poetry run sphinx-build -b html docs/source/ docs/build/html
+docs:
+	if ! [ -d "./docs" ]; then poetry run sphinx-quickstart -q --ext-autodoc --sep --project $(PROJECT) --author $(AUTHOR) docs; fi
+	poetry run sphinx-apidoc -o ./docs/source ./$(PROJECT)
+	poetry run sphinx-build -b html ./docs/source ./docs/build/html
 
 test:
 	poetry run pytest ${TEST_PATH}
@@ -34,7 +38,7 @@ check:
 	poetry run isort --check --diff .
 	poetry run flake8 . --exclude ${FLAKE8_EXCLUDE}
 
-lint_fix:
+lint-fix:
 	poetry run black .
 	poetry run isort .
 
@@ -44,17 +48,12 @@ install:
 docker-build:
 	docker build . -t pykg2tbl
 
-build: init-dev check test docu
+build: init-dev check test docs
 	poetry build
 
 update:
 	poetry update
-	poetry run -m pre-commit autoupdate
+	poetry run pre-commit autoupdate
 
 release: build update
-	poetry run release
-
-build-poetry-reqs:
-	cat requirements.txt | grep -E '^[^# ]' | cut -d= -f1 | xargs -n 1 poetry add 
-	cat requirements-dev.txt | grep -E '^[^# ]' | cut -d= -f1 | xargs -n 1 poetry add --group dev --extras dev
-	poetry update
+	poetry release

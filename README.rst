@@ -26,7 +26,7 @@ Build Docs
 
 .. code-block:: bash
 
-    $ make docu
+    $ make docs
 
 
 
