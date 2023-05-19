@@ -286,7 +286,7 @@ def main(sysargs=None):
         variables_check(
             variables_template=vars_template, variables_given=params
         )
-    querry = template_service.build_sparql_query(
+    query = template_service.build_sparql_query(
         name=args.template_name, variables=params
     )
     print("Making KGSource")
@@ -296,7 +296,7 @@ def main(sysargs=None):
     executive_service = KG2TblService(source)
     log.debug("performing service query")
     executive_service.exec(
-        querry,
+        query,
         os.path.join(os.getcwd(), args.output_location),
         getdelimiter(args),
     )
