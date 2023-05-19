@@ -44,10 +44,6 @@ dev = []
 
 [tool.poetry.scripts]
 pykg2tbl = "pykg2tbl.__main__:main"
-release = "custom_cmds:ReleaseCommand"
-upload = "custom_cmds:UploadCommand"
-test = "custom_cmds:TestCommand"
-build_sphinx = "custom_cmds:BuildDoc"
 
 [build-system]
 requires = ["setuptools","poetry"]
