@@ -3,7 +3,7 @@ FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
 PROJECT = pykg2tbl
 AUTHOR = Marc Portier, Cedric Decruw 
 
-.PHONY: build docs format install jupyter publish run tests
+.PHONY: build docs clean install docker-build
 
 clean:
 	@find . -name '*.pyc' -exec rm --force {} +
