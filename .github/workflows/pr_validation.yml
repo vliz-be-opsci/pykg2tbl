@@ -41,7 +41,7 @@ jobs:
 
     - name: Test with pytest
       id: pytest_test
-      if: ${{steps.linting_check.outputs.package == 'true' }}
+      if: ${{steps.filter.outputs.package == 'true' }} or ${{steps.filter.outputs.tests == 'true' }} 
       run: |
         make test
 

@@ -227,6 +227,7 @@ def KG2TblFactory(*source: Union[str, tuple[str, ...]]):
 
 
 class SparqlBuilder(ABC):
+    # TODO: check this
     @abstractmethod
     def build_sparql_query(self, name: str, **variables):
         """
