@@ -15,15 +15,19 @@ clean:
 	@rm -f *.sqlite
 	@rm -rf .cache
 
-init:
+ini:
 	pip install --upgrade pip
 	which poetry >/dev/null || pip install poetry
-	poetry install
+
+init: ini install
+
+init-dev: init
+	poetry install --extras 'tests' --extras 'dev' --extras 'docs'
 	poetry run pre-commit install
 	poetry run pre-commit install --hook-type commit-msg
 
-init-dev: init
-	poetry install --extras 'dev'
+init-docs: ini
+	poetry install --extras 'docs'
 
 docs:
 	if ! [ -d "./docs" ]; then poetry run sphinx-quickstart -q --ext-autodoc --sep --project $(PROJECT) --author $(AUTHOR) docs; fi
@@ -48,12 +52,12 @@ install:
 docker-build:
 	docker build . -t pykg2tbl
 
-build: init-dev check test docs
+build: update check test docs
 	poetry build
 
 update:
 	poetry update
 	poetry run pre-commit autoupdate
 
-release: build update
+release: build
 	poetry release

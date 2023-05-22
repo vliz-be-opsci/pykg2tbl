@@ -26,29 +26,36 @@ argparse = "^1.4.0"
 validators = "^0.20.0"
 jinja2 = "^3.1.2"
 pandas = "^2.0.1"
+poetry = "^1.5.0"
 
-[tool.poetry.group.dev.dependencies]
-pytest = {version = "^7.3.1", extras = ["dev"]}
-sphinx = {version = "^7.0.1", extras = ["dev"]}
-poetry = {version = "^1.4.2", extras = ["dev"]}
-pyyaml = {version = "^6.0", extras = ["dev"]}
-python-dotenv = {version = "^1.0.0", extras = ["dev"]}
-rdflib = {version = "^6.3.2", extras = ["dev"]}
-pre-commit = {version = "^3.3.1", extras = ["dev"]}
-isort = {version = "^5.12.0", extras = ["dev"]}
-black = {version = "^23.3.0", extras = ["dev"]}
-flake8 = {version = "^6.0.0", extras = ["dev"]}
-coverage = {version = "^7.2.5", extras = ["dev"]}
+
+# Development tools
+pre-commit = {version = "^3.3.1", optional = true}
+isort = {version = "^5.12.0", optional = true}
+black = {version = "^23.3.0", optional = true}
+flake8 = {version = "^6.0.0", optional = true}
+
+# Testing tools
+pyyaml = {version = "^6.0", optional = true}
+pytest = {version = "^7.3.1", optional = true}
+coverage = {version = "^7.2.5", optional = true}
+python-dotenv = {version = "^1.0.0", optional = true}
+
+# Documentation tools
+sphinx = {version = "^7.0.1", optional = true}
+
 
 [tool.poetry.extras]
-dev = []
+dev = ["pre-commit", "isort", "black", "flake8"]
+tests = ["pyyaml","pytest", "coverage", "python-dotenv"]
+docs = ["sphinx"]
 
 [tool.poetry.scripts]
 pykg2tbl = "pykg2tbl.__main__:main"
 
 [build-system]
 requires = ["setuptools","poetry"]
-build-backend = "poetry.masonry.api"
+build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 79
