@@ -1,7 +1,7 @@
 import csv
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Union
+from typing import List, Tuple, Union
 
 import pandas as pd
 from rdflib import Graph
@@ -199,7 +199,7 @@ class KG2EndpointSource(KGSource):
         return query_result
 
 
-def check_source(source: Union[str, tuple[str, ...]]) -> str:
+def check_source(source: Union[str, Tuple[str, ...]]) -> str:
     if isinstance(source, tuple):
         return check_source(source[0])
     source_type = "file"
@@ -208,7 +208,7 @@ def check_source(source: Union[str, tuple[str, ...]]) -> str:
     return source_type
 
 
-def KG2TblFactory(*source: Union[str, tuple[str, ...]]):
+def KG2TblFactory(*source: Union[str, Tuple[str, ...]]):
     """
     Kg2tbl main builder
         export a tabular data file based on the users preferences.
