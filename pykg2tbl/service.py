@@ -1,33 +1,41 @@
-# Use this file to describe the datamodel handled by this module
-# we recommend using abstract classes to achieve proper service and interface
-# insulation
 import csv
 import logging
 from abc import ABC, abstractmethod
+from typing import List, Union
 
+import pandas as pd
 from rdflib import Graph
 from SPARQLWrapper import SPARQLWrapper
 
 log = logging.getLogger(__name__)
 
 
-class QueryResult:
+class QueryResult(ABC):
     """
     Class that incompases the result from a performed query
 
-    :param data: query result data in the form of a list of dictionaries
+    :param list data: query result data in the form of a list of dictionaries
+    :param str query: query
+
     """
 
-    def __init__(self, data: dict):
-        log.info(data)
-        self._data = data  # TODO pandas dataframe
+    def __init__(self, data: list, query: str = ""):
+        # log.info(data)
+        self._data = data
+        self.query = query
 
     def __str__(self):
         # TODO consider something smarter then this:
         return str(self._data)
 
-    # be useful towards multiple ways of exporting (e.g. save as csv)
-    # TODO allow conversion to table / list/ dict/ whatnot with pandas
+    def __len__(self):
+        return len(self._data)
+
+    def __iter__(self):
+        # The iterator can work as the kind of choise, default to list.
+        for i in self.to_list():
+            yield i
+
     def as_csv(self, fileoutputlocation: str, sep: str = ","):
         """
         convert and outputs csv file from result query
@@ -36,19 +44,87 @@ class QueryResult:
             should be written to.
         :param sep: delimiter that should be used for writing the csv file.
         """
-        # open the file in the write mode
-        f = open(fileoutputlocation, "w", newline="")
-        # create the csv writer
-        writer = csv.DictWriter(f, self._data[0].keys(), delimiter=sep)
-        # write a row to the csv file
-        for row in self._data:
-            writer.writerow(row)
-        # close the file
-        f.close()
+        try:
+            data = self.to_dataframe()
+        except Exception as e:
+            log.error(e)
+            data = self.to_list()
+        if isinstance(data, pd.DataFrame):
+            data.to_csv(fileoutputlocation, sep=sep)
+        else:
+            # open the file in the write mode
+            with open(fileoutputlocation, "w", newline="") as f:
+                # create the csv writer
+                writer = csv.DictWriter(f, data[0].keys(), delimiter=sep)
+                # write a row to the csv file
+                for row in data:
+                    writer.writerow(row)
+
+    def to_list(self) -> List:
+        """
+        Converts the result query keys.
+
+        :return: List with updated keys
+        :rtype: list
+        """
+        translation = {"o": "object", "s": "subject", "p": "predicate"}
+        return [
+            dict([(translation.get(k), v) for k, v in f.items()])
+            for f in self._data
+        ]
+
+    def to_dict(self) -> dict:
+        """
+        Converts the result query to a dictionary.
+            Each key having a list with every query row.
+
+        :return: Query as a dictionary.
+        :rtype: dict
+        """
+        list_data = self.to_list()
+        dict_keys = list_data[0].keys()
+        query_dict = {}
+        for row in list_data:
+            for key in dict_keys:
+                if key in query_dict:
+                    query_dict[key] = query_dict[key] + [row[key]]
+                else:
+                    query_dict[key] = [row[key]]
+        return query_dict
+
+    def to_dataframe(self) -> pd.DataFrame:
+        """
+        Converts the result query to a pandas dataframe.
+
+        :return: Query as a dataframe.
+        :rtype: pd.Dataframe
+        """
+        query_df = pd.DataFrame()
+        for row in self.to_list():
+            query_df = pd.concat(
+                [query_df, pd.DataFrame(row, index=[0])], ignore_index=True
+            )
+
+        return query_df
+
+    # In future the design to match UDAL will require to also expose metadata
 
 
 # Create abstract class for making a contract by design for devs ##
 class KGSource(ABC):
+    @abstractmethod
+    def query_result_to_dict(reslist: list) -> List:
+        """
+        From the query result build a standard list of dicts,
+            where each key is the relation in the triplet:
+                's' : subjet
+                'p' : predicte
+                'o' : object
+
+        :param reslist: list with the query.
+        """
+        pass
+
     @abstractmethod
     def query(self, sparql: str) -> QueryResult:
         """
@@ -82,16 +158,13 @@ class KGFileSource(KGSource):
             )
 
     @staticmethod
-    def reslist_to_dict(reslist: list):
+    def query_result_to_dict(reslist: list):
         return [{str(v): str(row[v]) for v in reslist.vars} for row in reslist]
-        # TODO decide later on proper conversion to remove rdflib specifics and
-        #    create reusable data dict for conversion through query results
-        #   (pandas wrapper)
 
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
-        return QueryResult(KGFileSource.reslist_to_dict(reslist))
+        return QueryResult(self.query_result_to_dict(reslist))
 
 
 # Create class for KG based on endpoint
@@ -102,26 +175,55 @@ class KG2EndpointSource(KGSource):
     :param url: url of the endpoint to make the KGSource from.
     """
 
-    def __init__(self, url):
+    def __init__(self, *url):
         super().__init__()
-        self.endpoint = url
+        self.endpoints = [f for f in url]
 
-    # TODO decide later on proper conversion to remove rdflib specifics and
-    #   create reusable data dict for conversion through query results
-    #   (pandas wrapper)
     @staticmethod
-    def reslist_to_dict(reslist: list):
+    def query_result_to_dict(reslist: list):
         return [
             {k: row[k]["value"] for k in row}
             for row in reslist["results"]["bindings"]
         ]
 
     def query(self, sparql: str) -> QueryResult:
-        ep = SPARQLWrapper(self.endpoint)
-        ep.setQuery(sparql)
-        ep.setReturnFormat("json")
-        reslist = ep.query().convert()
-        return QueryResult(KG2EndpointSource.reslist_to_dict(reslist))
+        reslist = []
+        for url in self.endpoints:
+            ep = SPARQLWrapper(url)
+            ep.setQuery(sparql)
+            ep.setReturnFormat("json")
+            resdict = ep.query().convert()
+            reslist = reslist + self.query_result_to_dict(resdict)
+
+        query_result = QueryResult(reslist)
+        return query_result
+
+
+def check_source(source: Union[str, tuple[str, ...]]) -> str:
+    if isinstance(source, tuple):
+        return check_source(source[0])
+    source_type = "file"
+    if source.startswith("http"):
+        source_type = "endpoint"
+    return source_type
+
+
+def KG2TblFactory(*source: Union[str, tuple[str, ...]]):
+    """
+    Kg2tbl main builder
+        export a tabular data file based on the users preferences.
+
+    :param source: source of graph
+    """
+
+    source_type = check_source(source)
+
+    localizers = {
+        "file": KGFileSource,
+        "endpoint": KG2EndpointSource,
+    }
+
+    return localizers[source_type](*source)
 
 
 class SparqlBuilder(ABC):
