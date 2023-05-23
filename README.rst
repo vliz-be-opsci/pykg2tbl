@@ -32,9 +32,10 @@ Run Tests
 
     $ make test                                                   # to run all tests
     $ PYTEST_LOGCONF=debug-logconf.yml python tests/test_demo.py  # to run a specific test with specific logging
+    $ make test-coverage                                          # to run all tests and check the test coverage
 
 
-Check the code-style and syntax (flake8)
+Check the code-style and syntax (flake8, black, isort)
 
 .. code-block:: bash
 
