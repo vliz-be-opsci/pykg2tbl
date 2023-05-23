@@ -15,18 +15,21 @@ clean:
 	@rm -f *.sqlite
 	@rm -rf .cache
 
-ini:
+startup:
 	pip install --upgrade pip
 	which poetry >/dev/null || pip install poetry
 
-init: ini install
+install:
+	poetry install
 
-init-dev: init
+init: startup install
+
+init-dev: startup
 	poetry install --extras 'tests' --extras 'dev' --extras 'docs'
 	poetry run pre-commit install
 	poetry run pre-commit install --hook-type commit-msg
 
-init-docs: ini
+init-docs: startup
 	poetry install --extras 'docs'
 
 docs:
@@ -37,6 +40,9 @@ docs:
 test:
 	poetry run pytest ${TEST_PATH}
 
+test-coverage:
+	poetry run pytest --cov=$(PROJECT) ${TEST_PATH} --cov-report term-missing
+
 check:
 	poetry run black --check --diff .
 	poetry run isort --check --diff .
@@ -46,21 +52,17 @@ lint-fix:
 	poetry run black .
 	poetry run isort .
 
-install:
-	poetry install
-
 docker-build:
 	docker build . -t pykg2tbl
 
-build: update check test docs
-	poetry build
 
 update:
 	poetry update
 	poetry run pre-commit autoupdate
 
+
+build: update check test docs
+	poetry build
+
 release: build
 	poetry release
-
-test-coverage:
-	poetry run pytest --cov=pykg2tbl tests/ --cov-report term-missing
