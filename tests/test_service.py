@@ -1,6 +1,7 @@
 import glob
 import os
 
+import pandas as pd
 import pytest
 from util4tests import log, run_single_test
 
@@ -44,6 +45,15 @@ def test_query(source, query, query_response_length):
     assert result._data is not None
     assert set(result._data[0].keys()) == set(["s", "o", "p"])
     assert len(result._data) == query_response_length
+
+
+def test_query_functions():
+    source_KG2tbl = KG2TblFactory(*TTL_FILES_TO_TEST)
+    result = source_KG2tbl.query(ALL_TRIPLES_SPARQL)
+
+    assert type(result.to_list()) == list
+    assert type(result.to_dict()) == dict
+    assert type(result.to_dataframe()) == pd.DataFrame
 
 
 def test_full_search():

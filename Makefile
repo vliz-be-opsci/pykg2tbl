@@ -61,3 +61,6 @@ update:
 
 release: build
 	poetry release
+
+test-coverage:
+	poetry run pytest --cov=pykg2tbl tests/
