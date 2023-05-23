@@ -62,16 +62,12 @@ class QueryResult(ABC):
 
     def to_list(self) -> List:
         """
-        Converts the result query keys.
+        Returns the list of query responses
 
-        :return: List with updated keys
+        :return: List of query responses
         :rtype: list
         """
-        translation = {"o": "object", "s": "subject", "p": "predicate"}
-        return [
-            dict([(translation.get(k), v) for k, v in f.items()])
-            for f in self._data
-        ]
+        return self._data
 
     def to_dict(self) -> dict:
         """
@@ -226,6 +222,24 @@ def KG2TblFactory(*source: Union[str, Tuple[str, ...]]):
     return localizers[source_type](*source)
 
 
+# class tbl service
+class KG2TblService:
+    """
+    Service that will make query a provided kgsource and
+        export a tabular data file based on the users preferences.
+
+    :param source: source of graph
+    """
+
+    # TODO: Better docstring, not understandable.
+    def __init__(self, source: KGSource) -> None:
+        self.source = source
+
+    def exec(self, query: str, output_file: str, sep: str):
+        result = self.source.query(query)
+        result.as_csv(output_file, sep)
+
+
 class SparqlBuilder(ABC):
     # TODO: check this
     @abstractmethod
@@ -254,21 +268,3 @@ class SparqlBuilder(ABC):
 
         """
         pass
-
-
-# class tbl service
-class KG2TblService:
-    """
-    Service that will make query a provided kgsource and
-        export a tabular data file based on the users preferences.
-
-    :param source: source of graph
-    """
-
-    # TODO: Better docstring, not understandable.
-    def __init__(self, source: KGSource) -> None:
-        self.source = source
-
-    def exec(self, query: str, output_file: str, sep: str):
-        result = self.source.query(query)
-        result.as_csv(output_file, sep)
