@@ -127,6 +127,19 @@ class KGSource(ABC):
         """
         pass
 
+    def exec(self, query: str, output_file: str, sep: str):
+        """
+        Service that will make query a provided kgsource and
+            export a tabular data file based on the users preferences.
+
+        :param str query: named template sparql
+        :param str output_file: file to write query output as a table
+        :param str sep: table separator
+
+        """
+        result = self.query(query)
+        result.as_csv(output_file, sep)
+
 
 # Create classes for making the kg context and query factory graph
 class KGFileSource(KGSource):
@@ -202,7 +215,7 @@ def check_source(source: Union[str, Tuple[str, ...], List]) -> str:
     return source_type
 
 
-def KG2TblFactory(*source: Union[str, Tuple[str, ...], List]):
+def KG2Table(*source: Union[str, Tuple[str, ...], List]):
     """
     Kg2tbl main builder
         export a tabular data file based on the users preferences.
@@ -218,22 +231,3 @@ def KG2TblFactory(*source: Union[str, Tuple[str, ...], List]):
     }
 
     return localizers[source_type](*source)
-
-
-# class tbl service
-class KG2TblService:
-    """
-    Service that will make query a provided kgsource and
-        export a tabular data file based on the users preferences.
-
-    :param source: source of graph
-    """
-
-    # TODO: We could just do the exec function inside KGSource and
-    #   delete this class
-    def __init__(self, *source) -> None:
-        self.kgsource = KG2TblFactory(*source)
-
-    def exec(self, query: str, output_file: str, sep: str):
-        result = self.kgsource.query(query)
-        result.as_csv(output_file, sep)

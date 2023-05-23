@@ -8,7 +8,7 @@ import sys
 import validators
 
 from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
-from pykg2tbl.service import KG2TblService
+from pykg2tbl.service import KG2Table
 
 log = logging.getLogger(__name__)
 
@@ -290,7 +290,7 @@ def main(sysargs=None):
     source = makesource(args)
     print("performing query")
     log.debug("making exec service")
-    executive_service = KG2TblService(*source)
+    executive_service = KG2Table(*source)
     log.debug("performing service query")
     executive_service.exec(
         query,

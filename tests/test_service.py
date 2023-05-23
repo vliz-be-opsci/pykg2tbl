@@ -6,7 +6,7 @@ import pytest
 from util4tests import log, run_single_test
 
 from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
-from pykg2tbl.service import KG2EndpointSource, KG2TblFactory, KGFileSource
+from pykg2tbl.service import KG2EndpointSource, KG2Table, KGFileSource
 
 ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 25"
 # TODO provide some registry of endpoints to choose from --> issue #4
@@ -26,7 +26,7 @@ TTL_FILES_TO_TEST = glob.glob(f"{FILES_SOURCE}/*.ttl")
 def test_factory_choice(source, KGType):
     if isinstance(source, str):
         source = [source]
-    source_KG2tbl = KG2TblFactory(*source)
+    source_KG2tbl = KG2Table(*source)
     assert type(source_KG2tbl) == KGType
 
 
@@ -40,7 +40,7 @@ def test_factory_choice(source, KGType):
 def test_query(source, query, query_response_length):
     if isinstance(source, str):
         source = [source]
-    source_KG2tbl = KG2TblFactory(*source)
+    source_KG2tbl = KG2Table(*source)
     result = source_KG2tbl.query(query)
     assert result._data is not None
     assert set(result._data[0].keys()) == set(["s", "o", "p"])
@@ -49,7 +49,7 @@ def test_query(source, query, query_response_length):
 
 
 def test_query_functions():
-    source_KG2tbl = KG2TblFactory(*TTL_FILES_TO_TEST)
+    source_KG2tbl = KG2Table(*TTL_FILES_TO_TEST)
     result = source_KG2tbl.query(ALL_TRIPLES_SPARQL)
 
     assert type(result.to_list()) == list
