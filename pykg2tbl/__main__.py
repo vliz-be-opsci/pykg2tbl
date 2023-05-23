@@ -8,7 +8,7 @@ import sys
 import validators
 
 from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
-from pykg2tbl.service import KG2EndpointSource, KG2TblService, KGFileSource
+from pykg2tbl.service import KG2TblService
 
 log = logging.getLogger(__name__)
 
@@ -246,10 +246,7 @@ def variables_check(variables_template, variables_given):
 
 
 def makesource(args: argparse.Namespace):
-    if args.input is not None:
-        return KGFileSource(*args.input)
-    if args.endpoint is not None:
-        return KG2EndpointSource(args.endpoint)
+    return args.endpoint or args.input
 
 
 def getdelimiter(args: argparse.Namespace):
@@ -293,7 +290,7 @@ def main(sysargs=None):
     source = makesource(args)
     print("performing query")
     log.debug("making exec service")
-    executive_service = KG2TblService(source)
+    executive_service = KG2TblService(*source)
     log.debug("performing service query")
     executive_service.exec(
         query,

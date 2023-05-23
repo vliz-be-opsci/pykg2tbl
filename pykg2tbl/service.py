@@ -112,10 +112,7 @@ class KGSource(ABC):
     def query_result_to_dict(reslist: list) -> List:
         """
         From the query result build a standard list of dicts,
-            where each key is the relation in the triplet:
-                's' : subjet
-                'p' : predicte
-                'o' : object
+            where each key is the relation in the triplet.
 
         :param reslist: list with the query.
         """
@@ -124,7 +121,7 @@ class KGSource(ABC):
     @abstractmethod
     def query(self, sparql: str) -> QueryResult:
         """
-        function that queries data with the given sparql
+        Function that queries data with the given sparql
 
         :param sparql: sparql statement logic for querying data.
         """
@@ -144,6 +141,7 @@ class KGFileSource(KGSource):
         super().__init__()
         self.graph = None
         g = Graph()
+        print(files)
         for f in files:
             log.debug(f"loading graph from file {f}")
             graph_to_add = g.parse(f)
@@ -195,8 +193,8 @@ class KG2EndpointSource(KGSource):
         return query_result
 
 
-def check_source(source: Union[str, Tuple[str, ...]]) -> str:
-    if isinstance(source, tuple):
+def check_source(source: Union[str, Tuple[str, ...], List]) -> str:
+    if isinstance(source, tuple) or isinstance(source, list):
         return check_source(source[0])
     source_type = "file"
     if source.startswith("http"):
@@ -204,7 +202,7 @@ def check_source(source: Union[str, Tuple[str, ...]]) -> str:
     return source_type
 
 
-def KG2TblFactory(*source: Union[str, Tuple[str, ...]]):
+def KG2TblFactory(*source: Union[str, Tuple[str, ...], List]):
     """
     Kg2tbl main builder
         export a tabular data file based on the users preferences.
@@ -231,12 +229,13 @@ class KG2TblService:
     :param source: source of graph
     """
 
-    # TODO: Better docstring, not understandable.
-    def __init__(self, source: KGSource) -> None:
-        self.source = source
+    # TODO: We could just do the exec function inside KGSource and
+    #   delete this class
+    def __init__(self, *source) -> None:
+        self.kgsource = KG2TblFactory(*source)
 
     def exec(self, query: str, output_file: str, sep: str):
-        result = self.source.query(query)
+        result = self.kgsource.query(query)
         result.as_csv(output_file, sep)
 
 
