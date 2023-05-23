@@ -1,11 +1,40 @@
 import logging
 import os
+from abc import ABC, abstractmethod
 
 from jinja2 import Environment, FileSystemLoader, meta
 
-from pykg2tbl.service import SparqlBuilder
-
 log = logging.getLogger(__name__)
+
+
+class SparqlBuilder(ABC):
+    # TODO: check this
+    @abstractmethod
+    def build_sparql_query(self, name: str, **variables):
+        """
+        Builds the named sparql query by applying the provided params
+
+        :param name: Name of the query.
+        :param variables: Dict of all the variables given to the template to
+            make the sparql query.
+
+        :type name: str
+        """
+        pass
+
+    @abstractmethod
+    def variables_in_query(self, name: str):
+        """
+        Return the set of all the variable names applicable to the named query
+
+        :param name: [Name of the query.]
+        :type name: str
+
+        :return: the set of all variables applicable to the named query.
+        :rtype: set
+
+        """
+        pass
 
 
 class J2SparqlBuilder(SparqlBuilder):

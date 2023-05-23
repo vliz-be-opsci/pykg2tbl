@@ -45,6 +45,7 @@ def test_query(source, query, query_response_length):
     assert result._data is not None
     assert set(result._data[0].keys()) == set(["s", "o", "p"])
     assert len(result._data) == query_response_length
+    assert len(result) == query_response_length
 
 
 def test_query_functions():

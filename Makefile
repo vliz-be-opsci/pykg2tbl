@@ -63,4 +63,4 @@ release: build
 	poetry release
 
 test-coverage:
-	poetry run pytest --cov=pykg2tbl tests/
+	poetry run pytest --cov=pykg2tbl tests/ --cov-report term-missing
