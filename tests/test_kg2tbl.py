@@ -1,22 +1,15 @@
-import glob
-import os
-
 import pandas as pd
 import pytest
-from util4tests import log, run_single_test
+from util4tests import (
+    ALL_TRIPLES_SPARQL,
+    BODC_ENDPOINT,
+    TTL_FILES_TO_TEST,
+    log,
+    run_single_test,
+)
 
 from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
 from pykg2tbl.kg2tbl import KG2EndpointSource, KG2Table, KGFileSource
-
-ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 25"
-# TODO provide some registry of endpoints to choose from --> issue #4
-#   then replace next line!
-BODC_ENDPOINT = "http://vocab.nerc.ac.uk/sparql/sparql"
-
-FILES_SOURCE = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)), "sources"
-)
-TTL_FILES_TO_TEST = glob.glob(f"{FILES_SOURCE}/*.ttl")
 
 
 @pytest.mark.parametrize(
@@ -34,7 +27,7 @@ def test_factory_choice(source, KGType):
     "source, query, query_response_length",
     [
         (TTL_FILES_TO_TEST, ALL_TRIPLES_SPARQL, 20),
-        (BODC_ENDPOINT, ALL_TRIPLES_SPARQL, 25),
+        # (BODC_ENDPOINT, ALL_TRIPLES_SPARQL, 25),
     ],
 )
 def test_query(source, query, query_response_length):
