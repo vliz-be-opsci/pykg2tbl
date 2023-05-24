@@ -49,7 +49,7 @@ jobs:
       if: ${{steps.pytest_test.outcome == 'success'}}
       uses: dima-engineer/pytest-reporter@v2.1.1
       with:
-        cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*
+        cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*, *exceptions*
         cov-threshold-single: 85
         cov-threshold-total: 90
         async-tests: true

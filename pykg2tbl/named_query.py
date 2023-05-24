@@ -1,4 +1,3 @@
-import csv
 import logging
 from abc import ABC, abstractmethod
 from typing import List
@@ -83,27 +82,9 @@ class QueryResultFromListDict(QueryResult):
     def __len__(self):
         return len(self._data)
 
-    def __iter__(self):
-        # The iterator can work as the kind of choise, default to list.
-        for i in self.to_list():
-            yield i
-
     def as_csv(self, fileoutputlocation: str, sep: str = ","):
-        try:
-            data = self.to_dataframe()
-        except Exception as e:
-            log.error(e)
-            data = self.to_list()
-        if isinstance(data, pd.DataFrame):
-            data.to_csv(fileoutputlocation, sep=sep)
-        else:
-            # open the file in the write mode
-            with open(fileoutputlocation, "w", newline="") as f:
-                # create the csv writer
-                writer = csv.DictWriter(f, data[0].keys(), delimiter=sep)
-                # write a row to the csv file
-                for row in data:
-                    writer.writerow(row)
+        data = self.to_dataframe()
+        data.to_csv(fileoutputlocation, sep=sep)
 
     def to_list(self) -> List:
         return self._data
