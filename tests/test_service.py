@@ -6,7 +6,7 @@ import pytest
 from util4tests import log, run_single_test
 
 from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
-from pykg2tbl.service import KG2EndpointSource, KG2Table, KGFileSource
+from pykg2tbl.kg2tbl import KG2EndpointSource, KG2Table, KGFileSource
 
 ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 25"
 # TODO provide some registry of endpoints to choose from --> issue #4
