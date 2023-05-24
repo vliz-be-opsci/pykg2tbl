@@ -25,6 +25,11 @@ QUERY_RESULT_PATH = f"{FILES_SOURCE}/query_result.json"
 with open(QUERY_RESULT_PATH) as src:
     TTL_FILES_QUERY_RESULT = json.load(src)
 
+TTL_FILE_IN_URI = (
+    "https://raw.githubusercontent.com/"
+    "ukgovld/registry-core/master/src/main/vocabs/registryVocab.ttl"
+)
+
 
 def enable_test_logging():
     load_dotenv()

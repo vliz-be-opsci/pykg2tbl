@@ -3,6 +3,7 @@ import pytest
 from util4tests import (
     ALL_TRIPLES_SPARQL,
     BODC_ENDPOINT,
+    TTL_FILE_IN_URI,
     TTL_FILES_TO_TEST,
     log,
     run_single_test,
@@ -14,7 +15,11 @@ from pykg2tbl.kg2tbl import KG2EndpointSource, KG2Table, KGFileSource
 
 @pytest.mark.parametrize(
     "source, KGType",
-    [(TTL_FILES_TO_TEST, KGFileSource), (BODC_ENDPOINT, KG2EndpointSource)],
+    [
+        (TTL_FILES_TO_TEST, KGFileSource),
+        (BODC_ENDPOINT, KG2EndpointSource),
+        (TTL_FILE_IN_URI, KGFileSource),
+    ],
 )
 def test_factory_choice(source, KGType):
     if isinstance(source, str):
@@ -27,7 +32,8 @@ def test_factory_choice(source, KGType):
     "source, query, query_response_length",
     [
         (TTL_FILES_TO_TEST, ALL_TRIPLES_SPARQL, 20),
-        # (BODC_ENDPOINT, ALL_TRIPLES_SPARQL, 25),
+        (BODC_ENDPOINT, ALL_TRIPLES_SPARQL, 25),
+        (TTL_FILE_IN_URI, ALL_TRIPLES_SPARQL, 25),
     ],
 )
 def test_query(source, query, query_response_length):
