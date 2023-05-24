@@ -171,7 +171,7 @@ class KGFileSource(KGSource):
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
-        return QueryResult(self.query_result_to_dict(reslist))
+        return QueryResult(KGFileSource.query_result_to_dict(reslist))
 
 
 # Create class for KG based on endpoint
@@ -198,9 +198,11 @@ class KG2EndpointSource(KGSource):
         for url in self.endpoints:
             ep = SPARQLWrapper(url)
             ep.setQuery(sparql)
+            # TODO: Allow for mutiple return formats,
+            #   even reading the format from the endpoint.
             ep.setReturnFormat("json")
             resdict = ep.query().convert()
-            reslist = reslist + self.query_result_to_dict(resdict)
+            reslist = reslist + KG2EndpointSource.query_result_to_dict(resdict)
 
         query_result = QueryResult(reslist)
         return query_result
