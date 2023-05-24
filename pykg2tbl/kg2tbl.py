@@ -1,109 +1,14 @@
-import csv
 import logging
 from abc import ABC, abstractmethod
 from typing import List, Tuple, Union
 
-import pandas as pd
+import requests
 from rdflib import Graph
 from SPARQLWrapper import SPARQLWrapper
 
+from pykg2tbl.named_query import NamedQuery, QueryResult
+
 log = logging.getLogger(__name__)
-
-
-class QueryResult(ABC):
-    """
-    Class that incompases the result from a performed query
-
-    :param list data: query result data in the form of a list of dictionaries
-    :param str query: query
-
-    """
-
-    def __init__(self, data: list, query: str = ""):
-        # log.info(data)
-        self._data = data
-        self.query = query
-
-    def __str__(self):
-        # TODO consider something smarter then this:
-        return str(self._data)
-
-    def __len__(self):
-        return len(self._data)
-
-    def __iter__(self):
-        # The iterator can work as the kind of choise, default to list.
-        for i in self.to_list():
-            yield i
-
-    def as_csv(self, fileoutputlocation: str, sep: str = ","):
-        """
-        convert and outputs csv file from result query
-
-        :param fileoutputlocation: location + filename where the csv
-            should be written to.
-        :param sep: delimiter that should be used for writing the csv file.
-        """
-        try:
-            data = self.to_dataframe()
-        except Exception as e:
-            log.error(e)
-            data = self.to_list()
-        if isinstance(data, pd.DataFrame):
-            data.to_csv(fileoutputlocation, sep=sep)
-        else:
-            # open the file in the write mode
-            with open(fileoutputlocation, "w", newline="") as f:
-                # create the csv writer
-                writer = csv.DictWriter(f, data[0].keys(), delimiter=sep)
-                # write a row to the csv file
-                for row in data:
-                    writer.writerow(row)
-
-    def to_list(self) -> List:
-        """
-        Returns the list of query responses
-
-        :return: List of query responses
-        :rtype: list
-        """
-        return self._data
-
-    def to_dict(self) -> dict:
-        """
-        Converts the result query to a dictionary.
-            Each key having a list with every query row.
-
-        :return: Query as a dictionary.
-        :rtype: dict
-        """
-        list_data = self.to_list()
-        dict_keys = list_data[0].keys()
-        query_dict = {}
-        for row in list_data:
-            for key in dict_keys:
-                if key in query_dict:
-                    query_dict[key] = query_dict[key] + [row[key]]
-                else:
-                    query_dict[key] = [row[key]]
-        return query_dict
-
-    def to_dataframe(self) -> pd.DataFrame:
-        """
-        Converts the result query to a pandas dataframe.
-
-        :return: Query as a dataframe.
-        :rtype: pd.Dataframe
-        """
-        query_df = pd.DataFrame()
-        for row in self.to_list():
-            query_df = pd.concat(
-                [query_df, pd.DataFrame(row, index=[0])], ignore_index=True
-            )
-
-        return query_df
-
-    # In future the design to match UDAL will require to also expose metadata
 
 
 # Create abstract class for making a contract by design for devs ##
@@ -154,7 +59,6 @@ class KGFileSource(KGSource):
         super().__init__()
         self.graph = None
         g = Graph()
-        print(files)
         for f in files:
             log.debug(f"loading graph from file {f}")
             graph_to_add = g.parse(f)
@@ -171,7 +75,7 @@ class KGFileSource(KGSource):
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
-        return QueryResult(KGFileSource.query_result_to_dict(reslist))
+        return NamedQuery(KGFileSource.query_result_to_dict(reslist))
 
 
 # Create class for KG based on endpoint
@@ -204,16 +108,34 @@ class KG2EndpointSource(KGSource):
             resdict = ep.query().convert()
             reslist = reslist + KG2EndpointSource.query_result_to_dict(resdict)
 
-        query_result = QueryResult(reslist)
+        query_result = NamedQuery(reslist)
         return query_result
 
 
 def check_source(source: Union[str, Tuple[str, ...], List]) -> str:
+    """
+    Check the source type. Restrain only to files, or endpoints.
+        If there is multiple sources, it will only get the type of the first
+        path, which means it does not allow for different source types
+        be passed in the same object.
+
+    :param source: source of graph
+    """
+    # TRY a file source or a query
     if isinstance(source, tuple) or isinstance(source, list):
         return check_source(source[0])
-    source_type = "file"
-    if source.startswith("http"):
-        source_type = "endpoint"
+    source_type = "endpoint"
+    try:
+        requests.get(source)
+    # ttl file example:
+    # https://raw.githubusercontent.com/ukgovld/registry-core/master/src/main/vocabs/registryVocab.ttl
+    # SPARQL endopint
+    # KG graph endpoint/file
+    # Check content type
+    except requests.exceptions.MissingSchema:
+        source_type = "file"
+    except Exception as e:
+        log.exception(e)
     return source_type
 
 
