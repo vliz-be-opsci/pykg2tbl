@@ -2,7 +2,6 @@ import logging
 from abc import ABC, abstractmethod
 from typing import List, Tuple, Union
 
-import requests
 from rdflib import Graph
 from SPARQLWrapper import SPARQLWrapper
 
@@ -61,7 +60,13 @@ class KGFileSource(KGSource):
         g = Graph()
         for f in files:
             log.debug(f"loading graph from file {f}")
-            graph_to_add = g.parse(f)
+            try:
+                graph_to_add = g.parse(f)
+            except Exception as e:
+                log.exception(e)
+                file_extension = f.split(".")[-1]
+                graph_to_add = g.parse(f, format=file_extension)
+
             self.graph = (
                 graph_to_add
                 if self.graph is None
@@ -121,21 +126,16 @@ def check_source(source: Union[str, Tuple[str, ...], List]) -> str:
 
     :param source: source of graph
     """
-    # TRY a file source or a query
     if isinstance(source, tuple) or isinstance(source, list):
         return check_source(source[0])
-    source_type = "endpoint"
-    try:
-        requests.get(source)
-    # ttl file example:
-    # https://raw.githubusercontent.com/ukgovld/registry-core/master/src/main/vocabs/registryVocab.ttl
-    # SPARQL endopint
-    # KG graph endpoint/file
-    # Check content type
-    except requests.exceptions.MissingSchema:
-        source_type = "file"
-    except Exception as e:
-        log.exception(e)
+    source_type = "file"
+    if source.startswith("http"):
+        query_ask = "ask where {?s ?p [].}"
+        ep = SPARQLWrapper(source)
+        ep.setQuery(query_ask)
+        content_type = ep.query().info()["content-type"]
+        if "sparql" in content_type:
+            source_type = "endpoint"
     return source_type
 
 
