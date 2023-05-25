@@ -8,7 +8,6 @@ log = logging.getLogger(__name__)
 
 
 class SparqlBuilder(ABC):
-    # TODO: check this
     @abstractmethod
     def build_sparql_query(self, name: str, **variables):
         """
