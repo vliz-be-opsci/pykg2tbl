@@ -20,7 +20,7 @@ class SparqlBuilder(ABC):
 
         :type name: str
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def variables_in_query(self, name: str):
@@ -34,7 +34,7 @@ class SparqlBuilder(ABC):
         :rtype: set
 
         """
-        pass
+        pass  # pragma: no cover
 
 
 class J2SparqlBuilder(SparqlBuilder):
