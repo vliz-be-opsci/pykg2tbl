@@ -20,7 +20,7 @@ class KGSource(ABC):
 
         :param reslist: list with the query.
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def query(self, sparql: str) -> QueryResult:
@@ -29,7 +29,7 @@ class KGSource(ABC):
 
         :param sparql: sparql statement logic for querying data.
         """
-        pass
+        pass  # pragma: no cover
 
     def exec(self, query: str, output_file: str, sep: str):
         """

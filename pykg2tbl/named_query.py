@@ -26,7 +26,7 @@ class QueryResult(ABC):
 
         :param reslist: list with the query.
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def to_list(self) -> List:
@@ -36,7 +36,7 @@ class QueryResult(ABC):
         :return: List of query responses
         :rtype: list
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def to_dict(self) -> dict:
@@ -47,7 +47,7 @@ class QueryResult(ABC):
         :return: Query as a dictionary.
         :rtype: dict
         """
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def to_dataframe(self) -> pd.DataFrame:
@@ -57,7 +57,7 @@ class QueryResult(ABC):
         :return: Query as a dataframe.
         :rtype: pd.Dataframe
         """
-        pass
+        pass  # pragma: no cover
 
 
 class QueryResultFromListDict(QueryResult):
