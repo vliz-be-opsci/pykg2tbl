@@ -80,7 +80,9 @@ class KGFileSource(KGSource):
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
-        return NamedQuery(KGFileSource.query_result_to_dict(reslist))
+        return NamedQuery(
+            KGFileSource.query_result_to_dict(reslist), query=sparql
+        )
 
 
 # Create class for KG based on endpoint
@@ -113,7 +115,7 @@ class KG2EndpointSource(KGSource):
             resdict = ep.query().convert()
             reslist = reslist + KG2EndpointSource.query_result_to_dict(resdict)
 
-        query_result = NamedQuery(reslist)
+        query_result = NamedQuery(reslist, query=sparql)
         return query_result
 
 
