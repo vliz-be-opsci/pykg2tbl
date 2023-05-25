@@ -1,0 +1,20 @@
+{# Jinja Template --> Sparql Query
+ | Search a collection for matching members with the given term
+ | variables in template:
+ |   - term_match: term to matche in colletion (regex usage)
+ |   - collection_to_search: collection to search from
+ |   - (optional) number : to limit output
+
+#}
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix dc:   <http://purl.org/dc/terms/> 
+SELECT  ?lbl WHERE {
+  bind ( collection_to_search as ?coll) 
+  ?coll rdf:type skos:Collection ;
+        skos:member/skos:prefLabel ?lbl .
+  
+    FILTER(regex(?lbl, term_match ))
+} LIMIT number
