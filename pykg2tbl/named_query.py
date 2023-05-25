@@ -76,8 +76,8 @@ class QueryResultFromListDict(QueryResult):
         self.query = query
 
     def __str__(self):
-        # TODO consider something smarter then this:
-        return str(self._data)
+        df = self.to_dataframe()
+        return str(df)
 
     def __len__(self):
         return len(self._data)
