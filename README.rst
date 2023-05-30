@@ -40,3 +40,11 @@ Check the code-style and syntax (flake8, black, isort)
 .. code-block:: bash
 
     $ make check
+
+
+.. raw:: html
+
+    <p align="center">
+    <a href="https://github.com/JotaFan/pycoverage"><img src="https://github.com/vliz-be-opsci/pykg2tbl/tree/gh-pages/coverage.svg"></a>
+    <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+    </p>

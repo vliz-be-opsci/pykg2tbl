@@ -27,7 +27,7 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4.6.0
       with:
-        python-version: 3.8
+        python-version: 3.8      
     - name: Install dependencies
       run: |
         make init-dev
@@ -47,7 +47,7 @@ jobs:
 
     - id: run-tests
       if: ${{steps.pytest_test.outcome == 'success'}}
-      uses: dima-engineer/pytest-reporter@v2.1.1
+      uses: JotaFan/pycoverage@v1.1.0
       with:
         cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*, *exceptions*
         cov-threshold-single: 85

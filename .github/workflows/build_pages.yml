@@ -27,13 +27,22 @@ jobs:
       - name: Build Pages
         if: ${{steps.filter.outputs.package == 'true' }}
         run: |
-            make init-docs
+            make init-dev
             make docs
-        
+
+      - name: Coverage Badge
+        uses: JotaFan/pycoverage@v1.1.0
+        if: ${{(steps.filter.outputs.package == 'true') || (steps.filter.outputs.tests == 'true')}}
+        with:
+          cov-omit-list: tests/*, *__init__*, *__version__*, *__main__*, *exceptions*
+          cov-threshold-single: 85
+          cov-threshold-total: 90
+          async-tests: true
+          output: docs/build/html/coverage.svg
  
       - name: Deploy Pages
         if: ${{steps.filter.outputs.package == 'true' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/build/html 
+          publish_dir: ./docs/build/html
