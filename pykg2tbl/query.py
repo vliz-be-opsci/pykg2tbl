@@ -133,13 +133,13 @@ class QueryResultFromListDict(QueryResult):
         return query_dict
 
     def to_dataframe(self) -> pd.DataFrame:
-        query_df = pd.DataFrame()
+        result_df = pd.DataFrame()
         for row in self.to_list():
-            query_df = pd.concat(
-                [query_df, pd.DataFrame(row, index=[0])], ignore_index=True
+            result_df = pd.concat(
+                [result_df, pd.DataFrame(row, index=[0])], ignore_index=True
             )
 
-        return query_df
+        return result_df
 
     # In future the design to match UDAL will require to also expose metadata
     @staticmethod
