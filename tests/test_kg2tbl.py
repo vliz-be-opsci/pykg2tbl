@@ -1,8 +1,15 @@
 import pandas as pd
 import pytest
 
+from pykg2tbl.exceptions import (
+    MultipleSourceTypes,
+    NoCompatibilityChecker,
+    NotASubClass,
+    WrongInputFormat,
+)
 from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
 from pykg2tbl.kg2tbl import KG2EndpointSource, KGFileSource, KGSource
+from pykg2tbl.query import QueryResult
 from tests.const import (
     ALL_TRIPLES_SPARQL,
     BODC_ENDPOINT,
@@ -51,6 +58,36 @@ def test_query_functions():
     assert type(result.to_list()) == list
     assert type(result.to_dict()) == dict
     assert type(result.to_dataframe()) == pd.DataFrame
+
+
+class DummyKGSource(KGSource):
+    pass  # pragma: no cover
+
+
+@pytest.mark.parametrize(
+    "constructor, CustomException",
+    [
+        (QueryResult, NotASubClass),
+        (DummyKGSource, NoCompatibilityChecker),
+    ],
+)
+def test_class_register_raises(constructor, CustomException):
+    with pytest.raises(CustomException) as exc:
+        KGSource.register(constructor)
+    assert exc.type == CustomException
+
+
+@pytest.mark.parametrize(
+    "files, CustomException",
+    [
+        ([{"test"}], WrongInputFormat),
+        ([BODC_ENDPOINT, *TTL_FILES_TO_TEST], MultipleSourceTypes),
+    ],  # ("test", WrongInputFormat)],
+)
+def test_class_build_raises(files, CustomException):
+    with pytest.raises(CustomException) as exc:
+        KGSource.build(*files)
+    assert exc.type == CustomException
 
 
 def test_full_search():

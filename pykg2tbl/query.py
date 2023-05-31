@@ -69,7 +69,7 @@ class QueryResult(ABC):
     def register(constructor):
         if not issubclass(constructor, QueryResult):
             raise NotASubClass
-        if not getattr(constructor, "check_compatability", False):
+        if not getattr(constructor, "check_compatibility", False):
             raise NoCompatibilityChecker
         QueryResult.registry.add(constructor)
 
@@ -86,7 +86,7 @@ class QueryResult(ABC):
         """
 
         for constructor in QueryResult.registry:
-            if constructor.check_compatability(data, query) is True:
+            if constructor.check_compatibility(data, query) is True:
                 return constructor(data, query)
 
         raise WrongInputFormat
@@ -143,7 +143,7 @@ class QueryResultFromListDict(QueryResult):
 
     # In future the design to match UDAL will require to also expose metadata
     @staticmethod
-    def check_compatability(data, query) -> bool:
+    def check_compatibility(data, query) -> bool:
         is_list_of_dicts = False
         if isinstance(data, list):
             is_list_of_dicts = True

@@ -5,7 +5,8 @@ class WrongInputFormat(Exception):
         self, input_format="Iterable[dicts]", class_failed="QueryResult"
     ):
         message = (
-            f"Wrong input format. {class_failed} only allow for {input_format}"
+            f"Wrong input format. {class_failed} "
+            f"only allows for {input_format}"
         )
         super().__init__(message)
 
@@ -38,6 +39,6 @@ class NoCompatibilityChecker(Exception):
 
     def __init__(self):
         message = (
-            "The registered class does not have a check_compatability method"
+            "The registered class does not have a check_compatibility method"
         )
         super().__init__(message)
