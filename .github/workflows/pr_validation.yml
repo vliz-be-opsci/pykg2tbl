@@ -31,7 +31,6 @@ jobs:
     - name: Install dependencies
       run: |
         make init-dev
-        pip install -e .[tests]
 
     - name: Linting check
       id: linting_check
