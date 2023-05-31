@@ -1,11 +1,17 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Tuple, Union
+from typing import Iterable, List, Union
 
 from rdflib import Graph
 from SPARQLWrapper import SPARQLWrapper
 
-from pykg2tbl.named_query import NamedQuery, QueryResult
+from pykg2tbl.exceptions import (
+    MultipleSourceTypes,
+    NoCompatibilityChecker,
+    NotASubClass,
+    WrongInputFormat,
+)
+from pykg2tbl.query import QueryResult
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +50,36 @@ class KGSource(ABC):
         result = self.query(query)
         result.as_csv(output_file, sep)
 
+    registry = set()
+
+    @staticmethod
+    def register(constructor):
+        # assert that constructor is for a subclass of QueryResult
+        # e.g. check if method check_compatability is present
+        if not issubclass(constructor, KGSource):
+            raise NotASubClass
+        if not getattr(constructor, "check_compatability", False):
+            raise NoCompatibilityChecker
+        KGSource.registry.add(constructor)
+
+    @staticmethod
+    def build(*files):
+        """
+        Named main builder
+            Accepts a query response and a query.
+
+        :param list data: query response. A list of dictionaries.
+        :param str query: query made.
+        :return: QueryResult class apropriate for the query response.
+        :rtype: QueryResult
+        """
+
+        for constructor in KGSource.registry:
+            if constructor.check_compatability(*files) is True:
+                return constructor(*files)
+
+        raise WrongInputFormat
+
 
 # Create classes for making the kg context and query factory graph
 class KGFileSource(KGSource):
@@ -74,18 +110,22 @@ class KGFileSource(KGSource):
             )
 
     @staticmethod
-    def query_result_to_dict(reslist: list):
+    def query_result_to_dict(reslist: list) -> list:
         return [{str(v): str(row[v]) for v in reslist.vars} for row in reslist]
 
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
-        return NamedQuery(
+        return QueryResult.build(
             KGFileSource.query_result_to_dict(reslist), query=sparql
         )
 
+    @staticmethod
+    def check_compatability(*files):
+        source_type = get_single_type_from_source_list(files)
+        return source_type == "file"
 
-# Create class for KG based on endpoint
+
 class KG2EndpointSource(KGSource):
     """
     Class that makes a KGSource from given url endpoint
@@ -98,7 +138,7 @@ class KG2EndpointSource(KGSource):
         self.endpoints = [f for f in url]
 
     @staticmethod
-    def query_result_to_dict(reslist: list):
+    def query_result_to_dict(reslist: list) -> list:
         return [
             {k: row[k]["value"] for k in row}
             for row in reslist["results"]["bindings"]
@@ -115,21 +155,20 @@ class KG2EndpointSource(KGSource):
             resdict = ep.query().convert()
             reslist = reslist + KG2EndpointSource.query_result_to_dict(resdict)
 
-        query_result = NamedQuery(reslist, query=sparql)
+        query_result = QueryResult.build(reslist, query=sparql)
         return query_result
 
+    @staticmethod
+    def check_compatability(*files):
+        source_type = get_single_type_from_source_list(files)
+        return source_type == "endpoint"
 
-def check_source(source: Union[str, Tuple[str, ...], List]) -> str:
-    """
-    Check the source type. Restrain only to files, or endpoints.
-        If there is multiple sources, it will only get the type of the first
-        path, which means it does not allow for different source types
-        be passed in the same object.
 
-    :param source: source of graph
-    """
-    if isinstance(source, tuple) or isinstance(source, list):
-        return check_source(source[0])
+KGSource.register(KGFileSource)
+KGSource.register(KG2EndpointSource)
+
+
+def detect_single_source_type(source: str) -> str:
     source_type = "file"
     if source.startswith("http"):
         query_ask = "ask where {?s ?p [].}"
@@ -141,19 +180,31 @@ def check_source(source: Union[str, Tuple[str, ...], List]) -> str:
     return source_type
 
 
-def KG2Table(*source: Union[str, Tuple[str, ...], List]):
+def detect_source_type(source: Union[str, Iterable]) -> str:
     """
-    Kg2tbl main builder
-        export a tabular data file based on the users preferences.
+    Check the source type. Restrain only to files, or endpoints.
+        If there is multiple sources, it will only get the type of the first
+        path, which means it does not allow for different source types
+        be passed in the same object.
 
     :param source: source of graph
     """
+    if isinstance(source, Iterable):
+        for src in source:
+            if src:
+                yield detect_single_source_type(src)
+    else:
+        return detect_single_source_type(source)
 
-    source_type = check_source(source)
 
-    localizers = {
-        "file": KGFileSource,
-        "endpoint": KG2EndpointSource,
-    }
-
-    return localizers[source_type](*source)
+def get_single_type_from_source_list(files: Union[str, Iterable]) -> str:
+    source_type = detect_source_type(files)
+    if isinstance(source_type, Iterable):
+        # In case the source type is a generator
+        source_type = [f for f in source_type]
+        source_type = set(source_type)
+        # For multiple inputs they need to have the same source_type
+        if len(source_type) != 1:
+            raise MultipleSourceTypes
+        source_type = list(source_type)[0]
+    return source_type

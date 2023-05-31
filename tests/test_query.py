@@ -1,8 +1,9 @@
 import pytest
-from util4tests import TTL_FILES_QUERY_RESULT, run_single_test
 
 from pykg2tbl.exceptions import WrongInputFormat
-from pykg2tbl.named_query import NamedQuery, QueryResultFromListDict
+from pykg2tbl.query import QueryResult, QueryResultFromListDict
+from tests.const import TTL_FILES_QUERY_RESULT
+from tests.util4tests import run_single_test
 
 
 @pytest.mark.parametrize(
@@ -12,7 +13,7 @@ from pykg2tbl.named_query import NamedQuery, QueryResultFromListDict
     ],
 )
 def test_factory_choice(query_response, QueryType):
-    query_result = NamedQuery(query_response)
+    query_result = QueryResult.build(query_response)
     assert type(query_result) == QueryType
 
 
@@ -22,7 +23,7 @@ def test_factory_choice(query_response, QueryType):
 )
 def test_factory_raises(query_response, CustomException):
     with pytest.raises(CustomException) as exc:
-        NamedQuery(query_response)
+        QueryResult.build(query_response)
     assert exc.type == CustomException
 
 

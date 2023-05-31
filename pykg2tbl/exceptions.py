@@ -1,6 +1,43 @@
 class WrongInputFormat(Exception):
-    """Raised when this happens..."""
+    """Raised when the input is not in a valid format"""
+
+    def __init__(
+        self, input_format="Iterable[dicts]", class_failed="QueryResult"
+    ):
+        message = (
+            f"Wrong input format. {class_failed} only allow for {input_format}"
+        )
+        super().__init__(message)
+
+
+class MultipleSourceTypes(Exception):
+    """Raised when the input has multiple source type"""
 
     def __init__(self):
-        message = "Wrong input format. QueryResult only allow for List[dicts]"
+        message = (
+            "The input has multiple file sources. "
+            "The current implementation only allows "
+            "for one file source per object."
+        )
+        super().__init__(message)
+
+
+class NotASubClass(Exception):
+    """Raised when class is not a subclass of Given Parent Class"""
+
+    def __init__(self, parent_class="QueryResult"):
+        message = (
+            "The class you are trying to register "
+            f"is not a subclass of {parent_class}."
+        )
+        super().__init__(message)
+
+
+class NoCompatibilityChecker(Exception):
+    """Raised when class does not have the compatible checker"""
+
+    def __init__(self):
+        message = (
+            "The registered class does not have a check_compatability method"
+        )
         super().__init__(message)
