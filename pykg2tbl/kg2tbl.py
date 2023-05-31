@@ -57,7 +57,7 @@ class KGSource(ABC):
         # assert that constructor is for a subclass of QueryResult
         # e.g. check if method check_compatibility is present
         if not issubclass(constructor, KGSource):
-            raise NotASubClass
+            raise NotASubClass(parent_class="KGSource")
         if not getattr(constructor, "check_compatibility", False):
             raise NoCompatibilityChecker
         KGSource.registry.add(constructor)
@@ -77,7 +77,9 @@ class KGSource(ABC):
             if constructor.check_compatibility(*files) is True:
                 return constructor(*files)
 
-        raise WrongInputFormat
+        raise WrongInputFormat(
+            input_format="str, str, ...", class_failed="KGSource"
+        )
 
     @staticmethod
     def detect_source_type(*files: Union[str, Iterable]) -> str:
