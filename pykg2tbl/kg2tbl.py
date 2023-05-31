@@ -74,12 +74,32 @@ class KGSource(ABC):
         """
 
         for constructor in KGSource.registry:
-            print("files")
-            print(files)
             if constructor.check_compatibility(*files) is True:
                 return constructor(*files)
 
         raise WrongInputFormat
+
+    @staticmethod
+    def detect_source_type(*files: Union[str, Iterable]) -> str:
+        """
+        From the input sources it will get a list/generator with the types,
+            It will check if there is only one type, and return it.
+            Otherwise raise error for Mulitple Sources.
+
+        :param files: files or endpoints
+        :return: The source type of the given inputs.
+        :rtype: str
+        """
+        source_type = generator_of_source_types(*files)
+        if isinstance(source_type, Iterable):
+            # In case the source type is a generator
+            source_type = [f for f in source_type]
+            source_type = set(source_type)
+            # For multiple inputs they need to have the same source_type
+            if len(source_type) != 1:
+                raise MultipleSourceTypes
+            source_type = list(source_type)[0]
+        return source_type
 
 
 class KGFileSource(KGSource):
@@ -122,7 +142,7 @@ class KGFileSource(KGSource):
 
     @staticmethod
     def check_compatibility(*files: Tuple):
-        source_type = get_single_type_from_source_list(*files)
+        source_type = KGSource.detect_source_type(*files)
         return source_type == "file"
 
 
@@ -160,7 +180,7 @@ class KG2EndpointSource(KGSource):
 
     @staticmethod
     def check_compatibility(*files):
-        source_type = get_single_type_from_source_list(*files)
+        source_type = KGSource.detect_source_type(*files)
         return source_type == "endpoint"
 
 
@@ -189,7 +209,7 @@ def detect_single_source_type(source: str) -> str:
     return source_type
 
 
-def detect_source_type(*source: Union[str, Iterable]) -> Generator:
+def generator_of_source_types(*source: Union[str, Iterable]) -> Generator:
     """
     Check the source type. Restrain only to files, or endpoints.
         It will return a generator where each item is a source_type.
@@ -201,25 +221,3 @@ def detect_source_type(*source: Union[str, Iterable]) -> Generator:
             yield detect_single_source_type(src)
         else:
             yield None
-
-
-def get_single_type_from_source_list(*files: Union[str, Iterable]) -> str:
-    """
-    From the input sources it will get a list/generator with the types,
-        It will check if there is only one type, and return it.
-        Otherwise raise error for Mulitple Sources.
-
-    :param files: files or endpoints
-    :return: The source type of the given inputs.
-    :rtype: str
-    """
-    source_type = detect_source_type(*files)
-    if isinstance(source_type, Iterable):
-        # In case the source type is a generator
-        source_type = [f for f in source_type]
-        source_type = set(source_type)
-        # For multiple inputs they need to have the same source_type
-        if len(source_type) != 1:
-            raise MultipleSourceTypes
-        source_type = list(source_type)[0]
-    return source_type
