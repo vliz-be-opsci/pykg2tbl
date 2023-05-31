@@ -1,6 +1,6 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import Iterable, List, Union
+from typing import Generator, Iterable, List, Tuple, Union
 
 from rdflib import Graph
 from SPARQLWrapper import SPARQLWrapper
@@ -55,33 +55,33 @@ class KGSource(ABC):
     @staticmethod
     def register(constructor):
         # assert that constructor is for a subclass of QueryResult
-        # e.g. check if method check_compatability is present
+        # e.g. check if method check_compatibility is present
         if not issubclass(constructor, KGSource):
             raise NotASubClass
-        if not getattr(constructor, "check_compatability", False):
+        if not getattr(constructor, "check_compatibility", False):
             raise NoCompatibilityChecker
         KGSource.registry.add(constructor)
 
     @staticmethod
     def build(*files):
         """
-        Named main builder
-            Accepts a query response and a query.
+        Kg2tbl main builder
+            export a tabular data file based on the users preferences.
+        :param source: source of graph
 
-        :param list data: query response. A list of dictionaries.
-        :param str query: query made.
-        :return: QueryResult class apropriate for the query response.
-        :rtype: QueryResult
+        :return: KGSource class apropriate files.
+        :rtype: KGSource
         """
 
         for constructor in KGSource.registry:
-            if constructor.check_compatability(*files) is True:
+            print("files")
+            print(files)
+            if constructor.check_compatibility(*files) is True:
                 return constructor(*files)
 
         raise WrongInputFormat
 
 
-# Create classes for making the kg context and query factory graph
 class KGFileSource(KGSource):
     """
     Class that makes a KGSource from given turtle file(s)
@@ -121,8 +121,8 @@ class KGFileSource(KGSource):
         )
 
     @staticmethod
-    def check_compatability(*files):
-        source_type = get_single_type_from_source_list(files)
+    def check_compatibility(*files: Tuple):
+        source_type = get_single_type_from_source_list(*files)
         return source_type == "file"
 
 
@@ -159,8 +159,8 @@ class KG2EndpointSource(KGSource):
         return query_result
 
     @staticmethod
-    def check_compatability(*files):
-        source_type = get_single_type_from_source_list(files)
+    def check_compatibility(*files):
+        source_type = get_single_type_from_source_list(*files)
         return source_type == "endpoint"
 
 
@@ -169,6 +169,15 @@ KGSource.register(KG2EndpointSource)
 
 
 def detect_single_source_type(source: str) -> str:
+    """
+    Check the source type. Restrain only to files, or endpoints
+
+    :param source: files or endpoints
+    :return: The source type of the given input.
+        Endpoint or File
+    :rtype: str
+
+    """
     source_type = "file"
     if source.startswith("http"):
         query_ask = "ask where {?s ?p [].}"
@@ -180,25 +189,31 @@ def detect_single_source_type(source: str) -> str:
     return source_type
 
 
-def detect_source_type(source: Union[str, Iterable]) -> str:
+def detect_source_type(*source: Union[str, Iterable]) -> Generator:
     """
     Check the source type. Restrain only to files, or endpoints.
-        If there is multiple sources, it will only get the type of the first
-        path, which means it does not allow for different source types
-        be passed in the same object.
+        It will return a generator where each item is a source_type.
 
-    :param source: source of graph
+    :param source: files or endpoints
     """
-    if isinstance(source, Iterable):
-        for src in source:
-            if src:
-                yield detect_single_source_type(src)
-    else:
-        return detect_single_source_type(source)
+    for src in source:
+        if src and isinstance(src, str):
+            yield detect_single_source_type(src)
+        else:
+            yield None
 
 
-def get_single_type_from_source_list(files: Union[str, Iterable]) -> str:
-    source_type = detect_source_type(files)
+def get_single_type_from_source_list(*files: Union[str, Iterable]) -> str:
+    """
+    From the input sources it will get a list/generator with the types,
+        It will check if there is only one type, and return it.
+        Otherwise raise error for Mulitple Sources.
+
+    :param files: files or endpoints
+    :return: The source type of the given inputs.
+    :rtype: str
+    """
+    source_type = detect_source_type(*files)
     if isinstance(source_type, Iterable):
         # In case the source type is a generator
         source_type = [f for f in source_type]
