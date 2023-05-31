@@ -4,7 +4,11 @@ from typing import List
 
 import pandas as pd
 
-from pykg2tbl.exceptions import WrongInputFormat
+from pykg2tbl.exceptions import (
+    NoCompatibilityChecker,
+    NotASubClass,
+    WrongInputFormat,
+)
 
 log = logging.getLogger(__name__)
 
@@ -59,6 +63,34 @@ class QueryResult(ABC):
         """
         pass  # pragma: no cover
 
+    registry = set()
+
+    @staticmethod
+    def register(constructor):
+        if not issubclass(constructor, QueryResult):
+            raise NotASubClass
+        if not getattr(constructor, "check_compatability", False):
+            raise NoCompatibilityChecker
+        QueryResult.registry.add(constructor)
+
+    @staticmethod
+    def build(data: list, query: str = ""):
+        """
+        QueryResult main builder
+            Accepts a query response and a query.
+
+        :param list data: query response.
+        :param str query: query made.
+        :return: QueryResult class apropriate for the query response.
+        :rtype: QueryResult
+        """
+
+        for constructor in QueryResult.registry:
+            if constructor.check_compatability(data, query) is True:
+                return constructor(data, query)
+
+        raise WrongInputFormat
+
 
 class QueryResultFromListDict(QueryResult):
     """
@@ -71,7 +103,6 @@ class QueryResultFromListDict(QueryResult):
     """
 
     def __init__(self, data: list, query: str = ""):
-        # log.info(data)
         self._data = data
         self.query = query
 
@@ -111,23 +142,44 @@ class QueryResultFromListDict(QueryResult):
         return query_df
 
     # In future the design to match UDAL will require to also expose metadata
+    @staticmethod
+    def check_compatability(data, query) -> bool:
+        is_list_of_dicts = False
+        if isinstance(data, list):
+            is_list_of_dicts = True
+            for iter in data:
+                is_list_of_dicts = isinstance(iter, dict) and is_list_of_dicts
+
+        return is_list_of_dicts and isinstance(query, str)
 
 
-def NamedQuery(data: list, query: str = "") -> QueryResult:
-    """
-    Named main builder
-        Accepts a query response and a query.
+QueryResult.register(QueryResultFromListDict)
 
-    :param list data: query response. A list of dictionaries.
-    :param str query: query made.
-    :return: QueryResult class apropriate for the query response.
-    :rtype: QueryResult
-    """
 
-    if isinstance(data, list):
-        if isinstance(data[0], dict):
-            return QueryResultFromListDict(data, query)
-        else:
-            raise WrongInputFormat
-    else:
-        raise WrongInputFormat
+class SparqlBuilder(ABC):
+    @abstractmethod
+    def build_sparql_query(self, name: str, **variables):
+        """
+        Builds the named sparql query by applying the provided params
+
+        :param name: Name of the query.
+        :param variables: Dict of all the variables given to the template to
+            make the sparql query.
+
+        :type name: str
+        """
+        pass  # pragma: no cover
+
+    @abstractmethod
+    def variables_in_query(self, name: str):
+        """
+        Return the set of all the variable names applicable to the named query
+
+        :param name: [Name of the query.]
+        :type name: str
+
+        :return: the set of all variables applicable to the named query.
+        :rtype: set
+
+        """
+        pass  # pragma: no cover

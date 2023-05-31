@@ -1,30 +1,27 @@
 import pandas as pd
 import pytest
-from util4tests import (
+
+from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
+from pykg2tbl.kg2tbl import KG2EndpointSource, KGFileSource, KGSource
+from tests.const import (
     ALL_TRIPLES_SPARQL,
     BODC_ENDPOINT,
     TTL_FILE_IN_URI,
     TTL_FILES_TO_TEST,
-    log,
-    run_single_test,
 )
-
-from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
-from pykg2tbl.kg2tbl import KG2EndpointSource, KG2Table, KGFileSource
+from tests.util4tests import log, run_single_test
 
 
 @pytest.mark.parametrize(
     "source, KGType",
     [
         (TTL_FILES_TO_TEST, KGFileSource),
-        (BODC_ENDPOINT, KG2EndpointSource),
-        (TTL_FILE_IN_URI, KGFileSource),
+        ([BODC_ENDPOINT], KG2EndpointSource),
+        ([TTL_FILE_IN_URI], KGFileSource),
     ],
 )
 def test_factory_choice(source, KGType):
-    if isinstance(source, str):
-        source = [source]
-    source_KG2tbl = KG2Table(*source)
+    source_KG2tbl = KGSource.build(*source)
     assert type(source_KG2tbl) == KGType
 
 
@@ -39,7 +36,7 @@ def test_factory_choice(source, KGType):
 def test_query(source, query, query_response_length):
     if isinstance(source, str):
         source = [source]
-    source_KG2tbl = KG2Table(*source)
+    source_KG2tbl = KGSource.build(*source)
     result = source_KG2tbl.query(query)
     assert result._data is not None
     assert set(result._data[0].keys()) == set(["s", "o", "p"])
@@ -48,7 +45,7 @@ def test_query(source, query, query_response_length):
 
 
 def test_query_functions():
-    source_KG2tbl = KG2Table(*TTL_FILES_TO_TEST)
+    source_KG2tbl = KGSource.build(*TTL_FILES_TO_TEST)
     result = source_KG2tbl.query(ALL_TRIPLES_SPARQL)
 
     assert type(result.to_list()) == list
