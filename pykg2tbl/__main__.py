@@ -7,6 +7,7 @@ import sys
 
 import validators
 
+from pykg2tbl.exceptions import MultipleSourceTypes
 from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
 from pykg2tbl.kg2tbl import KGSource
 
@@ -36,25 +37,17 @@ def get_arg_parser():
     )
 
     parser.add_argument(
-        "-i",
-        "--input",
+        "-s",
+        "--source",
         type=str,
         nargs="+",
-        metavar="FILE",
+        metavar=["FILE", "URL"],
         action="store",
         help=(
             "input file to be turned into datagraph"
             " or endpoint of rdf-database"
+            "or sparql endpoint url"
         ),
-    )
-
-    parser.add_argument(
-        "-e",
-        "--endpoint",
-        type=str,
-        metavar="URL",
-        action="store",
-        help="sparql endpoint url",
     )
 
     parser.add_argument(
@@ -128,11 +121,7 @@ def performe_service(args: argparse.Namespace):
     #   (1) remove,
     #   (2) move to service or
     #   (3) motivate and keep here in cli
-    if args.input is not None and args.endpoint is not None:
-        raise argparse.ArgumentTypeError(
-            "Either a fileinput or an endpoint must be supplied, not both."
-        )
-    if args.input is None and args.endpoint is None:
+    if args.source is None:
         raise argparse.ArgumentTypeError(
             "A fileinput or an endpoint must be supplied."
         )
@@ -144,20 +133,27 @@ def performe_service(args: argparse.Namespace):
         )
 
     # per variable check if they are valid for consumption
+    # TODO why? why here and not in service?
     # TODO -- why?
     current_folder = os.getcwd()
-    if args.input is not None:
-        for i in args.input:
-            log.debug(os.path.join(current_folder, i))
-            if os.path.exists(os.path.join(current_folder, i)) is False:
-                raise argparse.ArgumentTypeError(f"file {i} does exist")
-
-    # TODO why? why here and not in service?
-    if args.endpoint is not None:
-        if validators.url(args.endpoint) is not True:
+    if args.source is not None:
+        try:
+            KGSource.detect_source_type(*args.source)
+        except MultipleSourceTypes:
             raise argparse.ArgumentTypeError(
-                f"given endpoint is not a valid url => {args.endpoint} "
+                "Either a fileinput or an endpoint must be supplied, not both."
             )
+
+        for src in args.source:
+            if src.startswith("http"):
+                if not validators.url(args.endpoint):
+                    raise argparse.ArgumentTypeError(
+                        f"given endpoint is not a valid url => {args.endpoint}"
+                    )
+            else:
+                log.debug(os.path.join(current_folder, src))
+                if not os.path.exists(os.path.join(current_folder, src)):
+                    raise argparse.ArgumentTypeError(f"file {src} does exist")
 
     # check if output path exists
     if args.output_location is not None:
@@ -286,11 +282,9 @@ def main(sysargs=None):
     query = template_service.build_sparql_query(
         name=args.template_name, variables=params
     )
-    print("Making KGSource")
-    source = makesource(args)
     print("performing query")
     log.debug("making exec service")
-    executive_service = KGSource.build(*source)
+    executive_service = KGSource.build(*args.source)
     log.debug("performing service query")
     executive_service.exec(
         query,
