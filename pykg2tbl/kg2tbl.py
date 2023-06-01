@@ -1,11 +1,12 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import Generator, Iterable, List, Tuple, Union
+from typing import Callable, Generator, Iterable, List, Tuple, Union
 
 from rdflib import Graph
 from SPARQLWrapper import SPARQLWrapper
 
 from pykg2tbl.exceptions import (
+    CompatibilityCheckerNotCallable,
     MultipleSourceTypes,
     NoCompatibilityChecker,
     NotASubClass,
@@ -58,8 +59,13 @@ class KGSource(ABC):
         # e.g. check if method check_compatibility is present
         if not issubclass(constructor, KGSource):
             raise NotASubClass(parent_class="KGSource")
-        if not getattr(constructor, "check_compatibility", False):
+        check_compatibility_function = getattr(
+            constructor, "check_compatibility", False
+        )
+        if not check_compatibility_function:
             raise NoCompatibilityChecker
+        if not isinstance(check_compatibility_function, Callable):
+            raise CompatibilityCheckerNotCallable
         KGSource.registry.add(constructor)
 
     @staticmethod
