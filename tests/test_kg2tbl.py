@@ -2,6 +2,7 @@ import pandas as pd
 import pytest
 
 from pykg2tbl.exceptions import (
+    CompatibilityCheckerNotCallable,
     MultipleSourceTypes,
     NoCompatibilityChecker,
     NotASubClass,
@@ -64,11 +65,18 @@ class DummyKGSource(KGSource):
     pass  # pragma: no cover
 
 
+class Dummy2KGSource(KGSource):
+    @property
+    def check_compatibility():
+        return None
+
+
 @pytest.mark.parametrize(
     "constructor, CustomException",
     [
         (QueryResult, NotASubClass),
         (DummyKGSource, NoCompatibilityChecker),
+        (Dummy2KGSource, CompatibilityCheckerNotCallable),
     ],
 )
 def test_class_register_raises(constructor, CustomException):
