@@ -7,11 +7,11 @@
 #}
 
 {%-if not language %}{% set language = "en" %}{%endif-%}
-prefix skos:<http://www.w3.org/2004/02/skos/core#>
-prefix text:<http://jena.apache.org/text#>
-prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix owl:<http://www.w3.org/2002/07/owl#>
-prefix dc:<http://purl.org/dc/terms/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix text: <http://jena.apache.org/text#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix dc: <http://purl.org/dc/terms/>
 
 select distinct (?x as ?uri) (?dci as ?identifier) (?pl as ?prefLabel)
 where

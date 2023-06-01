@@ -1,5 +1,8 @@
 {# Jinja Template --> Sparql Query
  | Get the skos collection.
+ | variables in template:
+ |    - (optional) language: language of the collection
+
 #}
 
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -9,5 +12,5 @@ prefix dc:   <http://purl.org/dc/terms/>
 SELECT ?coll ?ttl WHERE {
   ?coll rdf:type skos:Collection;
         dc:title ?ttl .
-  #FILTER(lang(?ttl) = "en" )
+  {%if language%}FILTER(lang(?ttl) = {{language}}){%endif%}
 }
