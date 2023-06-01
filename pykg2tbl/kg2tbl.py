@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 # Create abstract class for making a contract by design for devs ##
 class KGSource(ABC):
     @abstractmethod
-    def query_result_to_dict(reslist: list) -> List:
+    def query_result_to_list_dicts(reslist: list) -> List:
         """
         From the query result build a standard list of dicts,
             where each key is the relation in the triplet.
@@ -69,7 +69,7 @@ class KGSource(ABC):
             export a tabular data file based on the users preferences.
         :param source: source of graph
 
-        :return: KGSource class apropriate files.
+        :return: KGSource class appropriate files.
         :rtype: KGSource
         """
 
@@ -86,7 +86,7 @@ class KGSource(ABC):
         """
         From the input sources it will get a list/generator with the types,
             It will check if there is only one type, and return it.
-            Otherwise raise error for Mulitple Sources.
+            Otherwise raise error for Multiple Sources.
 
         :param files: files or endpoints
         :return: The source type of the given inputs.
@@ -109,7 +109,7 @@ class KGFileSource(KGSource):
     Class that makes a KGSource from given turtle file(s)
 
     :param *files: turtle files that should be converted into a single
-        knowlegde graph.
+        knowledge graph.
     """
 
     def __init__(self, *files):
@@ -132,14 +132,14 @@ class KGFileSource(KGSource):
             )
 
     @staticmethod
-    def query_result_to_dict(reslist: list) -> list:
+    def query_result_to_list_dicts(reslist: list) -> list:
         return [{str(v): str(row[v]) for v in reslist.vars} for row in reslist]
 
     def query(self, sparql: str) -> QueryResult:
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
         return QueryResult.build(
-            KGFileSource.query_result_to_dict(reslist), query=sparql
+            KGFileSource.query_result_to_list_dicts(reslist), query=sparql
         )
 
     @staticmethod
@@ -155,12 +155,12 @@ class KG2EndpointSource(KGSource):
     :param url: url of the endpoint to make the KGSource from.
     """
 
-    def __init__(self, *url):
+    def __init__(self, *urls):
         super().__init__()
-        self.endpoints = [f for f in url]
+        self.endpoints = [url for url in urls]
 
     @staticmethod
-    def query_result_to_dict(reslist: list) -> list:
+    def query_result_to_list_dicts(reslist: list) -> list:
         return [
             {k: row[k]["value"] for k in row}
             for row in reslist["results"]["bindings"]
@@ -175,7 +175,9 @@ class KG2EndpointSource(KGSource):
             #   even reading the format from the endpoint.
             ep.setReturnFormat("json")
             resdict = ep.query().convert()
-            reslist = reslist + KG2EndpointSource.query_result_to_dict(resdict)
+            reslist = reslist + KG2EndpointSource.query_result_to_list_dicts(
+                resdict
+            )
 
         query_result = QueryResult.build(reslist, query=sparql)
         return query_result
