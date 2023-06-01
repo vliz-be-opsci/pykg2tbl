@@ -82,7 +82,7 @@ def test_class_register_raises(constructor, CustomException):
     [
         ([{"test"}], WrongInputFormat),
         ([BODC_ENDPOINT, *TTL_FILES_TO_TEST], MultipleSourceTypes),
-    ],  # ("test", WrongInputFormat)],
+    ],
 )
 def test_class_build_raises(files, CustomException):
     with pytest.raises(CustomException) as exc:
