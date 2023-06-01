@@ -108,7 +108,11 @@ class QueryResultFromListDict(QueryResult):
 
     def __str__(self):
         df = self.to_dataframe()
-        return str(df)
+        _str = ""
+        if self.query:
+            _str = f"Query: \n{self.query} \n"
+        _str = _str + f"Table: \n{str(df)}"
+        return _str
 
     def __len__(self):
         return len(self._data)
