@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 class QueryResult(ABC):
     """
-    Class that incompases the result from a performed query
+    Class that encompasses the result from a performed query
 
     :param list data: query result data
     :param str query: query
@@ -94,7 +94,7 @@ class QueryResult(ABC):
 
 class QueryResultFromListDict(QueryResult):
     """
-    Class that incompases the result from a performed query.
+    Class that encompasses the result from a performed query.
         When the result is return as a list of dictionaries.
 
     :param list data: query result data in the form of a list of dictionaries
@@ -113,9 +113,9 @@ class QueryResultFromListDict(QueryResult):
     def __len__(self):
         return len(self._data)
 
-    def as_csv(self, fileoutputlocation: str, sep: str = ","):
+    def as_csv(self, file_output_path: str, sep: str = ","):
         data = self.to_dataframe()
-        data.to_csv(fileoutputlocation, sep=sep)
+        data.to_csv(file_output_path, sep=sep)
 
     def to_list(self) -> List:
         return self._data
