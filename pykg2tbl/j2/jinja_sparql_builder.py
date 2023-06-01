@@ -7,6 +7,10 @@ from pykg2tbl.query import SparqlBuilder
 
 log = logging.getLogger(__name__)
 
+TEMPLATES_FOLDER = os.path.join(
+    os.path.abspath(os.path.dirname(__file__)), "templates"
+)
+
 
 class J2SparqlBuilder(SparqlBuilder):
     """
@@ -20,9 +24,7 @@ class J2SparqlBuilder(SparqlBuilder):
 
     def __init__(self, templates_folder: str = None):
         if templates_folder is None:
-            templates_folder = os.path.join(
-                os.path.abspath(os.path.dirname(__file__)), "templates"
-            )
+            templates_folder = TEMPLATES_FOLDER
         self._templates_env = Environment(
             loader=FileSystemLoader(templates_folder)
         )
@@ -46,7 +48,7 @@ class J2SparqlBuilder(SparqlBuilder):
             templates_env, template_name
         )
         log.debug(f"template source = {template_source}")
-        ast = self._templates_env.parse(template_source)
+        ast = self._templates_env.parse(*template_source)
         return meta.find_undeclared_variables(ast)
 
     def build_sparql_query(self, name: str, **variables) -> str:

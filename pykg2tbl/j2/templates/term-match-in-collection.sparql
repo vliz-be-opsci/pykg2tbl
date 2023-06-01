@@ -1,7 +1,7 @@
 {# Jinja Template --> Sparql Query
  | Search a collection for matching members with the given term
  | variables in template:
- |   - term_match: term to matche in colletion (regex usage)
+ |   - term: term to match in colletion (regex usage)
  |   - col_uri: collection to search from
  |   - (optional) N: number of triples to return (no limit applied when no N is given)
 #}
@@ -17,5 +17,5 @@ SELECT ?term ?lbl WHERE {
   ?coll rdf:type skos:Collection .
   ?term skos:prefLabel ?lbl.
   
-    FILTER(regex(?lbl, term_match ))
+    FILTER(regex(?lbl, {{term}} ))
 } {%if N%}LIMIT {{N}}{%endif%}
