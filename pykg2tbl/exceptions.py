@@ -42,3 +42,14 @@ class NoCompatibilityChecker(Exception):
             "The registered class does not have a check_compatibility method"
         )
         super().__init__(message)
+
+
+class CompatibilityCheckerNotCallable(Exception):
+    """Raised when the compatible checker is not a callable"""
+
+    def __init__(self):
+        message = (
+            "The check_compatibility method in the "
+            "registered class is not a callable"
+        )
+        super().__init__(message)
