@@ -8,7 +8,7 @@ def test_basic():
     arg2 = "tests/sources/02-person.ttl"
     output = "/tmp/test_kg2tbl_vliz.csv"
 
-    kg2tbl(f"-i {arg1} {arg2} -o {output} -t all.sparql".split(" "))
+    kg2tbl(f"-s {arg1} {arg2} -o {output} -t all.sparql".split(" "))
     pass
 
 
