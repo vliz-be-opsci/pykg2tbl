@@ -45,7 +45,7 @@ def get_arg_parser():
         action="store",
         help=(
             "input file to be turned into datagraph"
-            " or endpoint of rdf-database"
+            " ,download-point of rdf-dump"
             "or sparql endpoint url"
         ),
     )
@@ -241,10 +241,6 @@ def variables_check(variables_template, variables_given):
             )
 
 
-def makesource(args: argparse.Namespace):
-    return args.endpoint or args.input
-
-
 def getdelimiter(args: argparse.Namespace):
     if args.output_format is not None:
         if args.output_format == "csv":
@@ -286,8 +282,8 @@ def main(sysargs=None):
     log.debug("making exec service")
     executive_service = KGSource.build(*args.source)
     log.debug("performing service query")
-    executive_service.exec(
-        query,
+    executive_query = executive_service.query(query)
+    executive_query.as_csv(
         os.path.join(os.getcwd(), args.output_location),
         getdelimiter(args),
     )

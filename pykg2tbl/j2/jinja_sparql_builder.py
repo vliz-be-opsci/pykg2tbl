@@ -7,7 +7,7 @@ from pykg2tbl.query import SparqlBuilder
 
 log = logging.getLogger(__name__)
 
-TEMPLATES_FOLDER = os.path.join(
+DEFAULT_TEMPLATES_FOLDER = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "templates"
 )
 
@@ -24,7 +24,7 @@ class J2SparqlBuilder(SparqlBuilder):
 
     def __init__(self, templates_folder: str = None):
         if templates_folder is None:
-            templates_folder = TEMPLATES_FOLDER
+            templates_folder = DEFAULT_TEMPLATES_FOLDER
         self._templates_env = Environment(
             loader=FileSystemLoader(templates_folder)
         )

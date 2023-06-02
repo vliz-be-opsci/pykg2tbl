@@ -38,19 +38,6 @@ class KGSource(ABC):
         """
         pass  # pragma: no cover
 
-    def exec(self, query: str, output_file: str, sep: str):
-        """
-        Service that will make query a provided kgsource and
-            export a tabular data file based on the users preferences.
-
-        :param str query: named template sparql
-        :param str output_file: file to write query output as a table
-        :param str sep: table separator
-
-        """
-        result = self.query(query)
-        result.as_csv(output_file, sep)
-
     registry = set()
 
     @staticmethod
@@ -69,36 +56,36 @@ class KGSource(ABC):
         KGSource.registry.add(constructor)
 
     @staticmethod
-    def build(*files):
+    def build(*sources):
         """
         Kg2tbl main builder
             export a tabular data file based on the users preferences.
-        :param source: source of graph
+        :param sources: source of graph
 
         :return: KGSource class appropriate files.
         :rtype: KGSource
         """
 
         for constructor in KGSource.registry:
-            if constructor.check_compatibility(*files) is True:
-                return constructor(*files)
+            if constructor.check_compatibility(*sources) is True:
+                return constructor(*sources)
 
         raise WrongInputFormat(
             input_format="str, str, ...", class_failed="KGSource"
         )
 
     @staticmethod
-    def detect_source_type(*files: Union[str, Iterable]) -> str:
+    def detect_source_type(*sources: Union[str, Iterable]) -> str:
         """
         From the input sources it will get a list/generator with the types,
             It will check if there is only one type, and return it.
             Otherwise raise error for Multiple Sources.
 
-        :param files: files or endpoints
+        :param sources: files or endpoints
         :return: The source type of the given inputs.
         :rtype: str
         """
-        source_type = generator_of_source_types(*files)
+        source_type = generator_of_source_types(*sources)
         if isinstance(source_type, Iterable):
             # In case the source type is a generator
             source_type = [f for f in source_type]
@@ -114,15 +101,15 @@ class KGFileSource(KGSource):
     """
     Class that makes a KGSource from given turtle file(s)
 
-    :param *files: turtle files that should be converted into a single
+    :param *sources: turtle files that should be converted into a single
         knowledge graph.
     """
 
-    def __init__(self, *files):
+    def __init__(self, *sources):
         super().__init__()
         self.graph = None
         g = Graph()
-        for f in files:
+        for f in sources:
             log.debug(f"loading graph from file {f}")
             try:
                 graph_to_add = g.parse(f)
@@ -149,8 +136,8 @@ class KGFileSource(KGSource):
         )
 
     @staticmethod
-    def check_compatibility(*files: Tuple):
-        source_type = KGSource.detect_source_type(*files)
+    def check_compatibility(*sources: Tuple):
+        source_type = KGSource.detect_source_type(*sources)
         return source_type == "file"
 
 
@@ -189,8 +176,8 @@ class KG2EndpointSource(KGSource):
         return query_result
 
     @staticmethod
-    def check_compatibility(*files):
-        source_type = KGSource.detect_source_type(*files)
+    def check_compatibility(*sources):
+        source_type = KGSource.detect_source_type(*sources)
         return source_type == "endpoint"
 
 
