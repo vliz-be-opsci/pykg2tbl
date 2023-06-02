@@ -54,12 +54,50 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="module-pykg2tbl.service">
-<span id="pykg2tbl-service-module"></span><h2>pykg2tbl.service module<a class="headerlink" href="#module-pykg2tbl.service" title="Permalink to this heading">¶</a></h2>
+<section id="module-pykg2tbl.exceptions">
+<span id="pykg2tbl-exceptions-module"></span><h2>pykg2tbl.exceptions module<a class="headerlink" href="#module-pykg2tbl.exceptions" title="Permalink to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pykg2tbl.exceptions.CompatibilityCheckerNotCallable">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.exceptions.</span></span><span class="sig-name descname"><span class="pre">CompatibilityCheckerNotCallable</span></span><a class="headerlink" href="#pykg2tbl.exceptions.CompatibilityCheckerNotCallable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when the compatible checker is not a callable</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pykg2tbl.exceptions.MultipleSourceTypes">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.exceptions.</span></span><span class="sig-name descname"><span class="pre">MultipleSourceTypes</span></span><a class="headerlink" href="#pykg2tbl.exceptions.MultipleSourceTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when the input has multiple source type</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pykg2tbl.exceptions.NoCompatibilityChecker">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.exceptions.</span></span><span class="sig-name descname"><span class="pre">NoCompatibilityChecker</span></span><a class="headerlink" href="#pykg2tbl.exceptions.NoCompatibilityChecker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when class does not have the compatible checker</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pykg2tbl.exceptions.NotASubClass">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.exceptions.</span></span><span class="sig-name descname"><span class="pre">NotASubClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'QueryResult'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.exceptions.NotASubClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when class is not a subclass of Given Parent Class</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="pykg2tbl.exceptions.WrongInputFormat">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.exceptions.</span></span><span class="sig-name descname"><span class="pre">WrongInputFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Iterable[dicts]'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_failed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'QueryResult'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.exceptions.WrongInputFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when the input is not in a valid format</p>
+</dd></dl>
+
+</section>
+<section id="module-pykg2tbl.kg2tbl">
+<span id="pykg2tbl-kg2tbl-module"></span><h2>pykg2tbl.kg2tbl module<a class="headerlink" href="#module-pykg2tbl.kg2tbl" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.service.KG2EndpointSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.service.</span></span><span class="sig-name descname"><span class="pre">KG2EndpointSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.KG2EndpointSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.service.KGSource" title="pykg2tbl.service.KGSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">KGSource</span></code></a></p>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KG2EndpointSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.kg2tbl.</span></span><span class="sig-name descname"><span class="pre">KG2EndpointSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">urls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KG2EndpointSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.kg2tbl.KGSource" title="pykg2tbl.kg2tbl.KGSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">KGSource</span></code></a></p>
 <p>Class that makes a KGSource from given url endpoint</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -67,9 +105,14 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.KG2EndpointSource.query">
-<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.service.QueryResult" title="pykg2tbl.service.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.service.KG2EndpointSource.query" title="Permalink to this definition">¶</a></dt>
-<dd><p>function that queries data with the given sparql</p>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KG2EndpointSource.check_compatibility">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_compatibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KG2EndpointSource.check_compatibility" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KG2EndpointSource.query">
+<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.query.QueryResult" title="pykg2tbl.query.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KG2EndpointSource.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that queries data with the given sparql</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sparql</strong> – sparql statement logic for querying data.</p>
@@ -78,48 +121,42 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.KG2EndpointSource.reslist_to_dict">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reslist_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reslist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.KG2EndpointSource.reslist_to_dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.service.KG2TblService">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.service.</span></span><span class="sig-name descname"><span class="pre">KG2TblService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pykg2tbl.service.KGSource" title="pykg2tbl.service.KGSource"><span class="pre">KGSource</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.KG2TblService" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="simple">
-<dt>Service that will make query a provided kgsource and</dt><dd><p>export a tabular data file based on the users preferences.</p>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KG2EndpointSource.query_result_to_list_dicts">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query_result_to_list_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reslist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KG2EndpointSource.query_result_to_list_dicts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>From the query result build a standard list of dicts,</dt><dd><p>where each key is the relation in the triplet.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>source</strong> – source of graph</p>
+<dd class="field-odd"><p><strong>reslist</strong> – list with the query.</p>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.KG2TblService.exec">
-<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.KG2TblService.exec" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.service.KGFileSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.service.</span></span><span class="sig-name descname"><span class="pre">KGFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">files</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.KGFileSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.service.KGSource" title="pykg2tbl.service.KGSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">KGSource</span></code></a></p>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGFileSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.kg2tbl.</span></span><span class="sig-name descname"><span class="pre">KGFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.kg2tbl.KGSource" title="pykg2tbl.kg2tbl.KGSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">KGSource</span></code></a></p>
 <p>Class that makes a KGSource from given turtle file(s)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>*files</strong> – <p>turtle files that should be converted into a single
-knowlegde graph.</p>
+<dd class="field-odd"><p><strong>*sources</strong> – <p>turtle files that should be converted into a single
+knowledge graph.</p>
 </p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.KGFileSource.query">
-<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.service.QueryResult" title="pykg2tbl.service.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.service.KGFileSource.query" title="Permalink to this definition">¶</a></dt>
-<dd><p>function that queries data with the given sparql</p>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGFileSource.check_compatibility">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_compatibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource.check_compatibility" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGFileSource.query">
+<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.query.QueryResult" title="pykg2tbl.query.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that queries data with the given sparql</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sparql</strong> – sparql statement logic for querying data.</p>
@@ -128,50 +165,243 @@ knowlegde graph.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.KGFileSource.reslist_to_dict">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reslist_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reslist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.KGFileSource.reslist_to_dict" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGFileSource.query_result_to_list_dicts">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query_result_to_list_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reslist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource.query_result_to_list_dicts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>From the query result build a standard list of dicts,</dt><dd><p>where each key is the relation in the triplet.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reslist</strong> – list with the query.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.kg2tbl.</span></span><span class="sig-name descname"><span class="pre">KGSource</span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.build">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.build" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Kg2tbl main builder</dt><dd><p>export a tabular data file based on the users preferences.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sources</strong> – source of graph</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>KGSource class appropriate files.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pykg2tbl.kg2tbl.KGSource" title="pykg2tbl.kg2tbl.KGSource">KGSource</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.detect_source_type">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">detect_source_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.detect_source_type" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>From the input sources it will get a list/generator with the types,</dt><dd><p>It will check if there is only one type, and return it.
+Otherwise raise error for Multiple Sources.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sources</strong> – files or endpoints</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The source type of the given inputs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.query">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.query.QueryResult" title="pykg2tbl.query.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that queries data with the given sparql</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sparql</strong> – sparql statement logic for querying data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.query_result_to_list_dicts">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query_result_to_list_dicts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.query_result_to_list_dicts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>From the query result build a standard list of dicts,</dt><dd><p>where each key is the relation in the triplet.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reslist</strong> – list with the query.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.register">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constructor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a virtual subclass of an ABC.</p>
+<p>Returns the subclass, to allow usage as a class decorator.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.registry">
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.detect_single_source_type">
+<span class="sig-prename descclassname"><span class="pre">pykg2tbl.kg2tbl.</span></span><span class="sig-name descname"><span class="pre">detect_single_source_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.detect_single_source_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the source type. Restrain only to files, or endpoints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> – files or endpoints</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The source type of the given input.
+Endpoint or File</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.generator_of_source_types">
+<span class="sig-prename descclassname"><span class="pre">pykg2tbl.kg2tbl.</span></span><span class="sig-name descname"><span class="pre">generator_of_source_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.generator_of_source_types" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Check the source type. Restrain only to files, or endpoints.</dt><dd><p>It will return a generator where each item is a source_type.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> – files or endpoints</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pykg2tbl.query">
+<span id="pykg2tbl-query-module"></span><h2>pykg2tbl.query module<a class="headerlink" href="#module-pykg2tbl.query" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.service.KGSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.service.</span></span><span class="sig-name descname"><span class="pre">KGSource</span></span><a class="headerlink" href="#pykg2tbl.service.KGSource" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.query.</span></span><span class="sig-name descname"><span class="pre">QueryResult</span></span><a class="headerlink" href="#pykg2tbl.query.QueryResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.KGSource.query">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.service.QueryResult" title="pykg2tbl.service.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.service.KGSource.query" title="Permalink to this definition">¶</a></dt>
-<dd><p>function that queries data with the given sparql</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sparql</strong> – sparql statement logic for querying data.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.service.QueryResult">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.service.</span></span><span class="sig-name descname"><span class="pre">QueryResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.QueryResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class that incompases the result from a performed query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> – query result data in the form of a list of dictionaries</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.QueryResult.as_csv">
-<span class="sig-name descname"><span class="pre">as_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileoutputlocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.QueryResult.as_csv" title="Permalink to this definition">¶</a></dt>
-<dd><p>convert and outputs csv file from result query</p>
+<p>Class that encompasses the result from a performed query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fileoutputlocation</strong> – location + filename where the csv
-should be written to.</p></li>
-<li><p><strong>sep</strong> – delimiter that should be used for writing the csv file.</p></li>
+<li><p><strong>data</strong> (<em>list</em>) – query result data</p></li>
+<li><p><strong>query</strong> (<em>str</em>) – query</p></li>
 </ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult.as_csv">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileoutputlocation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.QueryResult.as_csv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>From the query result build a standard list of dicts,</dt><dd><p>where each key is the relation in the triplet.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reslist</strong> – list with the query.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult.build">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.QueryResult.build" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>QueryResult main builder</dt><dd><p>Accepts a query response and a query.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>list</em>) – query response.</p></li>
+<li><p><strong>query</strong> (<em>str</em>) – query made.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>QueryResult class apropriate for the query response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pykg2tbl.query.QueryResult" title="pykg2tbl.query.QueryResult">QueryResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult.register">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constructor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.QueryResult.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a virtual subclass of an ABC.</p>
+<p>Returns the subclass, to allow usage as a class decorator.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult.registry">
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.query.QueryResultFromListDict'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.query.QueryResult.registry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult.to_dataframe">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResult.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the result query to a pandas dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Query as a dataframe.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult.to_dict">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResult.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Converts the result query to a dictionary.</dt><dd><p>Each key having a list with every query row.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Query as a dictionary.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResult.to_list">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResult.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of query responses</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of query responses</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -179,12 +409,94 @@ should be written to.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.service.SparqlBuilder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.service.</span></span><span class="sig-name descname"><span class="pre">SparqlBuilder</span></span><a class="headerlink" href="#pykg2tbl.service.SparqlBuilder" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResultFromListDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.query.</span></span><span class="sig-name descname"><span class="pre">QueryResultFromListDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.QueryResultFromListDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.query.QueryResult" title="pykg2tbl.query.QueryResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryResult</span></code></a></p>
+<dl class="simple">
+<dt>Class that encompasses the result from a performed query.</dt><dd><p>When the result is return as a list of dictionaries.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>list</em>) – query result data in the form of a list of dictionaries</p></li>
+<li><p><strong>query</strong> (<em>str</em>) – query</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResultFromListDict.as_csv">
+<span class="sig-name descname"><span class="pre">as_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.QueryResultFromListDict.as_csv" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>From the query result build a standard list of dicts,</dt><dd><p>where each key is the relation in the triplet.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reslist</strong> – list with the query.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResultFromListDict.check_compatibility">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_compatibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResultFromListDict.check_compatibility" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResultFromListDict.to_dataframe">
+<span class="sig-name descname"><span class="pre">to_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResultFromListDict.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the result query to a pandas dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Query as a dataframe.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResultFromListDict.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResultFromListDict.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Converts the result query to a dictionary.</dt><dd><p>Each key having a list with every query row.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Query as a dictionary.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.query.QueryResultFromListDict.to_list">
+<span class="sig-name descname"><span class="pre">to_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResultFromListDict.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of query responses</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of query responses</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pykg2tbl.query.SparqlBuilder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.query.</span></span><span class="sig-name descname"><span class="pre">SparqlBuilder</span></span><a class="headerlink" href="#pykg2tbl.query.SparqlBuilder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.SparqlBuilder.build_sparql_query">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sparql_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">variables</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.SparqlBuilder.build_sparql_query" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pykg2tbl.query.SparqlBuilder.build_sparql_query">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sparql_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">variables</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.SparqlBuilder.build_sparql_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds the named sparql query by applying the provided params</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -198,8 +510,8 @@ make the sparql query.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.service.SparqlBuilder.variables_in_query">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables_in_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.service.SparqlBuilder.variables_in_query" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pykg2tbl.query.SparqlBuilder.variables_in_query">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables_in_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.SparqlBuilder.variables_in_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the set of all the variable names applicable to the named query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
