@@ -22,12 +22,18 @@ class J2SparqlBuilder(SparqlBuilder):
         templates
     """
 
-    def __init__(self, templates_folder: str = None):
-        if templates_folder is None:
+    def __init__(
+        self, templates_folder: str = None, j2_filters=None, j2_functions=None
+    ):
+        if not templates_folder:
             templates_folder = DEFAULT_TEMPLATES_FOLDER
         self._templates_env = Environment(
             loader=FileSystemLoader(templates_folder)
         )
+        if j2_filters:
+            self._templates_env.filters.update(j2_filters.all())
+        if j2_functions:
+            self._templates_env.globals = j2_functions.all()
 
     def _get_qry_template(self, name: str):
         """Gets the template"""
