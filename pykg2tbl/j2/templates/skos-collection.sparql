@@ -9,8 +9,8 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix dc:   <http://purl.org/dc/terms/> 
-SELECT ?coll ?ttl WHERE {
-  ?coll rdf:type skos:Collection;
-        dc:title ?ttl .
-  {%if language%}FILTER(lang(?ttl) = {{language}}){%endif%}
+SELECT ?collection ?title WHERE {
+  ?collection rdf:type skos:Collection;
+        dc:title ?title .
+  {%if language%}FILTER(lang(?title) = {{language}}){%endif%}
 }
