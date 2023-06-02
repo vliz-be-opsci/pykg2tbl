@@ -19,10 +19,8 @@ startup:
 	pip install --upgrade pip
 	which poetry >/dev/null || pip install poetry
 
-install:
+init: startup
 	poetry install
-
-init: startup install
 
 init-dev: startup
 	poetry install --extras 'tests' --extras 'dev' --extras 'docs'
@@ -34,8 +32,8 @@ init-docs: startup
 
 docs:
 	if ! [ -d "./docs" ]; then poetry run sphinx-quickstart -q --ext-autodoc --sep --project $(PROJECT) --author $(AUTHOR) docs; fi
-	poetry run sphinx-apidoc -o ./docs/source ./$(PROJECT)
-	poetry run sphinx-build -b html ./docs/source ./docs/build/html
+	poetry run sphinx-apidoc -f -o ./docs/source ./$(PROJECT)
+	poetry run sphinx-build -E -a -b html ./docs/source ./docs/build/html
 
 test:
 	poetry run pytest ${TEST_PATH}
