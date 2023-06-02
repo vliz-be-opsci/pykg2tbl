@@ -12,10 +12,26 @@ Subpackages
 Submodules
 ----------
 
-pykg2tbl.service module
------------------------
+pykg2tbl.exceptions module
+--------------------------
 
-.. automodule:: pykg2tbl.service
+.. automodule:: pykg2tbl.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pykg2tbl.kg2tbl module
+----------------------
+
+.. automodule:: pykg2tbl.kg2tbl
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pykg2tbl.query module
+---------------------
+
+.. automodule:: pykg2tbl.query
    :members:
    :undoc-members:
    :show-inheritance:
