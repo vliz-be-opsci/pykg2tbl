@@ -1,0 +1,25 @@
+{#- Jinja Template --> Sparql Query
+ | Search for the entries (skos:concepts) in a particular bodc collection 
+ | variables in template:
+ |    - cc: the bodc collection code (e.g. P01, P06, S25, C17, ..) to list 
+ |    - (optional) lang: language of the labels to return (defaults to "en")
+ |    - (optional) N: number of hits you want (defaults to no limits --> full listing)
+-#}
+{%-if not lang %}{% set lang = "en" %}{%endif-%}
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX dc:   <http://purl.org/dc/terms/>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT  ?id ?pref ?alt ?depr ?member
+WHERE {
+    
+  bind (<http://vocab.nerc.ac.uk/collection/{{ cc }}/current/>  as ?c)
+  
+  ?c skos:member ?member .
+  ?member skos:prefLabel ?pref; dc:identifier ?id; skos:altLabel ?alt; owl:deprecated ?depr.
+  
+  filter(lang(?pref)='{{ lang }}') 
+  filter(lang(?alt)='{{ lang }}' || lang(?alt)='')  # many concepts don't have language-string entries for their alt label
+} 
+{%if N%}LIMIT {{N}}{%endif%}
