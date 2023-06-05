@@ -1,6 +1,7 @@
 import glob
 import json
 import os
+from pathlib import Path
 
 ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 25"
 # TODO provide some registry of endpoints to choose from --> issue #4
@@ -20,3 +21,7 @@ TTL_FILE_IN_URI = (
     "https://raw.githubusercontent.com/"
     "ukgovld/registry-core/master/src/main/vocabs/registryVocab.ttl"
 )
+
+P06_DUMP_FILE = Path(__file__).parent / "data/20230605-P06-dump.ttl"
+
+FAKE_DUMP_FILE = Path(__file__).parent / "data/fake-dump.ttl"
