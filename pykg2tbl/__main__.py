@@ -115,7 +115,7 @@ def enable_logging(args: argparse.Namespace):
     log.info(f"Logging enabled according to config in {args.logconf}")
 
 
-def performe_service(args: argparse.Namespace):
+def check_arguments(args: argparse.Namespace):
     # check if all necessary variables are given
     # TODO - why do this in __main__ ?? careful considertation --> either
     #   (1) remove,
@@ -146,9 +146,9 @@ def performe_service(args: argparse.Namespace):
 
         for src in args.source:
             if src.startswith("http"):
-                if not validators.url(args.endpoint):
+                if not validators.url(src):
                     raise argparse.ArgumentTypeError(
-                        f"given endpoint is not a valid url => {args.endpoint}"
+                        f"given endpoint is not a valid url => {src}"
                     )
             else:
                 log.debug(os.path.join(current_folder, src))
@@ -167,7 +167,7 @@ def performe_service(args: argparse.Namespace):
             )
 
 
-def args_values_to_params(argv_list: list) -> dict:
+def args_values_to_params(cli_variables: list) -> dict:
     """
     converts the arg.V list of:
         single_key=value | list_key[]=1,2 | dict_key.one=wan dict_key.two=toe
@@ -182,11 +182,11 @@ def args_values_to_params(argv_list: list) -> dict:
     """
     # TODO why?  from pyvocab search?  other technique available in argsparse?
     params = dict()
-    log.debug(argv_list)
-    for lin in argv_list:
-        log.debug(lin)
-        line = str(lin)
-        key, value = line.split("=")
+    log.debug(f"argv_list={cli_variables}")
+    flat_list = [str(item) for sublist in cli_variables for item in sublist]
+    for item in flat_list:
+        log.debug(f"variable item to parse={item}")
+        key, value = item.split("=")
         if "." in key:
             parts = key.split(".")
             key_msg = (
@@ -201,6 +201,7 @@ def args_values_to_params(argv_list: list) -> dict:
             )
             subdict[subkey] = value
             params[key] = subdict
+            log.debug(f"parsed param subdict {key} --> {subdict}")
         elif key.endswith("[]"):
             key = key[:-2]
             sublist = params.get(key, list())
@@ -210,35 +211,33 @@ def args_values_to_params(argv_list: list) -> dict:
             values = value.split(",")
             sublist.extend(values)
             params[key] = sublist
+            log.debug(f"parsed param sublist {key} --> {sublist}")
         else:
             assert key not in params, (
                 "single-value key '%s' should not be set twice" % key
             )
             params[key] = value
+            log.debug(f"parsed simple param {key} --> {value}")
     return params
 
 
 def variables_check(variables_template, variables_given):
-    for variable in variables_template:
-        intemplate = False
-        for var in variables_given.keys():
-            if var == variable:
-                intemplate = True
-        if intemplate is False:
-            raise argparse.ArgumentTypeError(
-                f"variable {variable} is not present in template"
-            )
-
-    for variable in variables_given.keys():
-        intemplate = False
-        log.debug(variable)
-        for var in variables_template:
-            if var == variable:
-                intemplate = True
-        if intemplate is False:
-            raise argparse.ArgumentTypeError(
-                f"variable {variable} is not present in template"
-            )
+    """
+    checks the possoible mismatch between variable names given vs. recognised
+    in the template
+    Note that any mismatch will only result in some extra logging as
+    no conclusion can be made about validity or processing effect
+    """
+    given_names = set(variables_given)
+    expected_names = variables_template
+    log.debug(f"checking given {given_names} vs expected {expected_names}")
+    ignored_names = given_names - expected_names
+    optional_names = expected_names - given_names
+    if len(ignored_names):
+        log.info(f"given names {ignored_names} are not in the template")
+    if len(ignored_names):
+        log.warning(f"some template variables {optional_names} not given")
+    return
 
 
 def getdelimiter(args: argparse.Namespace):
@@ -256,8 +255,6 @@ def main(sysargs=None):
     The main entry point to this module.
 
     """
-    # TODO use log instead
-    print("sysargs=", sysargs)
     args = (
         get_arg_parser().parse_args(sysargs)
         if sysargs is not None and len(sysargs) > 0
@@ -265,8 +262,8 @@ def main(sysargs=None):
     )
     enable_logging(args)
     log.info("The args passed to %s are: %s." % (sys.argv[0], args))
+    check_arguments(args)
     log.debug("Performing service")
-    performe_service(args)
     params = {}
     template_service = J2SparqlBuilder(args.template_folder)
     vars_template = template_service.variables_in_query(args.template_name)
@@ -276,20 +273,18 @@ def main(sysargs=None):
             variables_template=vars_template, variables_given=params
         )
     query = template_service.build_sparql_query(
-        name=args.template_name, variables=params
+        name=args.template_name, **params
     )
     print("performing query")
     log.debug("making exec service")
-    executive_service = KGSource.build(*args.source)
-    log.debug("performing service query")
-    executive_query = executive_service.query(query)
-    executive_query.as_csv(
-        os.path.join(os.getcwd(), args.output_location),
-        getdelimiter(args),
-    )
-    log.info("done with query")
-    new_file_location = os.path.join(os.getcwd(), args.output_location)
-    print(f"new file saved on location : {new_file_location}")
+    data_source = KGSource.build(*args.source)
+    log.debug(f"data_source build = {data_source}")
+    qry_result = data_source.query(query)
+    log.debug(f"query_result = {qry_result}")
+    output_location = os.path.join(os.getcwd(), args.output_location)
+    qry_result.as_csv(output_location, getdelimiter(args))
+    log.info(f"output written to {output_location}")
+    print(f"new file saved on location : {output_location}")
 
 
 if __name__ == "__main__":
