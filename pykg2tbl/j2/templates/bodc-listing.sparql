@@ -6,20 +6,24 @@
  |    - (optional) N: number of hits you want (defaults to no limits --> full listing)
 -#}
 {%-if not lang %}{% set lang = "en" %}{%endif-%}
-PREFIX owl:  <http://www.w3.org/2002/07/owl#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX dc:   <http://purl.org/dc/terms/>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT  ?id ?pref ?alt ?depr ?member
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT  ?id ?pref_lang ?alt_lang ?alt ?depr ?member
 WHERE {
     
-  bind (<http://vocab.nerc.ac.uk/collection/{{ cc }}/current/>  as ?c)
+  bind (<http://vocab.nerc.ac.uk/collection/{{ cc }}/current/>  as ?collection)
   
-  ?c skos:member ?member .
-  ?member skos:prefLabel ?pref; dc:identifier ?id; skos:altLabel ?alt; owl:deprecated ?depr.
+  ?collection skos:member ?member .
+  ?member skos:prefLabel ?pref_lang; dc:identifier ?id; skos:altLabel ?alt; owl:deprecated ?depr.
   
-  filter(lang(?pref)='{{ lang }}') 
-  filter(lang(?alt)='{{ lang }}' || lang(?alt)='')  # many concepts don't have language-string entries for their alt label
+  filter(langmatches(lang(?pref_lang),'{{ lang }}'))   
+  filter(langmatches(lang(?alt),''))  # most times the language is not present on the alt-label
+  optional {                          # but when it is it might be useful to have that too
+    ?member skos:altLabel ?alt_lang .  
+    filter(langmatches(lang(?alt_lang),'{{ lang }}'))  
+  }
 } 
 {%if N%}LIMIT {{N}}{%endif%}
