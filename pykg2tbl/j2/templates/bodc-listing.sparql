@@ -5,7 +5,7 @@
  |    - (optional) lang: language of the labels to return (defaults to "en")
  |    - (optional) N: number of hits you want (defaults to no limits --> full listing)
 -#}
-{%-if not lang %}{% set lang = "en" %}{%endif-%}
+{%-if not lang %}{% set lang = "en" %}{%endif-%}  # assume english if nothing explicitely specified
 PREFIX dc:   <http://purl.org/dc/terms/>
 PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -20,8 +20,8 @@ WHERE {
   ?member skos:prefLabel ?pref_lang; dc:identifier ?id; skos:altLabel ?alt; owl:deprecated ?depr.
   
   filter(langmatches(lang(?pref_lang),'{{ lang }}'))   
-  filter(langmatches(lang(?alt),''))  # most times the language is not present on the alt-label
-  optional {                          # but when it is it might be useful to have that too
+  filter(lang(?alt) = '')              # most times the language is not present on the alt-label
+  optional {                           # but when it is it might be useful to have that too
     ?member skos:altLabel ?alt_lang .  
     filter(langmatches(lang(?alt_lang),'{{ lang }}'))  
   }

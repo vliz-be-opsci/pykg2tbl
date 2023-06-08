@@ -32,7 +32,7 @@ def test_bodc_listing_knowndump_P06():
 
     result: QueryResult = in_memory.query(sparql=qry)
     assert result is not None, "there should be a result"
-    assert len(result) == 418, "the known dated dump had exactly 24 members"
+    assert len(result) == 395, "the known dated dump had exactly 395 members"
 
 
 def test_bodc_listing_fakedump():

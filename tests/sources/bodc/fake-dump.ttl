@@ -8,7 +8,8 @@ ex:one
   rdf:type               skos:Concept ;
   dc:identifier          "fake.01" ;
   owl:deprecated         "false" ;
-  skos:altLabel          "alt fake one"@en ;
+  skos:altLabel          "alt fake one" ;
+  skos:altLabel          "alt fake one (en)"@en ;
   skos:prefLabel         "pref fake one"@en .
 
 ex:two
@@ -16,7 +17,8 @@ ex:two
   dc:identifier          "fake.02" ;
   owl:deprecated         "false" ;
   skos:altLabel          "alt fake two" ;
-  skos:prefLabel         "pref fake two"@en .
+  skos:altLabel          "pref fake two"@en ;
+  skos:prefLabel         "pref fake two (en)"@en .
 
 ex:three
   rdf:type               skos:Concept ;

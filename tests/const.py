@@ -1,6 +1,5 @@
 import glob
 import json
-import os
 from pathlib import Path
 
 ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 25"
@@ -8,12 +7,11 @@ ALL_TRIPLES_SPARQL = "SELECT * WHERE { ?s ?p ?o. } LIMIT 25"
 #   then replace next line!
 BODC_ENDPOINT = "http://vocab.nerc.ac.uk/sparql/sparql"
 
-FILES_SOURCE = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)), "sources"
-)
-TTL_FILES_TO_TEST = glob.glob(f"{FILES_SOURCE}/*.ttl")
+ABS_PARENT_PATH = Path(__file__).parent.absolute()
+SOURCES_PATH = ABS_PARENT_PATH / "sources"
+TTL_FILES_TO_TEST = glob.glob(f"{ str(SOURCES_PATH) }/*.ttl")
 
-QUERY_RESULT_PATH = f"{FILES_SOURCE}/query_result.json"
+QUERY_RESULT_PATH = str(SOURCES_PATH / "query_result.json")
 with open(QUERY_RESULT_PATH) as src:
     TTL_FILES_QUERY_RESULT = json.load(src)
 
@@ -22,6 +20,5 @@ TTL_FILE_IN_URI = (
     "ukgovld/registry-core/master/src/main/vocabs/registryVocab.ttl"
 )
 
-P06_DUMP_FILE = Path(__file__).parent / "data/20230605-P06-dump.ttl"
-
-FAKE_DUMP_FILE = Path(__file__).parent / "data/fake-dump.ttl"
+P06_DUMP_FILE = SOURCES_PATH / "bodc/20230605-P06-dump.ttl"
+FAKE_DUMP_FILE = SOURCES_PATH / "bodc/fake-dump.ttl"
