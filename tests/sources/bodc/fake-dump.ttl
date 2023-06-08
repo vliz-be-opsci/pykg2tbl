@@ -1,0 +1,33 @@
+@prefix dc:   <http://purl.org/dc/terms/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex:   <https://example.org/pykg2table/fake-collection#> .
+
+ex:one
+  rdf:type               skos:Concept ;
+  dc:identifier          "fake.01" ;
+  owl:deprecated         "false" ;
+  skos:altLabel          "alt fake one" ;
+  skos:altLabel          "alt fake one (en)"@en ;
+  skos:prefLabel         "pref fake one"@en .
+
+ex:two
+  rdf:type               skos:Concept ;
+  dc:identifier          "fake.02" ;
+  owl:deprecated         "false" ;
+  skos:altLabel          "alt fake two" ;
+  skos:altLabel          "pref fake two"@en ;
+  skos:prefLabel         "pref fake two (en)"@en .
+
+ex:three
+  rdf:type               skos:Concept ;
+  dc:identifier          "fake.03" ;
+  owl:deprecated         "false" ;
+  skos:altLabel          "alt fake three" ;
+  skos:prefLabel         "pref fake three"@en .
+
+<http://vocab.nerc.ac.uk/collection/fake/current/>
+  rdf:type                skos:Collection;
+  skos:member             ex:one, ex:two, ex:three;
+  skos:prefLabel          "my pretty little fake colection for testing" .

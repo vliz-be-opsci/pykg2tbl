@@ -10,6 +10,7 @@ sparql_templates_list = templates_env.list_templates()
 template_variables = {
     "all.sparql": set({"N"}),
     "bodc-find.sparql": set({"regex", "collections", "language"}),
+    "bodc-listing.sparql": set({"cc", "lang", "N"}),
     "broader-terms.sparql": set({"term", "language"}),
     "rdf-predicates-count.sparql": set(),
     "rdf-predicates.sparql": set({"regex"}),
@@ -23,10 +24,4 @@ template_variables = {
 simple_template = "all.sparql"
 
 N = 723
-ALL_QUERY = f"""
-
-SELECT *
-WHERE {{
-    ?s ?p ?o.
-}}
-LIMIT {N}"""
+ALL_QUERY = f"SELECT * WHERE {{ ?s ?p ?o.}} LIMIT {N}"

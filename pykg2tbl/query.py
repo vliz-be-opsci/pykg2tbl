@@ -119,7 +119,7 @@ class QueryResultFromListDict(QueryResult):
 
     def as_csv(self, file_output_path: str, sep: str = ","):
         data = self.to_dataframe()
-        data.to_csv(file_output_path, sep=sep)
+        data.to_csv(file_output_path, sep=sep, index=False)
 
     def to_list(self) -> List:
         return self._data
