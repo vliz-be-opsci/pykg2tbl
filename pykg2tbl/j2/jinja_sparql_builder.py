@@ -1,5 +1,5 @@
 import logging
-import os
+from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, meta
 
@@ -7,9 +7,8 @@ from pykg2tbl.query import SparqlBuilder
 
 log = logging.getLogger(__name__)
 
-DEFAULT_TEMPLATES_FOLDER = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)), "templates"
-)
+
+DEFAULT_TEMPLATES_FOLDER = Path(__file__).parent.absolute() / "templates"
 
 
 class J2SparqlBuilder(SparqlBuilder):

@@ -2,8 +2,8 @@
 import argparse
 import logging
 import logging.config
-import os
 import sys
+from pathlib import Path
 
 import validators
 
@@ -135,7 +135,7 @@ def check_arguments(args: argparse.Namespace):
     # per variable check if they are valid for consumption
     # TODO why? why here and not in service?
     # TODO -- why?
-    current_folder = os.getcwd()
+    cwd = Path().absolute()
     if args.source is not None:
         try:
             KGSource.detect_source_type(*args.source)
@@ -148,20 +148,20 @@ def check_arguments(args: argparse.Namespace):
             if src.startswith("http"):
                 if not validators.url(src):
                     raise argparse.ArgumentTypeError(
-                        f"given endpoint is not a valid url => {src}"
+                        f"given endpoint is not a valid url => { src }"
                     )
             else:
-                log.debug(os.path.join(current_folder, src))
-                if not os.path.exists(os.path.join(current_folder, src)):
-                    raise argparse.ArgumentTypeError(f"file {src} does exist")
+                log.debug(str(cwd / src))
+                if not (cwd / src).exists():
+                    raise argparse.ArgumentTypeError(
+                        f"file { src } does exist"
+                    )
 
     # check if output path exists
     if args.output_location is not None:
-        folder_path_file = os.path.dirname(
-            os.path.abspath(os.path.join(os.getcwd(), args.output_location))
-        )
-        log.debug(folder_path_file)
-        if os.path.exists(folder_path_file) is False:
+        folder_path_file = (cwd / args.output_location).parent
+        log.debug(str(folder_path_file))
+        if not folder_path_file.exists():
             raise argparse.ArgumentTypeError(
                 "Supplied output path does not exist on disk."
             )
@@ -223,7 +223,7 @@ def args_values_to_params(cli_variables: list) -> dict:
 
 def variables_check(variables_template, variables_given):
     """
-    checks the possoible mismatch between variable names given vs. recognised
+    checks the possible mismatch between variable names given vs. recognised
     in the template
     Note that any mismatch will only result in some extra logging as
     no conclusion can be made about validity or processing effect
@@ -281,8 +281,8 @@ def main(sysargs=None):
     log.debug(f"data_source build = {data_source}")
     qry_result = data_source.query(query)
     log.debug(f"query_result = {qry_result}")
-    output_location = os.path.join(os.getcwd(), args.output_location)
-    qry_result.as_csv(output_location, getdelimiter(args))
+    output_location = Path().absolute() / args.output_location
+    qry_result.as_csv(str(output_location), getdelimiter(args))
     log.info(f"output written to {output_location}")
     print(f"new file saved on location : {output_location}")
 
