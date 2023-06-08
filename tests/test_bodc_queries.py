@@ -2,8 +2,9 @@
 # from pykg2tbl import KGSource, QueryResult, DefaultQueryBuilder
 from const import BODC_ENDPOINT, FAKE_DUMP_FILE, P06_DUMP_FILE
 
-from pykg2tbl.j2.jinja_sparql_builder import \
-    J2SparqlBuilder as DefaultQueryBuilder
+from pykg2tbl.j2.jinja_sparql_builder import (
+    J2SparqlBuilder as DefaultQueryBuilder,
+)
 from pykg2tbl.kg2tbl import KGSource
 from pykg2tbl.query import QueryResult
 
