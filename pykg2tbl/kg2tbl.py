@@ -159,14 +159,13 @@ class KG2EndpointSource(KGSource):
             for row in reslist["results"]["bindings"]
         ]
 
-    def query(self, sparql: str) -> QueryResult:
+    def query(self, sparql: str, return_format="json") -> QueryResult:
         reslist = []
         for url in self.endpoints:
             ep = SPARQLWrapper(url)
             ep.setQuery(sparql)
-            # TODO: Allow for mutiple return formats,
-            #   even reading the format from the endpoint.
-            ep.setReturnFormat("json")
+            # TODO: Allow reading the format from the endpoint.
+            ep.setReturnFormat(return_format)
             resdict = ep.query().convert()
             reslist = reslist + KG2EndpointSource.query_result_to_list_dicts(
                 resdict
@@ -200,6 +199,7 @@ def detect_single_source_type(source: str) -> str:
         query_ask = "ask where {?s ?p [].}"
         ep = SPARQLWrapper(source)
         ep.setQuery(query_ask)
+        ep.setReturnFormat("json")
         content_type = ep.query().info()["content-type"]
         if "sparql" in content_type:
             source_type = "endpoint"
