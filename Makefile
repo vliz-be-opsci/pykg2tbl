@@ -1,5 +1,5 @@
 TEST_PATH = ./tests/
-FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
+FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc,*__init__*
 PROJECT = pykg2tbl
 AUTHOR = Marc Portier, Cedric Decruw 
 
