@@ -11,3 +11,7 @@
 import logging
 
 log = logging.getLogger(__name__)
+
+from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
+from pykg2tbl.kg2tbl import KGSource
+from pykg2tbl.query import QueryResult
