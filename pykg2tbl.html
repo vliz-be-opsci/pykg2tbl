@@ -259,7 +259,7 @@ Otherwise raise error for Multiple Sources.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.registry">
-<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -460,13 +460,11 @@ Endpoint or File</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pykg2tbl.query.QueryResultFromListDict.to_dict">
 <span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#pykg2tbl.query.QueryResultFromListDict.to_dict" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Converts the result query to a dictionary.</dt><dd><p>Each key having a list with every query row.</p>
-</dd>
-</dl>
+<dd><p>Builds a dictionary where each key is a column from the query.
+In each key is a list with all the answer of the query.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Query as a dictionary.</p>
+<dd class="field-odd"><p>The dictionary mapping the query table</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -617,7 +615,7 @@ Otherwise raise error for Multiple Sources.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pykg2tbl.KGSource.registry">
-<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
