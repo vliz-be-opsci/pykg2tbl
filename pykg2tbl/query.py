@@ -125,16 +125,25 @@ class QueryResultFromListDict(QueryResult):
         return self._data
 
     def to_dict(self) -> dict:
-        list_data = self.to_list()
-        query_dict = {}
-        for row in list_data:
-            dict_keys = row.keys()
-            for key in dict_keys:
-                if key in query_dict:
-                    query_dict[key] = query_dict[key] + [row[key]]
-                else:
-                    query_dict[key] = [row[key]]
-        return query_dict
+        """
+        Builds a dictionary where each key is a column from the query.
+        In each key is a list with all the answer of the query.
+
+        :return: The dictionary mapping the query table
+        :rtype: dict
+        """
+        result_rows = self.to_list()
+        result_dict = {}
+        for row in result_rows:
+            columns = row.keys()
+            for key in columns:
+                # on first use
+                if key not in result_dict:
+                    # initialise as list
+                    result_dict[key] = list()
+                # append to list
+                result_dict[key] = result_dict[key] + [row[key]]
+        return result_dict
 
     def to_dataframe(self) -> pd.DataFrame:
         result_df = pd.DataFrame()
