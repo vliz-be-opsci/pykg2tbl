@@ -126,9 +126,9 @@ class QueryResultFromListDict(QueryResult):
 
     def to_dict(self) -> dict:
         list_data = self.to_list()
-        dict_keys = list_data[0].keys()
         query_dict = {}
         for row in list_data:
+            dict_keys = row.keys()
             for key in dict_keys:
                 if key in query_dict:
                     query_dict[key] = query_dict[key] + [row[key]]
