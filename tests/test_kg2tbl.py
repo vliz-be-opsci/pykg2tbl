@@ -14,12 +14,13 @@ from pykg2tbl.exceptions import (
     NotASubClass,
     WrongInputFormat,
 )
-from pykg2tbl.kg2tbl import KG2EndpointSource, KGFileSource
+from pykg2tbl.kg2tbl import KG2EndpointSource, KGFileSource, KGGraphSource
 from tests.const import (
     ALL_TRIPLES_SPARQL,
     BODC_ENDPOINT,
     TTL_FILE_IN_URI,
     TTL_FILES_TO_TEST,
+    graph,
 )
 from tests.util4tests import log, run_single_test
 
@@ -30,6 +31,7 @@ from tests.util4tests import log, run_single_test
         (TTL_FILES_TO_TEST, KGFileSource),
         ([BODC_ENDPOINT], KG2EndpointSource),
         ([TTL_FILE_IN_URI], KGFileSource),
+        ([graph], KGGraphSource),
     ],
 )
 def test_factory_choice(source, KGType):
@@ -43,6 +45,7 @@ def test_factory_choice(source, KGType):
         (TTL_FILES_TO_TEST, ALL_TRIPLES_SPARQL, 20),
         (BODC_ENDPOINT, ALL_TRIPLES_SPARQL, 25),
         (TTL_FILE_IN_URI, ALL_TRIPLES_SPARQL, 25),
+        ([graph], ALL_TRIPLES_SPARQL, 20),
     ],
 )
 def test_query(source, query, query_response_length):
