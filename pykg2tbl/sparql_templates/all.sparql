@@ -1,0 +1,6 @@
+{#- Jinja Template --> Sparql Query
+ | Search for all found triples, optionally limitting to first N
+ | variables in template:
+ |    - (optional) N: number of triples to return (no limit applied when no N is given)
+-#}
+SELECT * WHERE { ?s ?p ?o.}{%-if N%} LIMIT {{N}}{%endif-%}

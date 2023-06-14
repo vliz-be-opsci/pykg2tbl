@@ -97,6 +97,11 @@ class KGSource(ABC):
         return source_type
 
 
+# KGGrpah source and then KGFileSource as a subcalss of this
+# Initiate an empty grpah??
+# pass on graph?
+
+
 class KGFileSource(KGSource):
     """
     Class that makes a KGSource from given turtle file(s)

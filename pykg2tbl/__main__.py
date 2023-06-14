@@ -6,9 +6,10 @@ import sys
 from pathlib import Path
 
 import validators
+from pyrdfj2 import J2RDFSyntaxBuilder
 
+from pykg2tbl import DEFAULT_TEMPLATES_FOLDER
 from pykg2tbl.exceptions import MultipleSourceTypes
-from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
 from pykg2tbl.kg2tbl import KGSource
 
 log = logging.getLogger(__name__)
@@ -265,16 +266,15 @@ def main(sysargs=None):
     check_arguments(args)
     log.debug("Performing service")
     params = {}
-    template_service = J2SparqlBuilder(args.template_folder)
-    vars_template = template_service.variables_in_query(args.template_name)
+    template_folder = args.template_folder or DEFAULT_TEMPLATES_FOLDER
+    template_service = J2RDFSyntaxBuilder(template_folder)
+    vars_template = template_service.variables_in_template(args.template_name)
     if args.variables is not None and len(vars_template) > 0:
         params = args_values_to_params(args.variables)
         variables_check(
             variables_template=vars_template, variables_given=params
         )
-    query = template_service.build_sparql_query(
-        name=args.template_name, **params
-    )
+    query = template_service.build_syntax(name=args.template_name, **params)
     print("performing query")
     log.debug("making exec service")
     data_source = KGSource.build(*args.source)
