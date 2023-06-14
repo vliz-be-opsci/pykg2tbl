@@ -23,6 +23,14 @@ class MultipleSourceTypes(Exception):
         super().__init__(message)
 
 
+class NoGraphSource(Exception):
+    """Raised when the input in KGGraph is not a graph"""
+
+    def __init__(self):
+        message = "The input needs to be a graph object."
+        super().__init__(message)
+
+
 class NotASubClass(Exception):
     """Raised when class is not a subclass of Given Parent Class"""
 

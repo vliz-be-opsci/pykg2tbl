@@ -9,6 +9,7 @@ from pykg2tbl.exceptions import (
     CompatibilityCheckerNotCallable,
     MultipleSourceTypes,
     NoCompatibilityChecker,
+    NoGraphSource,
     NotASubClass,
     WrongInputFormat,
 )
@@ -91,43 +92,33 @@ class KGSource(ABC):
             source_type = [f for f in source_type]
             source_type = set(source_type)
             # For multiple inputs they need to have the same source_type
-            if len(source_type) != 1:
+            if len(source_type) > 1:
                 raise MultipleSourceTypes
             source_type = list(source_type)[0]
         return source_type
 
 
-# KGGrpah source and then KGFileSource as a subcalss of this
-# Initiate an empty grpah??
-# pass on graph?
-
-
-class KGFileSource(KGSource):
+class KGGraphSource(KGSource):
     """
-    Class that makes a KGSource from given turtle file(s)
+    Class that makes a KGSource from instatiated graphs.
 
-    :param *sources: turtle files that should be converted into a single
-        knowledge graph.
+    :param graph: rdf knowledge graph.
     """
 
-    def __init__(self, *sources):
+    def __init__(self, graph: Graph) -> None:
         super().__init__()
-        self.graph = None
-        g = Graph()
+        assert graph is not None, NoGraphSource
+        self.graph = graph
+
+    def parse(self, *sources):
         for f in sources:
             log.debug(f"loading graph from file {f}")
             try:
-                graph_to_add = g.parse(f)
+                self.graph.parse(f)
             except Exception as e:
                 log.exception(e)
                 file_extension = f.split(".")[-1]
-                graph_to_add = g.parse(f, format=file_extension)
-
-            self.graph = (
-                graph_to_add
-                if self.graph is None
-                else self.graph + graph_to_add
-            )
+                self.graph.parse(f, format=file_extension)
 
     @staticmethod
     def query_result_to_list_dicts(reslist: list) -> list:
@@ -137,8 +128,26 @@ class KGFileSource(KGSource):
         log.debug(f"executing sparql {sparql}")
         reslist = self.graph.query(sparql)
         return QueryResult.build(
-            KGFileSource.query_result_to_list_dicts(reslist), query=sparql
+            KGGraphSource.query_result_to_list_dicts(reslist), query=sparql
         )
+
+    @staticmethod
+    def check_compatibility(*graph):
+        return isinstance(graph[0], Graph)
+
+
+class KGFileSource(KGGraphSource):
+    """
+    Class that makes a KGSource from given turtle file(s)
+
+    :param *sources: turtle files that should be converted into a single
+        knowledge graph.
+    """
+
+    def __init__(self, *sources):
+        graph = Graph()
+        super().__init__(graph)
+        self.parse(*sources)
 
     @staticmethod
     def check_compatibility(*sources: Tuple):
@@ -185,6 +194,7 @@ class KG2EndpointSource(KGSource):
         return source_type == "endpoint"
 
 
+KGSource.register(KGGraphSource)
 KGSource.register(KGFileSource)
 KGSource.register(KG2EndpointSource)
 
