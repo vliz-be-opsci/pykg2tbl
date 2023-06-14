@@ -1,12 +1,12 @@
 import pytest
 
+from pykg2tbl import KGSource, QueryResult
 from pykg2tbl.exceptions import (
     NoCompatibilityChecker,
     NotASubClass,
     WrongInputFormat,
 )
-from pykg2tbl.kg2tbl import KGSource
-from pykg2tbl.query import QueryResult, QueryResultFromListDict
+from pykg2tbl.query import QueryResultFromListDict
 from tests.const import TTL_FILES_QUERY_RESULT
 from tests.util4tests import run_single_test
 

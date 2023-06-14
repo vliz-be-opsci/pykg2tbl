@@ -1,6 +1,12 @@
 import pandas as pd
 import pytest
 
+from pykg2tbl import (
+    DEFAULT_TEMPLATES_FOLDER,
+    DefaultSparqlBuilder,
+    KGSource,
+    QueryResult,
+)
 from pykg2tbl.exceptions import (
     CompatibilityCheckerNotCallable,
     MultipleSourceTypes,
@@ -8,9 +14,7 @@ from pykg2tbl.exceptions import (
     NotASubClass,
     WrongInputFormat,
 )
-from pykg2tbl.j2.jinja_sparql_builder import J2SparqlBuilder
-from pykg2tbl.kg2tbl import KG2EndpointSource, KGFileSource, KGSource
-from pykg2tbl.query import QueryResult
+from pykg2tbl.kg2tbl import KG2EndpointSource, KGFileSource
 from tests.const import (
     ALL_TRIPLES_SPARQL,
     BODC_ENDPOINT,
@@ -104,9 +108,9 @@ def test_full_search():
     test_source = KG2EndpointSource(BODC_ENDPOINT)
     # make test qry using template from BODC
     log.info("full test")
-    j2sqb = J2SparqlBuilder()
+    j2sqb = DefaultSparqlBuilder(DEFAULT_TEMPLATES_FOLDER)
 
-    qry = j2sqb.build_sparql_query(
+    qry = j2sqb.build_syntax(
         "bodc-find.sparql", collections=["P01"], regex=".*orca.*"
     )
     log.debug(f"query = {qry}")
