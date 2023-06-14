@@ -31,26 +31,6 @@
             
   <section id="pykg2tbl-package">
 <h1>pykg2tbl package<a class="headerlink" href="#pykg2tbl-package" title="Permalink to this heading">¶</a></h1>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pykg2tbl.j2.html">pykg2tbl.j2 package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pykg2tbl.j2.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pykg2tbl.j2.html#module-pykg2tbl.j2.jinja_sparql_builder">pykg2tbl.j2.jinja_sparql_builder module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pykg2tbl.j2.html#pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder"><code class="docutils literal notranslate"><span class="pre">J2SparqlBuilder</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pykg2tbl.j2.html#pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder.build_sparql_query"><code class="docutils literal notranslate"><span class="pre">J2SparqlBuilder.build_sparql_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="pykg2tbl.j2.html#pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder.variables_in_query"><code class="docutils literal notranslate"><span class="pre">J2SparqlBuilder.variables_in_query()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pykg2tbl.j2.html#module-pykg2tbl.j2">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
@@ -259,7 +239,7 @@ Otherwise raise error for Multiple Sources.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.registry">
-<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -488,44 +468,6 @@ In each key is a list with all the answer of the query.</p>
 
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.query.SparqlBuilder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.query.</span></span><span class="sig-name descname"><span class="pre">SparqlBuilder</span></span><a class="headerlink" href="#pykg2tbl.query.SparqlBuilder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.query.SparqlBuilder.build_sparql_query">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sparql_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">variables</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.SparqlBuilder.build_sparql_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Builds the named sparql query by applying the provided params</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – Name of the query.</p></li>
-<li><p><strong>variables</strong> – Dict of all the variables given to the template to
-make the sparql query.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.query.SparqlBuilder.variables_in_query">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables_in_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.query.SparqlBuilder.variables_in_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the set of all the variable names applicable to the named query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – [Name of the query.]</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the set of all variables applicable to the named query.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>set</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 <section id="module-0">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-0" title="Permalink to this heading">¶</a></h2>
@@ -533,7 +475,7 @@ make the sparql query.</p></li>
 <span class="target" id="module-pykg2tbl"></span><dl class="py attribute">
 <dt class="sig sig-object py" id="pykg2tbl.DefaultSparqlBuilder">
 <span class="sig-prename descclassname"><span class="pre">pykg2tbl.</span></span><span class="sig-name descname"><span class="pre">DefaultSparqlBuilder</span></span><a class="headerlink" href="#pykg2tbl.DefaultSparqlBuilder" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="pykg2tbl.j2.html#pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder" title="pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">J2SparqlBuilder</span></code></a></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">J2RDFSyntaxBuilder</span></code></p>
 </dd></dl>
 
 <dl class="py class">
@@ -615,7 +557,7 @@ Otherwise raise error for Multiple Sources.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pykg2tbl.KGSource.registry">
-<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

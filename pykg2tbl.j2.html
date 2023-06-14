@@ -34,62 +34,11 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="module-pykg2tbl.j2.jinja_sparql_builder">
-<span id="pykg2tbl-j2-jinja-sparql-builder-module"></span><h2>pykg2tbl.j2.jinja_sparql_builder module<a class="headerlink" href="#module-pykg2tbl.j2.jinja_sparql_builder" title="Permalink to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.j2.jinja_sparql_builder.</span></span><span class="sig-name descname"><span class="pre">J2SparqlBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">templates_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j2_filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j2_functions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pykg2tbl.html#pykg2tbl.query.SparqlBuilder" title="pykg2tbl.query.SparqlBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">SparqlBuilder</span></code></a></p>
-<dl class="simple">
-<dt>Generic class to perform templated SPARQL searches versus a given SPARQL</dt><dd><p>endpoint.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>endpoint</strong> – sparql endpoint URL of the service to call upon</p></li>
-<li><p><strong>templates_folder</strong> – location of the folder containing the sparql
-templates</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder.build_sparql_query">
-<span class="sig-name descname"><span class="pre">build_sparql_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">variables</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder.build_sparql_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fills a named template sparql</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – of the template</p></li>
-<li><p><strong>**variables</strong> – <p>named context parameters to apply to the template</p>
-</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder.variables_in_query">
-<span class="sig-name descname"><span class="pre">variables_in_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="headerlink" href="#pykg2tbl.j2.jinja_sparql_builder.J2SparqlBuilder.variables_in_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>The set of variables to make this template work</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> – name of the template to inspect</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>set of variable-names</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>set of str</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="pykg2tbl-j2-jinja-sparql-builder-module">
+<h2>pykg2tbl.j2.jinja_sparql_builder module<a class="headerlink" href="#pykg2tbl-j2-jinja-sparql-builder-module" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="module-pykg2tbl.j2">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pykg2tbl.j2" title="Permalink to this heading">¶</a></h2>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
