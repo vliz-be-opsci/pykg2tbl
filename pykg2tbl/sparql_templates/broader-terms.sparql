@@ -1,0 +1,18 @@
+{# Jinja Template --> Sparql Query
+ | Get any broader broader terms in a triple.
+ | variables in template:
+ |    - term: term to search from
+ |    - (optional) language: language of the collection
+#}
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix dc:   <http://purl.org/dc/terms/> 
+SELECT ?bterm ?blbl WHERE {
+  bind ( <{{term}}> as ?term) 
+  
+  ?term skos:broader+ ?bterm.
+  ?bterm skos:prefLabel ?blbl .
+  {%if language%}FILTER(lang(?blbl) = {{language}}){%endif%}
+}

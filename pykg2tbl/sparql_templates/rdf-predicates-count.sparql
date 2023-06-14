@@ -1,0 +1,8 @@
+{# Jinja Template --> Sparql Query
+ | Count the number of different predicates
+#}
+
+SELECT ?pred (count(?obj) as ?count)
+WHERE {
+  [] ?pred ?obj .
+} group by ?pred

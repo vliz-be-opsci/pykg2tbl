@@ -1,0 +1,15 @@
+{# Jinja Template --> Sparql Query
+ | Gets the depth of all skos broader concept paths
+#} 
+
+prefix skos:<http://www.w3.org/2004/02/skos/core#>
+
+select ?super ?sub (count(?mid) as ?distance) 
+where
+{
+
+  ?super skos:broader* ?mid .
+  ?mid skos:broader+ ?sub .
+}
+group by ?super ?sub
+order by ?super ?sub

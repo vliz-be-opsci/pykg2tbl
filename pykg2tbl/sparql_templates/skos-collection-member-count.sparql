@@ -1,0 +1,13 @@
+{# Jinja Template --> Sparql Query
+ | Count the number of members in all skos collections
+#}
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix dc:   <http://purl.org/dc/terms/> 
+SELECT ?collection ?title (count(?mem) as ?count) WHERE {
+  ?collection rdf:type skos:Collection;
+        dc:title ?title;
+        skos:member ?mem .
+} group by ?collection ?title

@@ -1,0 +1,16 @@
+{# Jinja Template --> Sparql Query
+ | Gets the list of relations available on the sparql endpoint
+ | variables in template:
+ |   - (optional) regex : to filter matching predicate-uri  (no filter if no regex specified)
+#}
+
+select distinct ?predicate
+where
+{
+    [] ?predicate ?value.
+
+    {% if regex %}
+    FILTER(regex(str(?predicate),'{{regex}}',"i"))
+    {% endif %}
+}
+   

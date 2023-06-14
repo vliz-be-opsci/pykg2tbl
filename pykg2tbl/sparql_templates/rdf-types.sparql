@@ -1,0 +1,15 @@
+{# Jinja Template --> Sparql Query
+ | Gets the list of types available on the sparql endpoint
+ | variables in template:
+ |   - (optional) regex : to filter matching type-uri
+#}
+
+select distinct ?type
+where
+{
+    [] a ?type.
+
+    {% if regex %}
+    FILTER(regex(str(?type),'{{regex}}',"i"))
+    {% endif %}
+}
