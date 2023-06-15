@@ -1,14 +1,6 @@
 pykg2tbl package
 ================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   pykg2tbl.j2
-
 Submodules
 ----------
 
