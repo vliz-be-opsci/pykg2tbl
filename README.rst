@@ -42,9 +42,11 @@ Check the code-style and syntax (flake8, black, isort)
     $ make check
 
 
-.. raw:: html
+.. image:: https://github.com/vliz-be-opsci/pykg2tbl/blob/gh-pages/coverage.svg
+   :align: center
+   :target: https://github.com/JotaFan/pycoverage
 
-    <p align="center">
-    <a href="https://github.com/JotaFan/pycoverage"><img src="https://github.com/vliz-be-opsci/pykg2tbl/tree/gh-pages/coverage.svg"></a>
-    <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-    </p>
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :align: center
+   :alt: Code style: black
+   :target: https://github.com/psf/black
