@@ -58,6 +58,13 @@
 </dd></dl>
 
 <dl class="py exception">
+<dt class="sig sig-object py" id="pykg2tbl.exceptions.NoGraphSource">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.exceptions.</span></span><span class="sig-name descname"><span class="pre">NoGraphSource</span></span><a class="headerlink" href="#pykg2tbl.exceptions.NoGraphSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when the input in KGGraph is not a graph</p>
+</dd></dl>
+
+<dl class="py exception">
 <dt class="sig sig-object py" id="pykg2tbl.exceptions.NotASubClass">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.exceptions.</span></span><span class="sig-name descname"><span class="pre">NotASubClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'QueryResult'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.exceptions.NotASubClass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
@@ -119,7 +126,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGFileSource">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.kg2tbl.</span></span><span class="sig-name descname"><span class="pre">KGFileSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.kg2tbl.KGSource" title="pykg2tbl.kg2tbl.KGSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">KGSource</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.kg2tbl.KGGraphSource" title="pykg2tbl.kg2tbl.KGGraphSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">KGGraphSource</span></code></a></p>
 <p>Class that makes a KGSource from given turtle file(s)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -133,9 +140,31 @@ knowledge graph.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_compatibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource.check_compatibility" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGGraphSource">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pykg2tbl.kg2tbl.</span></span><span class="sig-name descname"><span class="pre">KGGraphSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGGraphSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pykg2tbl.kg2tbl.KGSource" title="pykg2tbl.kg2tbl.KGSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">KGSource</span></code></a></p>
+<p>Class that makes a KGSource from instatiated graphs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>graph</strong> – rdf knowledge graph.</p>
+</dd>
+</dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGFileSource.query">
-<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.query.QueryResult" title="pykg2tbl.query.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource.query" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGGraphSource.check_compatibility">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_compatibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGGraphSource.check_compatibility" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGGraphSource.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">sources</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGGraphSource.parse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGGraphSource.query">
+<span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pykg2tbl.query.QueryResult" title="pykg2tbl.query.QueryResult"><span class="pre">QueryResult</span></a></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGGraphSource.query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function that queries data with the given sparql</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -145,8 +174,8 @@ knowledge graph.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGFileSource.query_result_to_list_dicts">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query_result_to_list_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reslist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGFileSource.query_result_to_list_dicts" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGGraphSource.query_result_to_list_dicts">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query_result_to_list_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reslist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#pykg2tbl.kg2tbl.KGGraphSource.query_result_to_list_dicts" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>From the query result build a standard list of dicts,</dt><dd><p>where each key is the relation in the triplet.</p>
 </dd>
@@ -239,7 +268,7 @@ Otherwise raise error for Multiple Sources.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pykg2tbl.kg2tbl.KGSource.registry">
-<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGGraphSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.kg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -557,7 +586,7 @@ Otherwise raise error for Multiple Sources.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pykg2tbl.KGSource.registry">
-<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">registry</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGFileSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KG2EndpointSource'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'pykg2tbl.kg2tbl.KGGraphSource'&gt;}</span></em><a class="headerlink" href="#pykg2tbl.KGSource.registry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
