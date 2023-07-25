@@ -215,7 +215,8 @@ def detect_single_source_type(source: str) -> str:
         ep = SPARQLWrapper(source)
         ep.setQuery(query_ask)
         ep.setReturnFormat("json")
-        content_type = ep.query().info()["content-type"]
+        query_info = ep.query().info()
+        content_type = query_info.get("content-type", "")
         if "sparql" in content_type:
             source_type = "endpoint"
     return source_type
