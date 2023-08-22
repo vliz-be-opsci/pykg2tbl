@@ -19,7 +19,7 @@ from tests.util4tests import run_single_test
 )
 def test_factory_choice(query_response, QueryType):
     query_result = QueryResult.build(query_response)
-    assert type(query_result) == QueryType
+    assert type(query_result) is QueryType
 
 
 class DummyQueryResult(QueryResult):

@@ -36,7 +36,7 @@ from tests.util4tests import log, run_single_test
 )
 def test_factory_choice(source, KGType):
     source_KG2tbl = KGSource.build(*source)
-    assert type(source_KG2tbl) == KGType
+    assert type(source_KG2tbl) is KGType
 
 
 @pytest.mark.parametrize(
