@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pykg2tbl"
-version = "0.0.1"
+version = "0.0.2"
 description = "Py Project to extract table data from knowwledge-graphs using sparql templates"
 authors = [
         "Marc Portier <marc.portier@gmail.com>", 
